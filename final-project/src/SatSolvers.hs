@@ -98,9 +98,11 @@ unitPropagate ::
 unitPropagate (SatProblem clauses) (UnitPropagate (VarAssignment (pv, nv))) =
   SatProblem $ (filter f . map g) clauses
   where
-    f (Clause p n) =
-      (not . varListIsZero) (p .&. pv) || (not . varListIsZero) (n .&. nv)
-    g (Clause p n) = Clause (p .&. complement pv) (n .&. complement nv)
+    f (Clause p n) = not $ varListIsZero (p .|. n)
+    g (Clause p n)
+      | not (varListIsZero (p .&. pv)) || not (varListIsZero (n .&. nv)) =
+        Clause (createVarList @n) (createVarList @n)
+      | otherwise = Clause (p .&. complement pv) (n .&. complement nv)
 
 findUnits ::
      forall n. KnownNat n

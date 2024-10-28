@@ -68,4 +68,4 @@ runTestSatHelper =
               fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 4], [1]]
         let unit = fromJust $ findUnits problem
         let newProblem = unitPropagate problem unit
-        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[2]])
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[2, 4]])
