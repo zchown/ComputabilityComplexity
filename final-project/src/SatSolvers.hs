@@ -86,7 +86,7 @@ addNewUnitClause (SatProblem cs) (VarAssignment (vp, vn)) = do
         | otherwise = Just i
   newBit <- findFirstUnassigned 0
   np' <- SatTypes.setBit createVarList newBit
-  let newVarAssignment = VarAssignment (np', vn)
+  let newVarAssignment = VarAssignment (np' .|. vp, vn)
       newClause = Clause np' createVarList
   return (SatProblem (newClause : cs), newVarAssignment)
 
