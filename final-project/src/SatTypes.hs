@@ -349,6 +349,13 @@ setBit ::
   -> Maybe (VarList n)
 setBit = bitChangePattern Data.Bits.setBit
 
+setBits ::
+     forall n. KnownNat n
+  => VarList n
+  -> [Int]
+  -> Maybe (VarList n)
+setBits = foldM SatTypes.setBit
+
 clearBit ::
      forall n. KnownNat n
   => VarList n

@@ -6,7 +6,6 @@
 
 module TestSatSolverHelpers where
 
-import qualified Data.Bits as B
 import Data.Maybe (fromJust)
 
 import SatSolvers
@@ -69,6 +68,24 @@ runTestSatHelper =
         let unit = fromJust $ findUnits problem
         let newProblem = unitPropagate problem unit
         newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[2, 4]])
+      it "unitPropagate negative unit" $ do
+        let problem =
+              fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 4], [-2]]
+        let unit = fromJust $ findUnits problem
+        let newProblem = unitPropagate problem unit
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[1, 3], [4]])
+      it "unitPropagate multiple units" $ do
+        let problem =
+              fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 4], [1], [4]]
+        let unit = fromJust $ findUnits problem
+        let newProblem = unitPropagate problem unit
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [])
+      it "unitPropagate unsat" $ do
+        let problem =
+              fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 4], [-2], [-4]]
+        let unit = fromJust $ findUnits problem
+        let newProblem = unitPropagate problem unit
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[1, 3], []])
     describe "addNewUnitClause" $ do
       it "addNewUnitClause empty assignment" $ do
         let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 4]]
@@ -107,3 +124,55 @@ runTestSatHelper =
             , S.createVarAssignment @4
                 (fromJust (S.setBit (S.createVarList @4) 0))
                 n)
+    describe "unitPropagateReduce" $ do
+      it "unitPropagateReduce no units" $ do
+        let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 3]]
+        let assignment =
+              S.createVarAssignment (S.createVarList @4) (S.createVarList @4)
+        let (newProblem, newAssignment) = unitPropagateReduce problem assignment
+        newProblem `shouldBe` problem
+        newAssignment `shouldBe` assignment
+      it "unitPropagateReduce single unit" $ do
+        let problem =
+              fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 3], [1]]
+        let assignment =
+              S.createVarAssignment (S.createVarList @4) (S.createVarList @4)
+        let (newProblem, newAssignment) = unitPropagateReduce problem assignment
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[2, 3]])
+        newAssignment `shouldBe`
+          S.createVarAssignment @4
+            (fromJust (S.setBit (S.createVarList @4) 0))
+            (S.createVarList @4)
+      it "unitPropagateReduce multiple reductions" $ do
+        let problem =
+              fromJust $ S.satProblemFromList @4 [[1, 2, 3, 4], [-1], [1, 2]]
+        let assignment =
+              S.createVarAssignment (S.createVarList @4) (S.createVarList @4)
+        let (newProblem, newAssignment) = unitPropagateReduce problem assignment
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [])
+        newAssignment `shouldBe`
+          S.createVarAssignment @4
+            (fromJust (S.setBits (S.createVarList @4) [1]))
+            (fromJust (S.setBit (S.createVarList @4) 0))
+      it "unitPropagateReduce complete reduction" $ do
+        let problem =
+              fromJust $
+              S.satProblemFromList @4 [[1, 2, 3, 4], [-1], [1, -3], [3, 2]]
+        let assignment =
+              S.createVarAssignment @4 (S.createVarList @4) (S.createVarList @4)
+        let (newProblem, newAssignment) = unitPropagateReduce problem assignment
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [])
+        newAssignment `shouldBe`
+          S.createVarAssignment @4
+            (fromJust (S.setBit (S.createVarList @4) 1))
+            (fromJust (S.setBits (S.createVarList @4) [0, 2]))
+      it "unitPropagateReduce no solution" $ do
+        let problem = fromJust $ S.satProblemFromList @4 [[1, 2], [-1], [-2]]
+        let assignment =
+              S.createVarAssignment @4 (S.createVarList @4) (S.createVarList @4)
+        let (newProblem, newAssignment) = unitPropagateReduce problem assignment
+        newProblem `shouldBe` fromJust (S.satProblemFromList @4 [[]])
+        newAssignment `shouldBe`
+          S.createVarAssignment @4
+            (S.createVarList @4)
+            (fromJust (S.setBits (S.createVarList @4) [0, 1]))

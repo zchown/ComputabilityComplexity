@@ -53,25 +53,19 @@ newtype UnitPropagate n =
   UnitPropagate (VarAssignment n)
   deriving (Show, Eq)
 
--- unitPropagateAll ::
---      forall n. KnownNat n
---   => SatProblem n
---   -> UnitPropagate n
---   -> (SatProblem n, VarAssignment n)
--- unitPropagateAll = go
---   where
---     go :: SatProblem n -> UnitPropagate n -> (SatProblem n, VarAssignment n)
---     go a b =
---       case addNewUnitClause a (UnitPropagate (getVarAssignment b)) of
---         Just (a', b') -> go a' (UnitPropagate b')
---         Nothing -> (a, getVarAssignment b)
--- -- unitPropagateAll = go
---   where
---     go :: SatProblem n -> VarAssignment n -> (SatProblem n, VarAssignment n)
---     go a b =
---       case findUnits a of
---         Just (UnitPropagate va') -> go (unitPropagate a va') va'
---         Nothing -> (a, b)
+unitPropagateReduce ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> VarAssignment n
+  -> (SatProblem n, VarAssignment n)
+unitPropagateReduce p cva@(VarAssignment (vap, van)) =
+  case findUnits p of
+    Nothing -> (p, cva)
+    Just up@(UnitPropagate (VarAssignment (vp, vn))) ->
+      let p' = unitPropagate p up
+          cva' = VarAssignment (vap .|. vp, van .|. vn)
+       in unitPropagateReduce p' cva'
+
 addNewUnitClause ::
      forall n. KnownNat n
   => SatProblem n
@@ -95,14 +89,11 @@ unitPropagate ::
   => SatProblem n
   -> UnitPropagate n
   -> SatProblem n
-unitPropagate (SatProblem clauses) (UnitPropagate (VarAssignment (pv, nv))) =
-  SatProblem $ (filter f . map g) clauses
+unitPropagate (SatProblem cs) (UnitPropagate (VarAssignment (vp, vn))) =
+  SatProblem $ (map g . filter f) cs
   where
-    f (Clause p n) = not $ varListIsZero (p .|. n)
-    g (Clause p n)
-      | not (varListIsZero (p .&. pv)) || not (varListIsZero (n .&. nv)) =
-        Clause (createVarList @n) (createVarList @n)
-      | otherwise = Clause (p .&. complement pv) (n .&. complement nv)
+    g (Clause p n) = Clause (p .&. complement vn) (n .&. complement vp)
+    f (Clause p n) = varListIsZero ((vp .&. p) .|. (vn .&. n))
 
 findUnits ::
      forall n. KnownNat n
