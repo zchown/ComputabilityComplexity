@@ -156,9 +156,6 @@ knapsack01 (KnapsackProblem is c _) =
 --  us a different approach probably with Integers
 minCostKnapsack :: KnapsackProblem Int -> KnapsackResult Int
 minCostKnapsack (KnapsackProblem [] _ _) = KnapsackResult [] 0
-minCostKnapsack (KnapsackProblem [item] c _)
-  | itemWeight item <= c = KnapsackResult [item] (itemValue item)
-  | otherwise = KnapsackResult [] 0
 minCostKnapsack (KnapsackProblem is c _)
   | sumWeight <= c = KnapsackResult is sumValue
   | otherwise = KnapsackResult takeList takeValue

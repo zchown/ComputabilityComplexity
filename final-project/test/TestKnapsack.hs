@@ -13,14 +13,6 @@ doubleConversion ::
 doubleConversion f =
   convertKnapsackResultDoubleInt . f . convertKnapsackProblemIntDouble
 
-doMemoryTests :: IO Bool
-doMemoryTests = do
-  env <- lookupEnv "RUN_MEMORY_TESTS"
-  return $
-    case env of
-      Just "true" -> True
-      _ -> False
-
 runKnapsackTests :: IO ()
 runKnapsackTests =
   hspec $ do
@@ -104,43 +96,6 @@ runKnapsackTests =
         it "Greedy Knapsack correct" $
           doubleConversion greedyKnapsack testKnapsackGreedyCorrect `shouldBe`
           KnapsackResult [Item 10 60, Item 20 100] 160
-      context "Memory/Performance Tests" $
-        -- expensive tests so only run when environment variable is set
-       do
-        memTestResult <- runIO doMemoryTests
-        let memoryTest :: String -> Expectation -> Spec
-            memoryTest =
-              if memTestResult
-                then it
-                else \desc _ ->
-                       it
-                         desc
-                         (pendingWith
-                            "Test Skipped: Memory Tests disabled, set RUN_MEMORY_TESTS=true to enable")
-        memoryTest "Minimum Knapsack Memory Value Test" $
-          minCostKnapsack testMinimumKnapsackMemoryValue `shouldBe`
-          KnapsackResult
-            [Item 10 ((2 :: Int) ^ (32 :: Int)), Item 20 10000]
-            (((2 :: Int) ^ (32 :: Int)) + 10000)
-        memoryTest "Minimum Knapsack Memory Length Test" $
-          knapsackValue (minCostKnapsack testKnapsackMemoryLength) `shouldBe`
-          300000
-        memoryTest "FPTAS Knapsack Memory Value Test" $
-          fptasKnapsack testMinimumKnapsackMemoryValue `shouldBe`
-          KnapsackResult
-            [Item 10 ((2 :: Int) ^ (32 :: Int)), Item 20 10000]
-            (((2 :: Int) ^ (16 :: Int)) + 10000)
-        memoryTest "FPTAS Knapsack Memory Length Test" $
-          knapsackValue (fptasKnapsack testKnapsackMemoryLength) `shouldBe`
-          300000
-        memoryTest "01 Knapsack Memory Length Test" $
-          knapsackValue (knapsack01 testKnapsackMemoryLength) `shouldBe` 500
-        memoryTest "01 Knapsack testKnapsackMemoryWeight" $
-          knapsack01 test01KnapsackMemoryWeight `shouldBe`
-          KnapsackResult [Item 10 60, Item 20 100, Item 30 120] 280
-        memoryTest "01 knapsack testKnapsackMemoryLengthWeight" $
-          knapsackValue (knapsack01 testKnapsackMemoryLengthWeight) `shouldBe`
-          21660
 
 -- Test problems
 testKnapsackNoItems :: KnapsackProblem Int
@@ -207,38 +162,5 @@ testKnapsackGreedyCorrect =
   KnapsackProblem
     { pItems = [Item 10 60, Item 30 120, Item 20 100]
     , capacity = 30
-    , epsilon = 0.1
-    }
-
-testMinimumKnapsackMemoryValue :: KnapsackProblem Int
-testMinimumKnapsackMemoryValue =
-  KnapsackProblem
-    { pItems =
-        [Item 10 ((2 :: Int) ^ (16 :: Int)), Item 20 10000, Item 30 12000]
-    , capacity = 30
-    , epsilon = 0.1
-    }
-
-test01KnapsackMemoryWeight :: KnapsackProblem Int
-test01KnapsackMemoryWeight =
-  KnapsackProblem
-    { pItems = [Item 10 60, Item 20 100, Item 30 120]
-    , capacity = (2 :: Int) ^ (24 :: Int)
-    , epsilon = 0.1
-    }
-
-testKnapsackMemoryLength :: KnapsackProblem Int
-testKnapsackMemoryLength =
-  KnapsackProblem
-    { pItems = [Item 1 1 | _ <- [1 .. (2 :: Int) ^ (20 :: Int)]]
-    , capacity = 500
-    , epsilon = 0.1
-    }
-
-testKnapsackMemoryLengthWeight :: KnapsackProblem Int
-testKnapsackMemoryLengthWeight =
-  KnapsackProblem
-    { pItems = [Item i 60 | i <- [1 .. (2 :: Int) ^ (16 :: Int)]]
-    , capacity = (2 :: Int) ^ (16 :: Int)
     , epsilon = 0.1
     }

@@ -48,7 +48,9 @@ prop_inAgreement p@(KnapsackProblem _ _ e) =
       fptasValue = knapsackValue fptas
       condition1 = zeroOneValue == minCostValue
       condition2 = zeroOneValue <= 2 * greedyValue
-      condition3 = int2Double fptasValue >= (1.0 - e) * int2Double zeroOneValue
+      condition3 =
+        (int2Double fptasValue >= (1.0 - e) * int2Double zeroOneValue) &&
+        (int2Double fptasValue <= int2Double zeroOneValue)
       condition4 = fptasValue <= zeroOneValue
       condition5 = greedyValue <= zeroOneValue
    in counterexample
@@ -65,6 +67,11 @@ runKnapsackFuzzTests :: IO ()
 runKnapsackFuzzTests = do
   putStrLn "Running Knapsack Fuzz Tests"
   putStrLn "---------------------------"
+  putStrLn "Testing Greedy Knapsack respectCapacity"
+  quickCheck
+    (prop_respectCapacity
+       (convertKnapsackResultDoubleInt .
+        greedyKnapsack . convertKnapsackProblemIntDouble))
   putStrLn "Testing 01 Knapsack respectCapacity"
   quickCheck (prop_respectCapacity knapsack01)
   putStrLn "Testing Min Cost Knapsack respectCapacity"
