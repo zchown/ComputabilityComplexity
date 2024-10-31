@@ -261,7 +261,6 @@ varListFromList ::
 varListFromList bs =
   let n = natVal (Proxy @n)
       m = minWords n
-      lastWordBits = fromInteger $ n `mod` 64
       valid = (length bs == fromInteger n)
    in if valid
         then VarList $
@@ -399,31 +398,7 @@ bit64VectorBounded totalBits i =
         , V.singleton (bit bits)
         , V.replicate numWords 0
         ]
-    -- recursiveRotateRight :: Int -> Word64 -> VarList n
-    -- recursiveRotateRight i carry
 
---
--- rotateVarList ::
---      forall n. KnownNat n
---   => VarList n
---   -> Int
---   -> VarList n
--- rotateVarList v 0 = v
--- rotateVarList v i
---   | i < 0 = rotateVarListLeft v (-i)
---   | otherwise = rotateVarListRight v i
---
--- rotateVarListRight ::
---      forall n. KnownNat n
---   => VarList n
---   -> Int
---   -> VarList n
--- rotateVarListRight v@(VarList xs) i =
---   let (fullWords, bits) = i `divMod` 64
---       bitmask = ((2 ^ bits) - 1) :: Word64
---       len = V.length xs
---    in (V.map) V.++ recursiveRotateRight fullWords 0
---   where
 --------------------------------------
 -- | VarList Conversion Operations |--
 --------------------------------------

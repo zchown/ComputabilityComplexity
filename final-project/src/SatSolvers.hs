@@ -92,7 +92,7 @@ unitPropagate ::
 unitPropagate (SatProblem cs) (UnitPropagate (VarAssignment (vp, vn))) =
   SatProblem $ (map g . filter f) cs
   where
-    g (Clause p n) = Clause (p .&. complement vn) (n .&. complement vp)
+    g (Clause p n) = Clause (p .&. (p `xor` vn)) (n .&. (n `xor` vp))
     f (Clause p n) = varListIsZero ((vp .&. p) .|. (vn .&. n))
 
 findUnits ::
