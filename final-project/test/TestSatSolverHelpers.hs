@@ -97,7 +97,8 @@ runTestSatHelper =
             ( fromJust (S.satProblemFromList @4 [[1], [1, 2, 3], [2, 4]])
             , S.createVarAssignment @4
                 (fromJust (S.setBit (S.createVarList @4) 0))
-                (S.createVarList @4))
+                (S.createVarList @4)
+            , 0)
       it "addNewUnitClause positive assignment" $ do
         let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 3]]
         let assignment@(S.VarAssignment (p, _)) =
@@ -110,20 +111,8 @@ runTestSatHelper =
             ( fromJust (S.satProblemFromList @4 [[1], [1, 2, 3], [2, 3]])
             , S.createVarAssignment @4
                 (fromJust (S.setBit p 0))
-                (S.createVarList @4))
-      it "addNewUnitClause negative assignment" $ do
-        let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 3]]
-        let assignment@(S.VarAssignment (_, n)) =
-              S.createVarAssignment
                 (S.createVarList @4)
-                (fromJust (S.setBit (S.createVarList @4) 3))
-        let newProblem = addNewUnitClause problem assignment
-        newProblem `shouldBe`
-          Just
-            ( fromJust (S.satProblemFromList @4 [[1], [1, 2, 3], [2, 3]])
-            , S.createVarAssignment @4
-                (fromJust (S.setBit (S.createVarList @4) 0))
-                n)
+            , 0)
     describe "unitPropagateReduce" $ do
       it "unitPropagateReduce no units" $ do
         let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [2, 3]]

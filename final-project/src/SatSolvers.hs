@@ -8,6 +8,7 @@ module SatSolvers where
 
 import Data.Bits
 import Data.Foldable (foldr')
+import Data.Maybe (fromJust, isNothing)
 import GHC.TypeLits
 import SatTypes
 
@@ -20,21 +21,31 @@ gsat = undefined
 dpll ::
      forall n. KnownNat n
   => SatProblem n
+  -> VarAssignment n
   -> Maybe (VarAssignment n)
-dpll = undefined
+dpll (SatProblem []) va = Just va
+dpll p va =
+  case (flippedAssignment, result) of
+    (Just flipped, Nothing) -> dpll newFormula flipped
+    (_, Just r)
+      | evaluateSatProblem p r -> Just r
+    _ -> Nothing
+  where
+    (p'@(SatProblem cs'), va') = unitPropagateReduce p va
+    (newFormula, newAssignment@(VarAssignment (nap, nan)), nb) =
+      case addNewUnitClause p' va' of
+        Nothing -> (p', va', 0)
+        Just (a, b, c) -> (a, b, c)
+    flippedAssignment = do
+      flippedP <- flipBit nap nb
+      flippedN <- flipBit nan nb
+      return $ VarAssignment (flippedP, flippedN)
+    result
+      | checkProblem p' = Nothing
+      | null cs' = Just va
+      | va' == newAssignment = Nothing
+      | otherwise = dpll newFormula newAssignment
 
--- dpllRecursive ::
---      forall n. KnownNat n
---   => SatProblem n
---   -> VarAssignment n
---   -> Maybe (VarAssignment n)
--- dpllRecursive p@(SatProblem cs) va
---   | not isValid = Nothing
---   | all (\(Clause p n) -> varListIsZero (p .|. n)) cs = Just va
---   | otherwise = cs
---   where
---     (newProblem, newAssignment) = unitPropagateAll p va
---     isValid = checkProblem newProblem
 --------------------------
 -- | Helper Functions | --
 --------------------------
@@ -42,9 +53,8 @@ checkProblem ::
      forall n. KnownNat n
   => SatProblem n
   -> Bool
-checkProblem (SatProblem clauses) = all f clauses
-  where
-    f (Clause p n) = (not . varListIsZero) (p .|. n)
+checkProblem (SatProblem clauses) =
+  not $ any (varListIsZero . (\(Clause p n) -> p .|. n)) clauses
 
 --------------------------
 -- | Unit Propagation | --
@@ -70,7 +80,7 @@ addNewUnitClause ::
      forall n. KnownNat n
   => SatProblem n
   -> VarAssignment n
-  -> Maybe (SatProblem n, VarAssignment n)
+  -> Maybe (SatProblem n, VarAssignment n, Int)
 addNewUnitClause (SatProblem cs) (VarAssignment (vp, vn)) = do
   let allAssigned = vp .|. vn
       findFirstUnassigned :: Int -> Maybe Int
@@ -82,7 +92,7 @@ addNewUnitClause (SatProblem cs) (VarAssignment (vp, vn)) = do
   np' <- SatTypes.setBit createVarList newBit
   let newVarAssignment = VarAssignment (np' .|. vp, vn)
       newClause = Clause np' createVarList
-  return (SatProblem (newClause : cs), newVarAssignment)
+  return (SatProblem (newClause : cs), newVarAssignment, newBit)
 
 unitPropagate ::
      forall n. KnownNat n

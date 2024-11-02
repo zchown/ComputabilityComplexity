@@ -58,8 +58,7 @@ newtype SatProblem (n :: Nat) =
   SatProblem [Clause n]
   deriving (Eq, Show)
 
-newtype SatSolution (n :: Nat) =
-  SatSolution (VarList n)
+data SatSolution (n :: Nat) = Satisfiable (VarList n) | Unsatisfiable
   deriving (Eq, Show)
 
 newtype BoolSatSolution (n :: Nat) =
@@ -440,4 +439,6 @@ satSolutionToBoolSatSolution ::
      forall n. KnownNat n
   => SatSolution n
   -> BoolSatSolution n
-satSolutionToBoolSatSolution (SatSolution v) = BoolSatSolution $ toBitList v
+satSolutionToBoolSatSolution (Satisfiable v) =
+  BoolSatSolution $ toBitList v
+satSolutionToBoolSatSolution Unsatisfiable = BoolSatSolution []
