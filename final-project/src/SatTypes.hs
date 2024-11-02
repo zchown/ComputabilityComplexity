@@ -4,42 +4,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
-{-
- - This modules defines the types and helper function used to solve and
- - represent SAT problems. A SAT problem is just a list of clauses. A clause
- - is just two VarLists one for the positive variables in a clause and one for
- - the negative variables in a clause. A VarList is just a bitmask of size n
- - where n is the number of variables in the SAT problem. The VarList uses a
- - list of Word64 to store the bits. We also ensure that the VarList is always
- - using as few Word64 as possible by using the minWords function.
- -
- - This sounded like a cool solution to represent SAT problems although as 
- - you might be able to tell it is definitely a bit involved. Fortunately I was
- - able to cheat to an extent. Bit shifts and rotates are the hardest to 
- - implement, but they don't really make sense for this use case. Therefore
- - while I do have to provide a definition for them they both just do nothing.
- - My hope was that because we can do bitwise operation on the VarList we might
- - be able to gain  some performance by using this representation. Although I 
- - am not actually sure if this is the case in Haksell or not, I think it would
- - be in a language like C/C++/Rust. Inefficiency in the list is a potential 
- - concern. But that also depends on how many variables you have in your SAT 
- - problems. And probably would have been more of an issue if I had done this 
- - as a List of Ints as was suggested in class. An Array of Ints would be an 
- - improvement from that but thats just not as much fun. I don't know of a 
- - better way though to get an arbitrary length bit mask in Haskell. Maybe I 
- - should have used Zig where you can have arbitrary bit-width integers.
- -
- - One thing that is nice about doing this in Haskell though is that the types
- - can be very expressive and we can encode the number of variables into the
- - type system. This means that we can't accidentally try to do bitwise 
- - operations on two VarLists of different sizes. That is what all of the 
- - KnownNat constraints are for.
- -
- - I'm pretty sure you could actually just go about solving the SAT problems
- - using the type system entirely and never actually run the code... Haskell
- - is weird. If you use it wrong (or maybe right) its a dynamically typed 
- - interpreted language as the joke goes.
- -}
 module SatTypes where
 
 import Control.Monad (foldM)
@@ -58,7 +22,9 @@ newtype SatProblem (n :: Nat) =
   SatProblem [Clause n]
   deriving (Eq, Show)
 
-data SatSolution (n :: Nat) = Satisfiable (VarList n) | Unsatisfiable
+data SatSolution (n :: Nat)
+  = Satisfiable (VarList n)
+  | Unsatisfiable
   deriving (Eq, Show)
 
 newtype BoolSatSolution (n :: Nat) =
@@ -439,6 +405,5 @@ satSolutionToBoolSatSolution ::
      forall n. KnownNat n
   => SatSolution n
   -> BoolSatSolution n
-satSolutionToBoolSatSolution (Satisfiable v) =
-  BoolSatSolution $ toBitList v
+satSolutionToBoolSatSolution (Satisfiable v) = BoolSatSolution $ toBitList v
 satSolutionToBoolSatSolution Unsatisfiable = BoolSatSolution []

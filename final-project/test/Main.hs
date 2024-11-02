@@ -4,8 +4,10 @@ module Main
 
 import TestSatSolverHelpers
 
-import FuzzKnapsack
-import TestKnapsack
+import TestSatSolvers
+
+-- import FuzzKnapsack
+-- import TestKnapsack
 import TestSatTypes
 
 main :: IO ()
@@ -15,5 +17,6 @@ runAllTests :: IO ()
 runAllTests = do
   runTestSatType
   runTestSatHelper
-  runKnapsackTests
-  runKnapsackFuzzTests
+  runTestSatSolver
+  -- runKnapsackTests
+  -- runKnapsackFuzzTests

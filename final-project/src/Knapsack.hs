@@ -1,22 +1,11 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE BangPatterns #-}
 
--- FlexibleInstances is needed for the instance of Eq for KnapsackResult
--- BangPattern is used to force strict evaluation in some places
--- This removes thunk build up and can help memory usage and performance
 module Knapsack where
 
--- Allows for monadic iteration which we need because we are using ST monads
--- and will be doing iteration to construct DP tables
 import Control.Monad (forM_)
-
---import as qualified to prevent collision with UArray
--- Used less then UArray so its less annoying to not qualify UArray
 import qualified Data.Array as A
-import Data.Array.ST -- Allows for mutable state in arrays
-
--- Using UArray because its more efficient items are unboxed
--- in a normal array items are pointers to the actual data
+import Data.Array.ST
 import Data.Array.Unboxed
 import Data.Foldable (foldl', foldr')
 import Data.List (sortBy)
@@ -64,9 +53,6 @@ instance (Ord a) => Eq (KnapsackResult a) where
   (==) (KnapsackResult is1 v1) (KnapsackResult is2 v2) =
     checkItemListEquality is1 is2 && v1 == v2
 
--- Not going to discuss this implementation much
--- Pretty normal foldl' using strictness for performance
--- If the max value is larger then greedy solution return max val
 greedyKnapsack :: (Ord a, Fractional a) => KnapsackProblem a -> KnapsackResult a
 greedyKnapsack (KnapsackProblem [] _ _) = KnapsackResult [] 0
 greedyKnapsack (KnapsackProblem is c _)
@@ -92,68 +78,34 @@ greedyKnapsack (KnapsackProblem is c _)
             else curMax
         , items)
 
--- this implementation makes use of some more advanced Haskell features
--- in order to make some performance improvements
--- (at least I hope) some basic testing suggests it does
--- I will try to explain the reasoning behind the complexities of the
--- implementation as they come up as they will be reused for
--- minCostKnapsack and FPTASKnapsack
 knapsack01 :: KnapsackProblem Int -> KnapsackResult Int
 knapsack01 (KnapsackProblem is c _) =
   KnapsackResult (backTrack n c) (table ! (n, c))
   where
     n = length is
-    -- convert to normal array we need to do lookups by index which we cant 
-    -- do  with a list, sense this is items we cant use an unboxed array
-    -- unboxed arrays have better performance but can only be used with
-    -- c types, also we do this strictly sense we know we will need it
     !items = A.listArray (1, n) is
-    -- create the table strictly sense we know we will need it
     table :: UArray (Int, Int) Int
     !table =
-      runSTUArray $
-      -- runSTUArray allows us to create a mutable array and then freeze it
-      -- this is useful for performance and doesn't break Haskell's purity
-      -- as we don't actually ever want to mutate the array or share it 
-      -- outside this function
-       do
+      runSTUArray $ do
         t <- newArray ((0, 0), (n, c)) 0
-        -- forM_ is a monadic version of forM it can be thought of as an 
-        -- iterable and is allowed to have side effects
-        -- in this case we are using it to iterate over the items
-        forM_ [1 .. n] $ \i
-          -- bang patterns are used to force strict evaluation
-          -- we know we will need this item so we force it to be evaluated now
-         -> do
+        forM_ [1 .. n] $ \i -> do
           let !item = items A.! i
-          -- now we use forM_ again to iterate weights
           forM_ [1 .. c] $ \w -> do
             if itemWeight item <= w
-                -- without is the value without the current item
               then do
                 without <- readArray t (i - 1, w)
-                -- with is the value with the current item
                 with <-
                   (\x -> x + itemValue item) <$>
                   readArray t (i - 1, w - itemWeight item)
                 writeArray t (i, w) (max without with)
               else readArray t (i - 1, w) >>= writeArray t (i, w)
         return t
-    -- backTrack is pretty straight forward it just checks if an item should
-    -- be included in the knapsack by comparing the value at i w with the value
-    -- at i - 1 w or in otherwords the value with and without the item
     backTrack i w
       | i == 0 || w == 0 = []
       | itemWeight (items A.! i) <= w && table ! (i, w) /= table ! (i - 1, w) =
         (items A.! i) : backTrack (i - 1) (w - itemWeight (items A.! i))
       | otherwise = backTrack (i - 1) w
 
--- sumWeight + 1 is equivalent to infinite as reachable values will
--- be capped at sumWeight
--- this is nice because we can avoid maxBound which can cause some
---  overflow issues, I assume sumValue and sumWeight are not going to
---  overflow the int bounds otherwise we would need to rethink this and
---  us a different approach probably with Integers
 minCostKnapsack :: KnapsackProblem Int -> KnapsackResult Int
 minCostKnapsack (KnapsackProblem [] _ _) = KnapsackResult [] 0
 minCostKnapsack (KnapsackProblem is c _)

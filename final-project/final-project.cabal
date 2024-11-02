@@ -45,7 +45,7 @@ test-suite final-project-test
     default-language: Haskell2010
 
     other-modules: FuzzKnapsack TestKnapsack 
-    TestSatTypes TestSatSolverHelpers
+    TestSatTypes TestSatSolverHelpers TestSatSolvers
 
     type:             exitcode-stdio-1.0
 

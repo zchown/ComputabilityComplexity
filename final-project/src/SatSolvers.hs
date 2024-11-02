@@ -8,7 +8,6 @@ module SatSolvers where
 
 import Data.Bits
 import Data.Foldable (foldr')
-import Data.Maybe (fromJust, isNothing)
 import GHC.TypeLits
 import SatTypes
 
@@ -22,17 +21,18 @@ dpll ::
      forall n. KnownNat n
   => SatProblem n
   -> VarAssignment n
-  -> Maybe (VarAssignment n)
-dpll (SatProblem []) va = Just va
+  -> SatSolution n
+dpll (SatProblem []) (VarAssignment (pos, _)) = Satisfiable pos
 dpll p va =
   case (flippedAssignment, result) of
-    (Just flipped, Nothing) -> dpll newFormula flipped
-    (_, Just r)
-      | evaluateSatProblem p r -> Just r
-    _ -> Nothing
+    (Just flipped, Unsatisfiable) -> dpll newProblem flipped
+    (_, Satisfiable sol)
+      | evaluateSatProblem p (VarAssignment (sol, complement sol)) ->
+        Satisfiable sol
+    _ -> Unsatisfiable
   where
     (p'@(SatProblem cs'), va') = unitPropagateReduce p va
-    (newFormula, newAssignment@(VarAssignment (nap, nan)), nb) =
+    (newProblem, newAssignment@(VarAssignment (nap, nan)), nb) =
       case addNewUnitClause p' va' of
         Nothing -> (p', va', 0)
         Just (a, b, c) -> (a, b, c)
@@ -41,10 +41,10 @@ dpll p va =
       flippedN <- flipBit nan nb
       return $ VarAssignment (flippedP, flippedN)
     result
-      | checkProblem p' = Nothing
-      | null cs' = Just va
-      | va' == newAssignment = Nothing
-      | otherwise = dpll newFormula newAssignment
+      | checkProblem p' = Unsatisfiable
+      | null cs' = Satisfiable nap
+      | va' == newAssignment = Unsatisfiable
+      | otherwise = dpll newProblem newAssignment
 
 --------------------------
 -- | Helper Functions | --
