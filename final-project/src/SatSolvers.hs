@@ -126,9 +126,11 @@ unitPropagateReduce p cva@(VarAssignment (vap, van)) =
   case findUnits p of
     Nothing -> (p, cva)
     Just up@(UnitPropagate (VarAssignment (vp, vn))) ->
-      let p' = unitPropagate p up
-          cva' = VarAssignment (vap .|. vp, van .|. vn)
-       in unitPropagateReduce p' cva'
+      if not (varListIsZero (vp .&. vn))
+        then (SatProblem [], cva)
+        else let p' = unitPropagate p up
+                 cva' = VarAssignment (vap .|. vp, van .|. vn)
+              in unitPropagateReduce p' cva'
 
 addNewUnitClause ::
      forall n. KnownNat n
