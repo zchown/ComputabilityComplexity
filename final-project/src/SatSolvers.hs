@@ -68,7 +68,7 @@ tryBothAssignments ::
   -> VarAssignment n
   -> Int
   -> SatSolution n
-tryBothAssignments p va@(VarAssignment (vp, vn)) i =
+tryBothAssignments p (VarAssignment (vp, vn)) i =
   case trueResult of
     Satisfiable s -> Satisfiable s
     Unsatisfiable -> tryFalse
@@ -106,7 +106,7 @@ selectVariable (SatProblem cs) (VarAssignment (vp, vn)) =
       cvs = foldl' collectV createVarList cs
    in case find (\i -> not (testBit a i) && testBit cvs i) [0 .. n - 1] of
         Just idx -> Just idx
-        Nothing -> find (\i -> not (testBit a i)) [0 .. n - 1]
+        Nothing -> find (not . testBit a) [0 .. n - 1]
   where
     collectV acc (Clause p n) = acc .|. p .|. n
 
