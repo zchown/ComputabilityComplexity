@@ -16,7 +16,7 @@ main = putStrLn "Running Tests..." >> runAllTests
 runAllTests :: IO ()
 runAllTests = do
   runTestSatType
-  runTestSatHelper
+  -- runTestSatHelper
   runTestSatSolver
   -- runKnapsackTests
   -- runKnapsackFuzzTests

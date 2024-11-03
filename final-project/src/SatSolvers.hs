@@ -7,7 +7,7 @@
 module SatSolvers where
 
 import Data.Bits
-import Data.Foldable (foldr')
+import Data.Foldable (find, foldl', foldr')
 import GHC.TypeLits
 import SatTypes
 
@@ -22,39 +22,93 @@ dpll ::
   => SatProblem n
   -> VarAssignment n
   -> SatSolution n
-dpll (SatProblem []) (VarAssignment (pos, _)) = Satisfiable pos
 dpll p va =
-  case (flippedAssignment, result) of
-    (Just flipped, Unsatisfiable) -> dpll newProblem flipped
-    (_, Satisfiable sol)
-      | evaluateSatProblem p (VarAssignment (sol, complement sol)) ->
-        Satisfiable sol
-    _ -> Unsatisfiable
+  case findUnits p of
+    Just (UnitPropagate (VarAssignment (up, un))) ->
+      if not (varListIsZero (up .&. un))
+        then Unsatisfiable
+        else continueSearch
+    Nothing -> continueSearch
   where
-    (p'@(SatProblem cs'), va') = unitPropagateReduce p va
-    (newProblem, newAssignment@(VarAssignment (nap, nan)), nb) =
-      case addNewUnitClause p' va' of
-        Nothing -> (p', va', 0)
-        Just (a, b, c) -> (a, b, c)
-    flippedAssignment = do
-      flippedP <- flipBit nap nb
-      flippedN <- flipBit nan nb
-      return $ VarAssignment (flippedP, flippedN)
-    result
-      | checkProblem p' = Unsatisfiable
-      | null cs' = Satisfiable nap
-      | va' == newAssignment = Unsatisfiable
-      | otherwise = dpll newProblem newAssignment
+    continueSearch =
+      let (np@(SatProblem cs), na@(VarAssignment (nap, _))) =
+            unitPropagateReduce p va
+       in if null cs
+            then if evaluateSatProblem p na
+                   then Satisfiable nap
+                   else Unsatisfiable
+            else case checkClauses cs of
+                   EmptyClause -> Unsatisfiable
+                   AllSatisfied ->
+                     if evaluateSatProblem p na
+                       then Satisfiable nap
+                       else case selectVariable np na of
+                              Nothing -> Unsatisfiable
+                              Just i -> tryBothAssignments p na i
+                   NeedBranch ->
+                     case selectVariable np na of
+                       Nothing ->
+                         if evaluateSatProblem p na
+                           then Satisfiable nap
+                           else Unsatisfiable
+                       Just i -> tryBothAssignments p na i
 
 --------------------------
 -- | Helper Functions | --
 --------------------------
-checkProblem ::
+data ClauseStatus
+  = EmptyClause
+  | AllSatisfied
+  | NeedBranch
+  deriving (Show, Eq)
+
+tryBothAssignments ::
      forall n. KnownNat n
   => SatProblem n
-  -> Bool
-checkProblem (SatProblem clauses) =
-  not $ any (varListIsZero . (\(Clause p n) -> p .|. n)) clauses
+  -> VarAssignment n
+  -> Int
+  -> SatSolution n
+tryBothAssignments p va@(VarAssignment (vp, vn)) i =
+  case trueResult of
+    Satisfiable s -> Satisfiable s
+    Unsatisfiable -> tryFalse
+  where
+    trueResult =
+      case SatTypes.setBit vp i of
+        Just vp' -> dpll p (VarAssignment (vp', vn))
+        Nothing -> error "Error setting bit"
+    tryFalse =
+      case SatTypes.setBit vn i of
+        Just vn' -> dpll p (VarAssignment (vp, vn'))
+        Nothing -> error "Error setting bit"
+
+checkClauses ::
+     forall n. KnownNat n
+  => [Clause n]
+  -> ClauseStatus
+checkClauses [] = AllSatisfied
+checkClauses cs
+  | any isEmptyClause cs = EmptyClause
+  | all isSatisfiedClause cs = AllSatisfied
+  | otherwise = NeedBranch
+  where
+    isEmptyClause (Clause p n) = varListIsZero (p .|. n)
+    isSatisfiedClause (Clause p n) = not $ varListIsZero (p .|. n)
+
+selectVariable ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> VarAssignment n
+  -> Maybe Int
+selectVariable (SatProblem cs) (VarAssignment (vp, vn)) =
+  let a = vp .|. vn
+      n = varListSize a
+      cvs = foldl' collectV createVarList cs
+   in case find (\i -> not (testBit a i) && testBit cvs i) [0 .. n - 1] of
+        Just idx -> Just idx
+        Nothing -> find (\i -> not (testBit a i)) [0 .. n - 1]
+  where
+    collectV acc (Clause p n) = acc .|. p .|. n
 
 --------------------------
 -- | Unit Propagation | --
