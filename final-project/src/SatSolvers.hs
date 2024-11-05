@@ -3,17 +3,11 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeApplications #-}
 
 module SatSolvers where
 
 import Data.Bits
 import Data.Foldable (find, foldr')
-import Data.Maybe (fromJust)
 import qualified Data.Vector as V
 import GHC.TypeLits
 import SatTypes
@@ -23,16 +17,16 @@ dpll ::
   => SatProblem n
   -> VarAssignment n
   -> SatSolution n
-dpll problem@(SatProblem clauses) assignment@(VarAssignment (vp, vn)) =
+dpll problem assignment =
   case unitPropagateReduce problem assignment of
-    (SatProblem cs, va@(VarAssignment (vp', vn'))) ->
+    (SatProblem cs, va@(VarAssignment (vp', _))) ->
       if V.null cs
         then Satisfiable vp'
         else case checkClauses cs va of
                EmptyClause -> Unsatisfiable
                AllSatisfied -> Satisfiable vp'
                NeedBranch ->
-                 case selectVariable (SatProblem cs) va of
+                 case selectVariable va of
                    Nothing -> Unsatisfiable
                    Just i -> tryBothAssignments (SatProblem cs) va i
 
@@ -51,7 +45,7 @@ tryBothAssignments ::
   -> VarAssignment n
   -> Int
   -> SatSolution n
-tryBothAssignments prob va@(VarAssignment (vp, vn)) i =
+tryBothAssignments prob (VarAssignment (vp, vn)) i =
   case SatTypes.setBit vp i of
     Just vp' ->
       case dpll prob (VarAssignment (vp', vn)) of
@@ -67,7 +61,7 @@ checkClauses ::
   => V.Vector (Clause n)
   -> VarAssignment n
   -> ClauseStatus
-checkClauses cs va@(VarAssignment (vp, vn))
+checkClauses cs (VarAssignment (vp, vn))
   | V.null cs = AllSatisfied
   | V.any isEmptyClause cs = EmptyClause
   | V.all isSatisfiedClause cs = AllSatisfied
@@ -80,13 +74,12 @@ checkClauses cs va@(VarAssignment (vp, vn))
 
 selectVariable ::
      forall n. KnownNat n
-  => SatProblem n
-  -> VarAssignment n
+  => VarAssignment n
   -> Maybe Int
-selectVariable (SatProblem cs) (VarAssignment (vp, vn)) =
+selectVariable (VarAssignment (vp, vn)) =
   let assigned = vp .|. vn
       n = varListSize assigned
-   in find (\i -> not (testBit assigned i)) [0 .. n - 1]
+   in find (not . testBit assigned) [0 .. n - 1]
 
 --------------------------
 -- | Unit Propagation | --

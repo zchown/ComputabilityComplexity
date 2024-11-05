@@ -96,7 +96,7 @@ benchmarkWithVars ::
 benchmarkWithVars handle proxy = do
   let numVars = fromIntegral $ natVal proxy
   tee handle $ "Generating test cases with " ++ show numVars ++ " variables..."
-  let clauseCounts = [16, 32, 64, 128, 256]
+  let clauseCounts = [64,128 .. 640]
   let numProblems = 5
   problems <-
     sequence $
@@ -128,4 +128,4 @@ main = do
       formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" currentTime
     tee handle "================================================"
     tee handle ""
-    benchmarkWithVars handle (Proxy @32)
+    benchmarkWithVars handle (Proxy @128)
