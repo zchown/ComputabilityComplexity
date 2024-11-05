@@ -59,21 +59,6 @@ evaluateSatProblem ::
   -> Bool
 evaluateSatProblem (SatProblem cs) v = all (evaluateClause v) cs
 
--- ratioSatProblem ::
---      forall n. KnownNat n
---   => SatProblem n
---   -> VarAssignment n
---   -> Double
--- ratioSatProblem (SatProblem cs) v =
---   fromIntegral (length (filter (evaluateClause v) cs)) /
---   fromIntegral (length cs)
--- satProblemFromList ::
---      forall n. KnownNat n
---   => [[Int]]
---   -> Maybe (SatProblem n)
--- satProblemFromList xs = do
---   clauses <- mapM clauseFromList xs
---   return $ SatProblem clauses
 satProblemFromList ::
      forall n. KnownNat n
   => [[Int]]

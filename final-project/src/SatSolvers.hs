@@ -23,29 +23,18 @@ dpll ::
   => SatProblem n
   -> VarAssignment n
   -> SatSolution n
-dpll p@(SatProblem cs) va@(VarAssignment (vap, van)) =
-  case checkClauses cs va of
-    EmptyClause -> Unsatisfiable
-    AllSatisfied -> Satisfiable vap
-    NeedBranch ->
-      case findUnits p of
-        Nothing -> prop p va
-        Just up@(UnitPropagate (VarAssignment (vp, vn))) ->
-          prop p (VarAssignment (vap .|. vp, van .|. vn))
-  where
-    prop p va = uncurry quickCheck $ unitPropagateReduce p va
-    quickCheck p@(SatProblem cs) va@(VarAssignment (vp, vn)) =
-      case checkClauses cs va of
-        EmptyClause -> Unsatisfiable
-        AllSatisfied -> Satisfiable vp
-        NeedBranch -> continueDpll p va
-    continueDpll p@(SatProblem cs) va@(VarAssignment (vp, vn)) =
-      case selectVariable p va of
-        Just i -> tryBothAssignments p va i
-        Nothing ->
-          case checkClauses cs va of
-            AllSatisfied -> Satisfiable vp
-            _ -> Unsatisfiable
+dpll problem@(SatProblem clauses) assignment@(VarAssignment (vp, vn)) =
+  case unitPropagateReduce problem assignment of
+    (SatProblem cs, va@(VarAssignment (vp', vn'))) ->
+      if V.null cs
+        then Satisfiable vp'
+        else case checkClauses cs va of
+               EmptyClause -> Unsatisfiable
+               AllSatisfied -> Satisfiable vp'
+               NeedBranch ->
+                 case selectVariable (SatProblem cs) va of
+                   Nothing -> Unsatisfiable
+                   Just i -> tryBothAssignments (SatProblem cs) va i
 
 --------------------------
 -- | Helper Functions | --
@@ -62,21 +51,16 @@ tryBothAssignments ::
   -> VarAssignment n
   -> Int
   -> SatSolution n
-tryBothAssignments p@(SatProblem cs) va@(VarAssignment (vp, vn)) i =
-  case trueResult of
-    Satisfiable s -> Satisfiable s
-    Unsatisfiable -> tryFalse
-  where
-    trueResult =
-      case SatTypes.setBit vp i of
-        Just vp' ->
-          uncurry dpll $ unitPropagateReduce p (VarAssignment (vp', vn))
-        Nothing -> Unsatisfiable
-    tryFalse =
-      case SatTypes.setBit vn i of
-        Just vn' ->
-          uncurry dpll $ unitPropagateReduce p (VarAssignment (vp, vn'))
-        Nothing -> Unsatisfiable
+tryBothAssignments prob va@(VarAssignment (vp, vn)) i =
+  case SatTypes.setBit vp i of
+    Just vp' ->
+      case dpll prob (VarAssignment (vp', vn)) of
+        Satisfiable s -> Satisfiable s
+        Unsatisfiable ->
+          case SatTypes.setBit vn i of
+            Just vn' -> dpll prob (VarAssignment (vp, vn'))
+            Nothing -> Unsatisfiable
+    Nothing -> Unsatisfiable
 
 checkClauses ::
      forall n. KnownNat n
@@ -85,13 +69,13 @@ checkClauses ::
   -> ClauseStatus
 checkClauses cs va@(VarAssignment (vp, vn))
   | V.null cs = AllSatisfied
-  | V.any (isEmptyClause va) cs = EmptyClause
-  | V.all (isSatisfiedClause va) cs = AllSatisfied
+  | V.any isEmptyClause cs = EmptyClause
+  | V.all isSatisfiedClause cs = AllSatisfied
   | otherwise = NeedBranch
   where
-    isEmptyClause (VarAssignment (vp, vn)) (Clause p n) =
-      varListIsZero ((p .&. complement vn) .|. (n .&. complement vp))
-    isSatisfiedClause (VarAssignment (vp, vn)) (Clause p n) =
+    isEmptyClause (Clause p n) =
+      varListIsZero (p .&. (p `xor` vn)) && varListIsZero (n .&. (n `xor` vp))
+    isSatisfiedClause (Clause p n) =
       not (varListIsZero (p .&. vp)) || not (varListIsZero (n .&. vn))
 
 selectVariable ::
@@ -102,7 +86,6 @@ selectVariable ::
 selectVariable (SatProblem cs) (VarAssignment (vp, vn)) =
   let assigned = vp .|. vn
       n = varListSize assigned
-      cvs = V.foldl' (\acc (Clause p n) -> acc .|. p .|. n) createVarList cs
    in find (\i -> not (testBit assigned i)) [0 .. n - 1]
 
 --------------------------

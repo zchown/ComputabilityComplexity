@@ -1,0 +1,46 @@
+SAT Solver Benchmark Results - 2024-11-05 05:21:59
+================================================
+
+Generating test cases with 32 variables...
+
+Running benchmarks...
+Benchmarking with 16 clauses...
+DPLL-32-vars/16 clauses: 0.206 ms
+DPLL-32-vars/16 clauses: 7.627 ms
+DPLL-32-vars/16 clauses: 6.133 ms
+DPLL-32-vars/16 clauses: 7.3e-2 ms
+DPLL-32-vars/16 clauses: 8.616999999999999 ms
+Average time for 16 clauses: 4.5312 ms
+
+Benchmarking with 32 clauses...
+DPLL-32-vars/32 clauses: 0.102 ms
+DPLL-32-vars/32 clauses: 0.101 ms
+DPLL-32-vars/32 clauses: 0.7290000000000001 ms
+DPLL-32-vars/32 clauses: 0.156 ms
+DPLL-32-vars/32 clauses: 1.9940000000000002 ms
+Average time for 32 clauses: 0.6164000000000001 ms
+
+Benchmarking with 64 clauses...
+DPLL-32-vars/64 clauses: 25.02 ms
+DPLL-32-vars/64 clauses: 0.128 ms
+DPLL-32-vars/64 clauses: 2.693 ms
+DPLL-32-vars/64 clauses: 0.517 ms
+DPLL-32-vars/64 clauses: 1.159 ms
+Average time for 64 clauses: 5.9034 ms
+
+Benchmarking with 128 clauses...
+DPLL-32-vars/128 clauses: 1621.027 ms
+DPLL-32-vars/128 clauses: 2.182 ms
+DPLL-32-vars/128 clauses: 14.508999999999999 ms
+DPLL-32-vars/128 clauses: 25.235 ms
+DPLL-32-vars/128 clauses: 1570.489 ms
+Average time for 128 clauses: 646.6884 ms
+
+Benchmarking with 256 clauses...
+DPLL-32-vars/256 clauses: 155.012 ms
+DPLL-32-vars/256 clauses: 175.727 ms
+DPLL-32-vars/256 clauses: 101.153 ms
+DPLL-32-vars/256 clauses: 137.86499999999998 ms
+DPLL-32-vars/256 clauses: 48.150999999999996 ms
+Average time for 256 clauses: 123.58160000000001 ms
+

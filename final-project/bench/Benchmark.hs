@@ -2,16 +2,24 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Main where
 
 import Control.DeepSeq
 import Control.Monad (forM_, replicateM)
 import Data.List (transpose)
+import Data.Proxy (Proxy(..))
+import Data.Time.Clock (getCurrentTime)
 import Data.Time.Clock.POSIX (POSIXTime, getPOSIXTime)
+import Data.Time.Format (defaultTimeLocale, formatTime)
 import qualified Data.Vector.Unboxed as V
+import GHC.TypeLits (KnownNat, Nat, natVal)
 import SatSolvers
 import SatTypes
+import System.IO (Handle, IOMode(..), hPutStrLn, stdout, withFile)
 import System.Random
 
 instance NFData (VarList n) where
@@ -30,6 +38,11 @@ instance NFData (SatSolution n) where
   rnf !s@(Satisfiable v) = s `seq` rnf v
   rnf Unsatisfiable = ()
 
+tee :: Handle -> String -> IO ()
+tee handle str = do
+  putStrLn str
+  hPutStrLn handle str
+
 generate3SATClause :: Int -> IO [Int]
 generate3SATClause n = do
   vars <- V.replicateM 3 (randomRIO (1, n))
@@ -44,43 +57,75 @@ generate3SATClause n = do
       vars
       signs
 
-generateSATProblems :: Int -> Int -> IO [SatProblem 32]
-generateSATProblems n m = do
+generateSATProblems ::
+     forall n. KnownNat n
+  => Proxy n
+  -> Int
+  -> Int
+  -> IO [SatProblem n]
+generateSATProblems proxy n m = do
   clauses <- replicateM m (generate3SATClause n)
-  case satProblemFromList @32 clauses of
+  case satProblemFromList @n clauses of
     Just problem -> return [problem]
     Nothing -> return []
 
-timeAction :: String -> SatProblem 32 -> IO POSIXTime
-timeAction label problem = do
+timeAction ::
+     forall n. KnownNat n
+  => Handle
+  -> String
+  -> SatProblem n
+  -> IO POSIXTime
+timeAction handle label problem = do
   start <- getPOSIXTime
-  let !result = dpll problem emptyAssignment
+  let !result = dpll problem (emptyAssignment @n)
   end <- getPOSIXTime
   let diff = end - start
-  putStrLn $ label ++ ": " ++ show (realToFrac diff * 1000) ++ " ms"
+  tee handle $ label ++ ": " ++ show (realToFrac diff * 1000) ++ " ms"
   return diff
 
-emptyAssignment :: VarAssignment 32
+emptyAssignment ::
+     forall n. KnownNat n
+  => VarAssignment n
 emptyAssignment = createVarAssignment createVarList createVarList
 
-main :: IO ()
-main = do
-  putStrLn "Generating test cases with 32 variables..."
-  let clauseCounts = [16,32 .. 256]
+benchmarkWithVars ::
+     forall n. KnownNat n
+  => Handle
+  -> Proxy n
+  -> IO ()
+benchmarkWithVars handle proxy = do
+  let numVars = fromIntegral $ natVal proxy
+  tee handle $ "Generating test cases with " ++ show numVars ++ " variables..."
+  let clauseCounts = [16, 32, 64, 128, 256]
   let numProblems = 5
   problems <-
     sequence $
     replicate numProblems $
-    concat <$> mapM (\c -> generateSATProblems 32 c) clauseCounts
-  let zippedProblems = zip clauseCounts $ transpose $ problems
-  putStrLn "\nRunning benchmarks..."
+    concat <$> mapM (\c -> generateSATProblems proxy numVars c) clauseCounts
+  let zippedProblems = zip clauseCounts $ transpose problems
+  tee handle "\nRunning benchmarks..."
   forM_ zippedProblems $ \(numClauses, problemSet) -> do
-    putStrLn $ "Benchmarking with " ++ show numClauses ++ " clauses..."
+    tee handle $ "Benchmarking with " ++ show numClauses ++ " clauses..."
     times <-
       mapM
-        (timeAction ("DPLL-32-vars/" ++ show numClauses ++ " clauses"))
+        (timeAction
+           handle
+           ("DPLL-" ++ show numVars ++ "-vars/" ++ show numClauses ++ " clauses"))
         problemSet
     let avgTime = realToFrac (sum times) * 1000 / fromIntegral numProblems
-    putStrLn $
+    tee handle $
       "Average time for " ++
       show numClauses ++ " clauses: " ++ show avgTime ++ " ms\n"
+
+main :: IO ()
+main = do
+  currentTime <- getCurrentTime
+  let timestamp = formatTime defaultTimeLocale "%Y%m%d_%H%M%S" currentTime
+  let filename = "benchmark_results_" ++ timestamp ++ ".txt"
+  withFile filename WriteMode $ \handle -> do
+    tee handle $
+      "SAT Solver Benchmark Results - " ++
+      formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" currentTime
+    tee handle "================================================"
+    tee handle ""
+    benchmarkWithVars handle (Proxy @32)
