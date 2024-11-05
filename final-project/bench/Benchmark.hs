@@ -32,7 +32,7 @@ instance NFData (SatProblem n) where
   rnf !p@(SatProblem cs) = p `seq` rnf cs
 
 instance NFData (VarAssignment n) where
-  rnf !a@(VarAssignment (!p, !n)) = a `seq` rnf p `seq` rnf n
+  rnf !a@(VarAssignment !p !n) = a `seq` rnf p `seq` rnf n
 
 instance NFData (SatSolution n) where
   rnf !s@(Satisfiable v) = s `seq` rnf v
