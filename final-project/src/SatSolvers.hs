@@ -3,6 +3,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE BangPatterns #-}
 
 module SatSolvers where
 
@@ -17,18 +18,26 @@ dpll ::
   => SatProblem n
   -> VarAssignment n
   -> SatSolution n
-dpll problem assignment =
-  case unitPropagateReduce problem assignment of
-    (SatProblem cs, va@(VarAssignment (vp', _))) ->
-      if V.null cs
-        then Satisfiable vp'
-        else case checkClauses cs va of
-               EmptyClause -> Unsatisfiable
-               AllSatisfied -> Satisfiable vp'
-               NeedBranch ->
-                 case selectVariable va of
-                   Nothing -> Unsatisfiable
-                   Just i -> tryBothAssignments (SatProblem cs) va i
+dpll !p !a = dpll' p a 0
+
+dpll' ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> VarAssignment n
+  -> Int
+  -> SatSolution n
+dpll' !p !a !j =
+  if V.null cs
+    then Satisfiable vp
+    else case checkClauses cs a of
+           EmptyClause -> Unsatisfiable
+           AllSatisfied -> Satisfiable vp
+           NeedBranch ->
+             case selectVariable a j of
+               Nothing -> Unsatisfiable
+               Just !i -> tryBothAssignments p a i
+  where
+    (SatProblem !cs, VarAssignment (!vp, _)) = unitPropagateReduce p a
 
 --------------------------
 -- | Helper Functions | --
@@ -45,14 +54,14 @@ tryBothAssignments ::
   -> VarAssignment n
   -> Int
   -> SatSolution n
-tryBothAssignments prob (VarAssignment (vp, vn)) i =
+tryBothAssignments !prob !va@(VarAssignment (!vp, !vn)) !i =
   case SatTypes.setBit vp i of
-    Just vp' ->
-      case dpll prob (VarAssignment (vp', vn)) of
+    Just !vp' ->
+      case dpll' prob (VarAssignment (vp', vn)) i of
         Satisfiable s -> Satisfiable s
         Unsatisfiable ->
           case SatTypes.setBit vn i of
-            Just vn' -> dpll prob (VarAssignment (vp, vn'))
+            Just !vn' -> dpll' prob (VarAssignment (vp, vn')) i
             Nothing -> Unsatisfiable
     Nothing -> Unsatisfiable
 
@@ -61,25 +70,26 @@ checkClauses ::
   => V.Vector (Clause n)
   -> VarAssignment n
   -> ClauseStatus
-checkClauses cs (VarAssignment (vp, vn))
+checkClauses !cs !va@(VarAssignment (!vp, !vn))
   | V.null cs = AllSatisfied
   | V.any isEmptyClause cs = EmptyClause
   | V.all isSatisfiedClause cs = AllSatisfied
   | otherwise = NeedBranch
   where
-    isEmptyClause (Clause p n) =
+    isEmptyClause (Clause !p !n) =
       varListIsZero (p .&. (p `xor` vn)) && varListIsZero (n .&. (n `xor` vp))
-    isSatisfiedClause (Clause p n) =
+    isSatisfiedClause (Clause !p !n) =
       not (varListIsZero (p .&. vp)) || not (varListIsZero (n .&. vn))
 
 selectVariable ::
      forall n. KnownNat n
   => VarAssignment n
+  -> Int
   -> Maybe Int
-selectVariable (VarAssignment (vp, vn)) =
-  let assigned = vp .|. vn
-      n = varListSize assigned
-   in find (not . testBit assigned) [0 .. n - 1]
+selectVariable !va@(VarAssignment (!vp, !vn)) !i =
+  let !assigned = vp .|. vn
+      !n = varListSize assigned
+   in find (not . testBit assigned) [i .. n - 1]
 
 --------------------------
 -- | Unit Propagation | --
@@ -93,14 +103,14 @@ unitPropagateReduce ::
   => SatProblem n
   -> VarAssignment n
   -> (SatProblem n, VarAssignment n)
-unitPropagateReduce p cva@(VarAssignment (vap, van)) =
+unitPropagateReduce !p !cva@(VarAssignment (!vap, !van)) =
   case findUnits p of
     Nothing -> (p, cva)
-    Just up@(UnitPropagate (VarAssignment (vp, vn))) ->
+    Just !up@(UnitPropagate (VarAssignment (!vp, !vn))) ->
       if not (varListIsZero (vp .&. vn))
         then (SatProblem V.empty, cva)
-        else let p' = unitPropagate p up
-                 cva' = VarAssignment (vap .|. vp, van .|. vn)
+        else let !p' = unitPropagate p up
+                 !cva' = VarAssignment (vap .|. vp, van .|. vn)
               in unitPropagateReduce p' cva'
 
 unitPropagate ::
@@ -108,30 +118,30 @@ unitPropagate ::
   => SatProblem n
   -> UnitPropagate n
   -> SatProblem n
-unitPropagate (SatProblem cs) (UnitPropagate (VarAssignment (vp, vn))) =
+unitPropagate (SatProblem !cs) (UnitPropagate (VarAssignment (!vp, !vn))) =
   SatProblem $ V.map g $ V.filter f cs
   where
-    g (Clause p n) = Clause (p .&. (p `xor` vn)) (n .&. (n `xor` vp))
-    f (Clause p n) = varListIsZero ((vp .&. p) .|. (vn .&. n))
+    g (Clause !p !n) = Clause (p .&. (p `xor` vn)) (n .&. (n `xor` vp))
+    f (Clause !p !n) = varListIsZero ((vp .&. p) .|. (vn .&. n))
 
 findUnits ::
      forall n. KnownNat n
   => SatProblem n
   -> Maybe (UnitPropagate n)
-findUnits (SatProblem clauses) = actual
+findUnits (SatProblem !clauses) = actual
   where
-    actual =
+    !actual =
       if result == VarAssignment (createVarList @n, createVarList @n)
         then Nothing
         else Just (UnitPropagate result)
-    result =
+    !result =
       foldr' f (VarAssignment (createVarList @n, createVarList @n)) clauses
-    f (Clause p n) (VarAssignment (vp, vn))
+    f (Clause !p !n) (VarAssignment (!vp, !vn))
       | pp == 1 && pn == 0 && varListIsZero (vn .&. p) =
         VarAssignment (vp .|. p, vn)
       | pp == 0 && pn == 1 && varListIsZero (vp .&. n) =
         VarAssignment (vp, vn .|. n)
       | otherwise = VarAssignment (vp, vn)
       where
-        pp = popCount p
-        pn = popCount n
+        !pp = popCount p
+        !pn = popCount n

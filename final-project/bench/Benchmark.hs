@@ -96,7 +96,7 @@ benchmarkWithVars ::
 benchmarkWithVars handle proxy = do
   let numVars = fromIntegral $ natVal proxy
   tee handle $ "Generating test cases with " ++ show numVars ++ " variables..."
-  let clauseCounts = [64,128 .. 640]
+  let clauseCounts = [64,128 .. 1024]
   let numProblems = 5
   problems <-
     sequence $
