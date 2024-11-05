@@ -10,6 +10,7 @@ import Control.Monad (foldM)
 import Data.Bits
 import Data.Foldable (foldl', foldr')
 import Data.Proxy
+import qualified Data.Vector as VE
 import Data.Vector.Unboxed (Vector)
 import qualified Data.Vector.Unboxed as V
 import Data.Word (Word64)
@@ -19,7 +20,7 @@ import GHC.TypeLits
 -- | Core SAT Problem Types | --
 --------------------------------
 newtype SatProblem (n :: Nat) =
-  SatProblem [Clause n]
+  SatProblem (VE.Vector (Clause n))
   deriving (Eq, Show)
 
 data SatSolution (n :: Nat)
@@ -58,22 +59,28 @@ evaluateSatProblem ::
   -> Bool
 evaluateSatProblem (SatProblem cs) v = all (evaluateClause v) cs
 
-ratioSatProblem ::
-     forall n. KnownNat n
-  => SatProblem n
-  -> VarAssignment n
-  -> Double
-ratioSatProblem (SatProblem cs) v =
-  fromIntegral (length (filter (evaluateClause v) cs)) /
-  fromIntegral (length cs)
-
+-- ratioSatProblem ::
+--      forall n. KnownNat n
+--   => SatProblem n
+--   -> VarAssignment n
+--   -> Double
+-- ratioSatProblem (SatProblem cs) v =
+--   fromIntegral (length (filter (evaluateClause v) cs)) /
+--   fromIntegral (length cs)
+-- satProblemFromList ::
+--      forall n. KnownNat n
+--   => [[Int]]
+--   -> Maybe (SatProblem n)
+-- satProblemFromList xs = do
+--   clauses <- mapM clauseFromList xs
+--   return $ SatProblem clauses
 satProblemFromList ::
      forall n. KnownNat n
   => [[Int]]
   -> Maybe (SatProblem n)
 satProblemFromList xs = do
   clauses <- mapM clauseFromList xs
-  return $ SatProblem clauses
+  return $ SatProblem $ VE.fromList clauses
 
 --------------------------------
 -- | Clause Type Operations | --
@@ -94,8 +101,10 @@ isClauseEmpty ::
   -> Bool
 isClauseEmpty (Clause p n) = varListIsZero $ p .|. n
 
+-- addClause :: Clause n -> SatProblem n -> SatProblem n
+-- addClause c (SatProblem cs) = SatProblem (c : cs)
 addClause :: Clause n -> SatProblem n -> SatProblem n
-addClause c (SatProblem cs) = SatProblem (c : cs)
+addClause c (SatProblem cs) = SatProblem $ cs VE.++ VE.singleton c
 
 evaluateClause ::
      forall n. KnownNat n

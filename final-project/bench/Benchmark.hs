@@ -7,6 +7,7 @@ module Main where
 
 import Control.DeepSeq
 import Control.Monad (forM_, replicateM)
+import Data.List (transpose)
 import Data.Time.Clock.POSIX (POSIXTime, getPOSIXTime)
 import qualified Data.Vector.Unboxed as V
 import SatSolvers
@@ -43,38 +44,43 @@ generate3SATClause n = do
       vars
       signs
 
-generate3SATProblem :: Int -> Int -> IO (SatProblem 256)
-generate3SATProblem n m = do
+generateSATProblems :: Int -> Int -> IO [SatProblem 32]
+generateSATProblems n m = do
   clauses <- replicateM m (generate3SATClause n)
-  case satProblemFromList @256 clauses of
-    Just problem -> return $!! problem
-    Nothing -> error "Failed to generate valid SAT problem"
+  case satProblemFromList @32 clauses of
+    Just problem -> return [problem]
+    Nothing -> return []
 
-emptyAssignment :: VarAssignment 256
-emptyAssignment = createVarAssignment createVarList createVarList
-
-{-# NOINLINE emptyAssignment #-}
-timeAction :: String -> SatProblem 256 -> IO POSIXTime
+timeAction :: String -> SatProblem 32 -> IO POSIXTime
 timeAction label problem = do
   start <- getPOSIXTime
-  let !result = dpll problem emptyAssignment -- Force evaluation
+  let !result = dpll problem emptyAssignment
   end <- getPOSIXTime
   let diff = end - start
   putStrLn $ label ++ ": " ++ show (realToFrac diff * 1000) ++ " ms"
   return diff
 
+emptyAssignment :: VarAssignment 32
+emptyAssignment = createVarAssignment createVarList createVarList
+
 main :: IO ()
 main = do
-  putStrLn "Generating test cases with 256 variables..."
-  problems <- mapM (\m -> generate3SATProblem 256 m) clauseSizes
+  putStrLn "Generating test cases with 32 variables..."
+  let clauseCounts = [16,32 .. 256]
+  let numProblems = 5
+  problems <-
+    sequence $
+    replicate numProblems $
+    concat <$> mapM (\c -> generateSATProblems 32 c) clauseCounts
+  let zippedProblems = zip clauseCounts $ transpose $ problems
   putStrLn "\nRunning benchmarks..."
-  forM_ (zip clauseSizes problems) $ \(numClauses, problem) -> do
+  forM_ zippedProblems $ \(numClauses, problemSet) -> do
+    putStrLn $ "Benchmarking with " ++ show numClauses ++ " clauses..."
     times <-
-      replicateM 5 $
-      timeAction ("DPLL-256-vars/" ++ show numClauses ++ " clauses") problem
-    let avgTime = realToFrac (sum times) * 1000 / 5.0
+      mapM
+        (timeAction ("DPLL-32-vars/" ++ show numClauses ++ " clauses"))
+        problemSet
+    let avgTime = realToFrac (sum times) * 1000 / fromIntegral numProblems
     putStrLn $
       "Average time for " ++
       show numClauses ++ " clauses: " ++ show avgTime ++ " ms\n"
-  where
-    clauseSizes = [128, 256, 512, 1024, 1536, 2048]

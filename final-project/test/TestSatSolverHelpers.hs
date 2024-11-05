@@ -14,7 +14,15 @@ import Test.Hspec
 
 runTestSatHelper :: IO ()
 runTestSatHelper =
-  hspec $ do
+  hspec $
+    -- describe "checkProblem" $ do
+    --   it "returns True for a problem with no zero clauses" $ do
+    --     let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [1, 2, 4]]
+    --     checkProblem problem `shouldBe` True
+    --   it "returns False for a problem with a zero clause" $ do
+    --     let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], []]
+    --     checkProblem problem `shouldBe` False
+   do
     describe "findUnits" $ do
       it "returns Nothing for a problem with no unit clauses" $ do
         let problem = fromJust $ S.satProblemFromList @4 [[1, 2, 3], [1, 2, 4]]
