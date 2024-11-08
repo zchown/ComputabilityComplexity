@@ -1,5 +1,7 @@
 module TspTypes where
 
+import qualified Data.Text as T
+
 data Point2D = Point2D
   { xPos :: Double
   , yPos :: Double
@@ -22,8 +24,9 @@ data TspDataTypes
 
 tspDataTypeFromStr :: String -> Maybe TspDataTypes
 tspDataTypeFromStr str =
-  case str of
+  case strip str of
     "TSP" -> Just TSP
+    "TSP(M.~Hofmeister)" -> Just TSP
     "ATSP" -> Just ATSP
     "SOP" -> Just SOP
     "HCP" -> Just HCP
@@ -49,7 +52,7 @@ data TspEdgeWeightType
 
 edgeWeightTypeFromStr :: String -> Maybe TspEdgeWeightType
 edgeWeightTypeFromStr str =
-  case str of
+  case strip str of
     "EXPLICIT" -> Just EXPLICIT
     "EUC_2D" -> Just EUC_2D
     "EUC_3D" -> Just EUC_3D
@@ -80,7 +83,7 @@ data EdgeWeightFormat
 
 edgeWeightFormatFromStr :: String -> Maybe EdgeWeightFormat
 edgeWeightFormatFromStr str =
-  case str of
+  case strip str of
     "FUNCTION" -> Just FUNCTION
     "FULL_MATRIX" -> Just FULL_MATRIX
     "UPPER_ROW" -> Just UPPER_ROW
@@ -100,7 +103,7 @@ data TspEdgeDataFormat
 
 edgeDataFormatFromStr :: String -> Maybe TspEdgeDataFormat
 edgeDataFormatFromStr str =
-  case str of
+  case strip str of
     "EDGE_LIST" -> Just EDGE_LIST
     "ADJ_LIST" -> Just ADJ_LIST
     _ -> Nothing
@@ -113,11 +116,16 @@ data TspNodeCoordType
 
 nodeCoordTypeFromStr :: String -> Maybe TspNodeCoordType
 nodeCoordTypeFromStr str =
-  case str of
+  case strip str of
     "TWOD_COORDS" -> Just TWOD_COORDS
     "THREED_COORDS" -> Just THREED_COORDS
     "NO_COORDS" -> Just NO_COORDS
     _ -> Nothing
+
+strip :: String -> String
+strip = dropWhile isSpace . reverse . dropWhile isSpace . reverse
+  where
+    isSpace c = c == ' ' || c == '\t'
 
 data Node
   = Node2D
@@ -130,6 +138,11 @@ data Node
       }
   deriving (Show, Eq)
 
+data TspData
+  = NodeCoordData [Node]
+  | EdgeWeightData [[Double]]
+  deriving (Show, Eq)
+
 data TspProblem = TspProblem
   { tspName :: String
   , tspType :: TspDataTypes
@@ -139,7 +152,7 @@ data TspProblem = TspProblem
   , tspEdgeWeightFormat :: Maybe EdgeWeightFormat
   , tspEdgeDataFormat :: Maybe TspEdgeDataFormat
   , tspNodeCoordType :: Maybe TspNodeCoordType
-  , tspNodes :: [Node]
+  , tspData :: TspData
   } deriving (Show, Eq)
 
 data TspProblemHeader = TspProblemHeader
@@ -151,10 +164,11 @@ data TspProblemHeader = TspProblemHeader
   , edgeWeightFormat :: Maybe EdgeWeightFormat
   , edgeDataFormat :: Maybe TspEdgeDataFormat
   , nodeCoordType :: Maybe TspNodeCoordType
+  , tData :: TspData
   } deriving (Show, Eq)
 
 data TspProblemBody = TspProblemBody
-  { nodes :: [Node]
+  { btData :: TspData
   } deriving (Show, Eq)
 
 tspProblemFromHeaderBody :: TspProblemHeader -> TspProblemBody -> TspProblem
@@ -168,5 +182,64 @@ tspProblemFromHeaderBody header body =
     , tspEdgeWeightFormat = edgeWeightFormat header
     , tspEdgeDataFormat = edgeDataFormat header
     , tspNodeCoordType = nodeCoordType header
-    , tspNodes = nodes body
+    , tspData = btData body
     }
+
+data TspParseError
+  = MissingRequiredField String
+  | InvalidFieldValue String String
+  | InvalidFormat String
+  | InvalidNodeData String
+  | InvalidEdgeWeight String
+  | InvalidDimension Int Int
+  | InvalidWeightCount EdgeWeightFormat Int Int
+  | ParseError String
+  | UnsupportedFormat String
+  deriving (Show, Eq)
+
+formatTspError :: TspParseError -> String
+formatTspError err =
+  case err of
+    MissingRequiredField field -> "Missing required field: " ++ field
+    InvalidFieldValue field value ->
+      "Invalid value '" ++ value ++ "' for field: " ++ field
+    InvalidFormat msg -> "Invalid format: " ++ msg
+    InvalidNodeData msg -> "Invalid node data: " ++ msg
+    InvalidEdgeWeight msg -> "Invalid edge weight: " ++ msg
+    InvalidDimension expected actual ->
+      "Dimension mismatch: expected " ++
+      show expected ++ " but found " ++ show actual
+    InvalidWeightCount format expected actual ->
+      "Weight count mismatch for " ++
+      show format ++
+      ": expected " ++ show expected ++ " weights but found " ++ show actual
+    ParseError msg -> "Parse error: " ++ msg
+    UnsupportedFormat fmt -> "Unsupported format: " ++ fmt
+
+checkWeightCount ::
+     EdgeWeightFormat -> Int -> [Double] -> Either TspParseError [Double]
+checkWeightCount format dim weights =
+  let expected = expectedWeightCount format dim
+   in if length weights == expected
+        then Right weights
+        else Left $ InvalidWeightCount format expected (length weights)
+
+expectedWeightCount :: EdgeWeightFormat -> Int -> Int
+expectedWeightCount format dim =
+  case format of
+    FULL_MATRIX -> dim * dim
+    UPPER_ROW -> ((dim - 1) * dim) `div` 2
+    LOWER_ROW -> ((dim - 1) * dim) `div` 2
+    UPPER_DIAG_ROW -> (dim * (dim + 1)) `div` 2
+    LOWER_DIAG_ROW -> (dim * (dim + 1)) `div` 2
+    UPPER_COL -> ((dim - 1) * dim) `div` 2
+    LOWER_COL -> ((dim - 1) * dim) `div` 2
+    UPPER_DIAG_COL -> (dim * (dim + 1)) `div` 2
+    LOWER_DIAG_COL -> (dim * (dim + 1)) `div` 2
+    FUNCTION -> 0
+
+validateNodeCoords :: [Node] -> Int -> Either TspParseError [Node]
+validateNodeCoords nodes expectedDim =
+  if length nodes == expectedDim
+    then Right nodes
+    else Left $ InvalidDimension expectedDim (length nodes)
