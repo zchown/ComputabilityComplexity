@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-partial-fields #-}
+
 module TspTypes where
 
 data Point2D = Point2D
@@ -176,7 +178,7 @@ data TspProblemHeader = TspProblemHeader
   , tData :: TspData
   } deriving (Show, Eq)
 
-data TspProblemBody = TspProblemBody
+newtype TspProblemBody = TspProblemBody
   { btData :: TspData
   } deriving (Show, Eq)
 
