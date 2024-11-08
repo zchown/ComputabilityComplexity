@@ -142,7 +142,10 @@ splitSections (line:lines)
 parseSectionData ::
      TspProblemHeader -> (String, [String]) -> Either TspParseError TspData
 parseSectionData header ("NODE_COORD_SECTION", lines) = do
-  nodes <- traverse parseNodeLine (filter (not . null) lines)
+  nodes <-
+    traverse
+      parseNodeLine
+      (filter (\s -> not (null s) && (strip s) /= "EOF") lines)
   Right $ NodeCoordData nodes
 parseSectionData header ("EDGE_WEIGHT_SECTION", lines) = do
   weights <- parseEdgeWeightSection header lines
@@ -151,7 +154,9 @@ parseSectionData header ("EDGE_WEIGHT_SECTION", lines) = do
       TspProblemBody (EdgeWeightData matrix) -> EdgeWeightData matrix
       _ -> EdgeWeightData []
 parseSectionData header ("FIXED_EDGES_SECTION", lines) = do
-  edges <- parseFixedEdgesSection (filter (not . null) lines)
+  edges <-
+    parseFixedEdgesSection
+      (filter (\s -> not (null s) && (strip s) /= "EOF") lines)
   Right $ FixedEdgesData edges
 parseSectionData _ (section, _) =
   Left $ UnsupportedFormat $ "Unknown section: " ++ section
