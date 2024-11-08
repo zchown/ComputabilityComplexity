@@ -1,7 +1,5 @@
 module TspTypes where
 
-import qualified Data.Text as T
-
 data Point2D = Point2D
   { xPos :: Double
   , yPos :: Double
@@ -11,6 +9,12 @@ data Point3D = Point3D
   { x3 :: Double
   , y3 :: Double
   , zPos :: Double
+  } deriving (Show, Eq)
+
+-- Add FixedEdge type
+data FixedEdge = FixedEdge
+  { fromNode :: Int
+  , toNode :: Int
   } deriving (Show, Eq)
 
 data TspDataTypes
@@ -141,12 +145,18 @@ data Node
 data TspData
   = NodeCoordData [Node]
   | EdgeWeightData [[Double]]
+  | FixedEdgesData [FixedEdge]
+  | CombinedData
+      { nodeCoords :: Maybe [Node]
+      , edgeWeights :: Maybe [[Double]]
+      , fixedEdges :: Maybe [FixedEdge]
+      }
   deriving (Show, Eq)
 
 data TspProblem = TspProblem
   { tspName :: String
   , tspType :: TspDataTypes
-  , tspComment :: String
+  , tspComment :: Maybe String
   , tspDimension :: Int
   , tspEdgeWeightType :: Maybe TspEdgeWeightType
   , tspEdgeWeightFormat :: Maybe EdgeWeightFormat
@@ -158,7 +168,7 @@ data TspProblem = TspProblem
 data TspProblemHeader = TspProblemHeader
   { name :: String
   , dataType :: TspDataTypes
-  , comment :: String
+  , comment :: Maybe String
   , dimension :: Int
   , edgeWeightType :: Maybe TspEdgeWeightType
   , edgeWeightFormat :: Maybe EdgeWeightFormat
@@ -191,6 +201,7 @@ data TspParseError
   | InvalidFormat String
   | InvalidNodeData String
   | InvalidEdgeWeight String
+  | InvalidFixedEdge String
   | InvalidDimension Int Int
   | InvalidWeightCount EdgeWeightFormat Int Int
   | ParseError String
@@ -206,6 +217,7 @@ formatTspError err =
     InvalidFormat msg -> "Invalid format: " ++ msg
     InvalidNodeData msg -> "Invalid node data: " ++ msg
     InvalidEdgeWeight msg -> "Invalid edge weight: " ++ msg
+    InvalidFixedEdge msg -> "Invalid fixed edge: " ++ msg
     InvalidDimension expected actual ->
       "Dimension mismatch: expected " ++
       show expected ++ " but found " ++ show actual
