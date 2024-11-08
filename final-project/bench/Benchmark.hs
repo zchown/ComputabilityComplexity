@@ -96,7 +96,7 @@ benchmarkWithVars ::
 benchmarkWithVars handle proxy = do
   let numVars = fromIntegral $ natVal proxy
   tee handle $ "Generating test cases with " ++ show numVars ++ " variables..."
-  let clauseCounts = [64,128 .. 1024]
+  let clauseCounts = [32,64 .. 640]
   let numProblems = 5
   problems <-
     sequence $
@@ -121,11 +121,11 @@ main :: IO ()
 main = do
   currentTime <- getCurrentTime
   let timestamp = formatTime defaultTimeLocale "%Y%m%d_%H%M%S" currentTime
-  let filename = "benchmark_results_" ++ timestamp ++ ".txt"
+  let filename = "benchmark_results/benchmark_results_" ++ timestamp ++ ".txt"
   withFile filename WriteMode $ \handle -> do
     tee handle $
       "SAT Solver Benchmark Results - " ++
       formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" currentTime
     tee handle "================================================"
     tee handle ""
-    benchmarkWithVars handle (Proxy @128)
+    benchmarkWithVars handle (Proxy @64)

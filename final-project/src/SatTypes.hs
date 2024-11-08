@@ -18,7 +18,6 @@ import Data.Vector.Unboxed (Vector)
 import qualified Data.Vector.Unboxed as V
 import Data.Word (Word64)
 import GHC.TypeLits
-import GHC.Word (Word64(..))
 
 --------------------------------
 -- | Core SAT Problem Types | --
@@ -40,7 +39,7 @@ newtype BoolAssignment (n :: Nat) =
   BoolAssignment [Maybe Bool]
   deriving (Eq, Show)
 
-data VarAssignment (n :: Nat) = VarAssignment 
+data VarAssignment (n :: Nat) = VarAssignment
   { assignedPositive :: {-# UNPACK #-} !(VarList n)
   , assignedNegative :: {-# UNPACK #-} !(VarList n)
   } deriving (Eq, Show)
@@ -63,8 +62,8 @@ evaluateSatProblem ::
   -> VarAssignment n
   -> Bool
 evaluateSatProblem !(SatProblem cs) !v = VE.all (evaluateClause v) cs
-{-# INLINE evaluateSatProblem #-}
 
+{-# INLINE evaluateSatProblem #-}
 satProblemFromList ::
      forall n. KnownNat n
   => [[Int]]
@@ -72,8 +71,8 @@ satProblemFromList ::
 satProblemFromList !xs = do
   !clauses <- mapM clauseFromList xs
   return $! SatProblem $! VE.fromList clauses
-{-# INLINE satProblemFromList #-}
 
+{-# INLINE satProblemFromList #-}
 --------------------------------
 -- | Clause Type Operations | --
 --------------------------------
@@ -85,22 +84,22 @@ instance KnownNat n => Show (Clause n) where
 createClause ::
      forall n. KnownNat n
   => Clause n
-createClause = 
-    let !emptyList = createVarList @n
-    in Clause emptyList emptyList
-{-# INLINE createClause #-}
+createClause =
+  let !emptyList = createVarList @n
+   in Clause emptyList emptyList
 
+{-# INLINE createClause #-}
 isClauseEmpty ::
      forall n. KnownNat n
   => Clause n
   -> Bool
 isClauseEmpty !(Clause p n) = varListIsZero $! p .|. n
-{-# INLINE isClauseEmpty #-}
 
+{-# INLINE isClauseEmpty #-}
 addClause :: Clause n -> SatProblem n -> SatProblem n
 addClause !c !(SatProblem cs) = SatProblem $! cs VE.++ VE.singleton c
-{-# INLINE addClause #-}
 
+{-# INLINE addClause #-}
 evaluateClause ::
      forall n. KnownNat n
   => VarAssignment n
@@ -110,8 +109,8 @@ evaluateClause !(VarAssignment vp vn) !(Clause p n) = not x || not y
   where
     !x = varListIsZero $! vp .&. p
     !y = varListIsZero $! vn .&. n
-{-# INLINE evaluateClause #-}
 
+{-# INLINE evaluateClause #-}
 clauseFromList ::
      forall n. KnownNat n
   => [Int]
@@ -131,8 +130,8 @@ clauseFromList !xs = do
       | x > 0 = (x : p, n)
       | x < 0 = (p, x : n)
       | otherwise = (p, n)
-{-# INLINE clauseFromList #-}
 
+{-# INLINE clauseFromList #-}
 unsafeClauseFromList ::
      forall n. KnownNat n
   => [Int]
@@ -141,8 +140,8 @@ unsafeClauseFromList !xs =
   case clauseFromList xs of
     Just !c -> c
     Nothing -> error "Invalid clause"
-{-# INLINE unsafeClauseFromList #-}
 
+{-# INLINE unsafeClauseFromList #-}
 ------------------------------------
 -- | Clause Variable Operations | --
 ------------------------------------
@@ -154,8 +153,8 @@ addPositiveVar ::
 addPositiveVar !(Clause p n) !i = do
   !p' <- SatTypes.setBit p i
   return $! Clause p' n
-{-# INLINE addPositiveVar #-}
 
+{-# INLINE addPositiveVar #-}
 addNegativeVar ::
      forall n. KnownNat n
   => Clause n
@@ -164,8 +163,8 @@ addNegativeVar ::
 addNegativeVar !(Clause p n) !i = do
   !n' <- SatTypes.setBit n i
   return $! Clause p n'
-{-# INLINE addNegativeVar #-}
 
+{-# INLINE addNegativeVar #-}
 removePositiveVar ::
      forall n. KnownNat n
   => Clause n
@@ -174,8 +173,8 @@ removePositiveVar ::
 removePositiveVar !(Clause p n) !i = do
   !p' <- SatTypes.clearBit p i
   return $! Clause p' n
-{-# INLINE removePositiveVar #-}
 
+{-# INLINE removePositiveVar #-}
 removeNegativeVar ::
      forall n. KnownNat n
   => Clause n
@@ -184,40 +183,40 @@ removeNegativeVar ::
 removeNegativeVar !(Clause p n) !i = do
   !n' <- SatTypes.clearBit n i
   return $! Clause p n'
-{-# INLINE removeNegativeVar #-}
 
+{-# INLINE removeNegativeVar #-}
 isPositiveVar ::
      forall n. KnownNat n
   => Clause n
   -> Int
   -> Bool
 isPositiveVar !(Clause p _) = testBit p
-{-# INLINE isPositiveVar #-}
 
+{-# INLINE isPositiveVar #-}
 isNegativeVar ::
      forall n. KnownNat n
   => Clause n
   -> Int
   -> Bool
 isNegativeVar !(Clause _ n) = testBit n
-{-# INLINE isNegativeVar #-}
 
+{-# INLINE isNegativeVar #-}
 getPositiveVars ::
      forall n. KnownNat n
   => Clause n
   -> [Int]
 getPositiveVars !c@(Clause p _) =
   [i | i <- [0 .. varListSize p - 1], isPositiveVar c i]
-{-# INLINE getPositiveVars #-}
 
+{-# INLINE getPositiveVars #-}
 getNegativeVars ::
      forall n. KnownNat n
   => Clause n
   -> [Int]
 getNegativeVars !c@(Clause _ n) =
   [i | i <- [0 .. varListSize n - 1], isNegativeVar c i]
-{-# INLINE getNegativeVars #-}
 
+{-# INLINE getNegativeVars #-}
 -------------------------------------
 -- | VarList Type Core Operations |--
 -------------------------------------
@@ -226,16 +225,16 @@ instance KnownNat n => Show (VarList n) where
 
 minWords :: Integer -> Int
 minWords !n = fromInteger ((n + 63) `div` 64)
-{-# INLINE minWords #-}
 
+{-# INLINE minWords #-}
 createVarList ::
      forall n. KnownNat n
   => VarList n
 createVarList =
   let !n = natVal (Proxy @n)
    in VarList $! V.replicate (minWords n) 0
-{-# INLINE createVarList #-}
 
+{-# INLINE createVarList #-}
 varListFromList ::
      forall n. KnownNat n
   => [Bool]
@@ -259,8 +258,8 @@ varListFromList !bs =
                      0
                      bits
         else error "Invalid list length"
-{-# INLINE varListFromList #-}
 
+{-# INLINE varListFromList #-}
 validateVarList ::
      forall n. KnownNat n
   => Vector Word64
@@ -276,32 +275,29 @@ validateVarList !ws =
    in if V.length ws == m && valid
         then Just $! VarList ws
         else Nothing
-{-# INLINE validateVarList #-}
 
+{-# INLINE validateVarList #-}
 varListSize ::
      forall n. KnownNat n
   => VarList n
   -> Int
 varListSize _ = fromInteger $! natVal (Proxy @n)
-{-# INLINE varListSize #-}
 
+{-# INLINE varListSize #-}
 varListIsZero :: VarList n -> Bool
 varListIsZero (VarList xs) = V.all (== 0) xs
-{-# INLINE varListIsZero #-}
 
+{-# INLINE varListIsZero #-}
 --------------------------------
 -- | VarList Bit Operations | --
 --------------------------------
 instance KnownNat n => Bits (VarList n) where
   {-# INLINE (.&.) #-}
   VarList xs .&. VarList ys = VarList $! V.zipWith (.&.) xs ys
-
   {-# INLINE (.|.) #-}
   VarList xs .|. VarList ys = VarList $! V.zipWith (.|.) xs ys
-
   {-# INLINE xor #-}
   xor (VarList xs) (VarList ys) = VarList $! V.zipWith xor xs ys
-
   {-# INLINE complement #-}
   complement (VarList xs) =
     let !n = natVal (Proxy @n)
@@ -320,28 +316,22 @@ instance KnownNat n => Bits (VarList n) where
           where
             !len = V.length xs
      in VarList result
-
   shift v _ = v
   rotate v _ = v
-
   {-# INLINE bitSize #-}
   bitSize = varListSize
-
   {-# INLINE bitSizeMaybe #-}
   bitSizeMaybe = Just . varListSize
-
   isSigned _ = False
   {-# INLINE testBit #-}
   testBit (VarList xs) !i
     | i < 0 || i >= varListSize (undefined :: VarList n) = False
-    | otherwise =  testBit (xs V.! (i `div` 64)) (i `mod` 64)
-
+    | otherwise = testBit (xs V.! (i `div` 64)) (i `mod` 64)
   {-# INLINE bit #-}
   bit !i
     | i < 0 || i >= varListSize (undefined :: VarList n) = createVarList @n
     | otherwise =
       VarList $! bit64VectorBounded (varListSize (undefined :: VarList n)) i
-
   {-# INLINE popCount #-}
   popCount (VarList xs) = V.sum $! V.map popCount xs
 
@@ -351,32 +341,32 @@ setBit ::
   -> Int
   -> Maybe (VarList n)
 setBit = bitChangePattern Data.Bits.setBit
-{-# INLINE setBit #-}
 
+{-# INLINE setBit #-}
 setBits ::
      forall n. KnownNat n
   => VarList n
   -> [Int]
   -> Maybe (VarList n)
 setBits = foldM SatTypes.setBit
-{-# INLINE setBits #-}
 
+{-# INLINE setBits #-}
 clearBit ::
      forall n. KnownNat n
   => VarList n
   -> Int
   -> Maybe (VarList n)
 clearBit = bitChangePattern Data.Bits.clearBit
-{-# INLINE clearBit #-}
 
+{-# INLINE clearBit #-}
 flipBit ::
      forall n. KnownNat n
   => VarList n
   -> Int
   -> Maybe (VarList n)
 flipBit = bitChangePattern Data.Bits.complementBit
-{-# INLINE flipBit #-}
 
+{-# INLINE flipBit #-}
 bitChangePattern ::
      forall n. KnownNat n
   => (Word64 -> Int -> Word64)
@@ -394,8 +384,8 @@ bitChangePattern !f !v@(VarList xs) !i
           if j == index
             then f (xs V.! j) offset
             else xs V.! j
-{-# INLINE bitChangePattern #-}
 
+{-# INLINE bitChangePattern #-}
 bit64VectorBounded :: Int -> Int -> Vector Word64
 bit64VectorBounded totalBits i =
   let fullWords = i `div` 64

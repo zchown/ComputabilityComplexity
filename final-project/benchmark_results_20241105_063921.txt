@@ -1,9 +1,0 @@
-SAT Solver Benchmark Results - 2024-11-05 06:39:21
-================================================
-
-Generating test cases with 128 variables...
-
-Running benchmarks...
-Benchmarking with 64 clauses...
-DPLL-128-vars/64 clauses: 0.5609999999999999 ms
-DPLL-128-vars/64 clauses: 0.512 ms
