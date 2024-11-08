@@ -15,7 +15,8 @@ parseTspFile :: String -> IO (Either TspParseError TspProblem)
 parseTspFile filename = do
   contents <- fmap (unpack . decompress) (LBS.readFile filename)
   let linesOfFile = lines contents
-  let (headerLines, remainingLines) = break isSectionMarker linesOfFile
+  let (headerLines, t) = break isSectionMarker linesOfFile
+  let (remainingLines, _) = break (== "DISPLAY_DATA_SECTION") t
   return $ do
     header <- parseHeader headerLines
     body <- parseBody header remainingLines

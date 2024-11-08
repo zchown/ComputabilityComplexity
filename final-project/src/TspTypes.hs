@@ -11,7 +11,6 @@ data Point3D = Point3D
   , zPos :: Double
   } deriving (Show, Eq)
 
--- Add FixedEdge type
 data FixedEdge = FixedEdge
   { fromNode :: Int
   , toNode :: Int
