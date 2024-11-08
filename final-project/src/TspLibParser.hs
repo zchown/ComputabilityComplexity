@@ -27,15 +27,13 @@ parseTspFile filename = do
               , "EDGE_WEIGHT_SECTION"
               , "FIXED_EDGES_SECTION"
               ]) .
-      unwords . words
+      strip
 
 parseHeaderLine :: String -> Either TspParseError (String, String)
 parseHeaderLine line =
   case splitOn ":" (filter (/= ' ') line) of
-    [k, v] -> Right (k, trimStr v)
+    [k, v] -> Right (k, strip v)
     _ -> Left $ InvalidFormat $ "Invalid header line format: " ++ line
-  where
-    trimStr = filter (/= ' ')
 
 parseHeader :: [String] -> Either TspParseError TspProblemHeader
 parseHeader linesOfFile = do
