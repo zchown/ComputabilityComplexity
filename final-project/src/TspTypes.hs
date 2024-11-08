@@ -55,6 +55,14 @@ edgeWeightTypeFromStr str =
     "EUC_3D" -> Just EUC_3D
     "MAX_2D" -> Just MAX_2D
     "MAX_3D" -> Just MAX_3D
+    "MAN_2D" -> Just MAN_2D
+    "MAN_3D" -> Just MAN_3D
+    "CEIL_2D" -> Just CEIL_2D
+    "GEO" -> Just GEO
+    "ATT" -> Just ATT
+    "XRAY1" -> Just XRAY1
+    "XRAY2" -> Just XRAY2
+    "SPECIAL" -> Just SPECIAL
     _ -> Nothing
 
 data EdgeWeightFormat

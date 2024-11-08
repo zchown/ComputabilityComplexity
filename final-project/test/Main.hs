@@ -2,21 +2,21 @@ module Main
   ( main
   ) where
 
-import TestSatSolverHelpers
-
-import TestSatSolvers
-
+-- import TestSatSolverHelpers
+-- import TestSatSolvers
 -- import FuzzKnapsack
 -- import TestKnapsack
-import TestSatTypes
+-- import TestSatTypes
+import TspParserTest
 
 main :: IO ()
 main = putStrLn "Running Tests..." >> runAllTests
 
 runAllTests :: IO ()
 runAllTests = do
-  runTestSatType
+  runTspParserTest
+  -- runTestSatType
   -- runTestSatHelper
-  runTestSatSolver
+  -- runTestSatSolver
   -- runKnapsackTests
   -- runKnapsackFuzzTests
