@@ -20,6 +20,17 @@ data TspDataTypes
   | TOUR
   deriving (Show, Eq)
 
+tspDataTypeFromStr :: String -> Maybe TspDataTypes
+tspDataTypeFromStr str =
+  case str of
+    "TSP" -> Just TSP
+    "ATSP" -> Just ATSP
+    "SOP" -> Just SOP
+    "HCP" -> Just HCP
+    "CVRP" -> Just CVRP
+    "TOUR" -> Just TOUR
+    _ -> Nothing
+
 data TspEdgeWeightType
   = EXPLICIT
   | EUC_2D
@@ -36,6 +47,16 @@ data TspEdgeWeightType
   | SPECIAL
   deriving (Show, Eq)
 
+edgeWeightTypeFromStr :: String -> Maybe TspEdgeWeightType
+edgeWeightTypeFromStr str =
+  case str of
+    "EXPLICIT" -> Just EXPLICIT
+    "EUC_2D" -> Just EUC_2D
+    "EUC_3D" -> Just EUC_3D
+    "MAX_2D" -> Just MAX_2D
+    "MAX_3D" -> Just MAX_3D
+    _ -> Nothing
+
 data EdgeWeightFormat
   = FUNCTION
   | FULL_MATRIX
@@ -49,16 +70,46 @@ data EdgeWeightFormat
   | LOWER_DIAG_COL
   deriving (Show, Eq)
 
+edgeWeightFormatFromStr :: String -> Maybe EdgeWeightFormat
+edgeWeightFormatFromStr str =
+  case str of
+    "FUNCTION" -> Just FUNCTION
+    "FULL_MATRIX" -> Just FULL_MATRIX
+    "UPPER_ROW" -> Just UPPER_ROW
+    "LOWER_ROW" -> Just LOWER_ROW
+    "UPPER_DIAG_ROW" -> Just UPPER_DIAG_ROW
+    "LOWER_DIAG_ROW" -> Just LOWER_DIAG_ROW
+    "UPPER_COL" -> Just UPPER_COL
+    "LOWER_COL" -> Just LOWER_COL
+    "UPPER_DIAG_COL" -> Just UPPER_DIAG_COL
+    "LOWER_DIAG_COL" -> Just LOWER_DIAG_COL
+    _ -> Nothing
+
 data TspEdgeDataFormat
   = EDGE_LIST
   | ADJ_LIST
   deriving (Show, Eq)
+
+edgeDataFormatFromStr :: String -> Maybe TspEdgeDataFormat
+edgeDataFormatFromStr str =
+  case str of
+    "EDGE_LIST" -> Just EDGE_LIST
+    "ADJ_LIST" -> Just ADJ_LIST
+    _ -> Nothing
 
 data TspNodeCoordType
   = TWOD_COORDS
   | THREED_COORDS
   | NO_COORDS
   deriving (Show, Eq)
+
+nodeCoordTypeFromStr :: String -> Maybe TspNodeCoordType
+nodeCoordTypeFromStr str =
+  case str of
+    "TWOD_COORDS" -> Just TWOD_COORDS
+    "THREED_COORDS" -> Just THREED_COORDS
+    "NO_COORDS" -> Just NO_COORDS
+    _ -> Nothing
 
 data Node
   = Node2D
