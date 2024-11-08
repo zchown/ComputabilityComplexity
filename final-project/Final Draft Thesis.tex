@@ -1,0 +1,644 @@
+\documentclass[12pt, title page, manuscript, nonacm]{acmart}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{ulem} 
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+{\Large\bfseries Skidmore College}
+
+\vspace{1.5cm}
+
+{\Large Exploring a goal-based approach to smartphone management}
+
+\vspace{1cm}
+
+{By}
+
+\vspace{0.5cm}
+
+{\large Zoe Beals}
+
+\vspace{1cm}
+
+% {\large A THESIS SUBMITTED IN PARTIAL FULFILLMENT
+% OF THE REQUIREMENTS FOR THE DEGREE OF}
+
+{\large Computer Science Department}
+
+\vspace{0.5cm}
+{\large Saratoga Springs, New York}
+
+\vspace{0.5cm}
+{April, 2022}
+
+\vspace{0.5cm}
+{SUPERVISOR} 
+
+{Aarathi Prasad}
+
+
+
+\vfill
+
+% {\itshape © Bhavithry Sen Puliparambil, 2022}
+\end{titlepage}
+
+% \renewcommand\contentsname{Table of Contents}
+% \tableofcontents
+
+% \addcontentsline{toc}{chapter}{Abstract}
+
+
+% \addcontentsline{toc}{chapter}{List of Figures}
+
+% \listoftables
+
+% \addcontentsline{toc}{chapter}{List of Tables}
+
+\section*{Table of Contents}
+\begin{enumerate}[label=\arabic*,leftmargin=*,labelsep=2ex,ref=\arabic*]
+    \item Abstract \dotfill 3
+    \item Introduction \dotfill 4
+    \item Related Work \dotfill 5
+    \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{Smartphone Apps} \dotfill 5
+    \end{enumerate}
+    \item ScreenSnooze \dotfill 8
+    \item Focus Groups \dotfill 10
+    \item ScreenAware - First Version \dotfill 13
+    \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{Design} \dotfill 13
+        \item \textit{Implementation} \dotfill 14
+        \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+            \item {Views} \dotfill 14
+            \item {Persistence} \dotfill 15
+            \item {Authentication} \dotfill 16
+        \end{enumerate}
+        \item \textit{Limitations} \dotfill 17
+    \end{enumerate}
+    \item ScreenAware - Most Recent Version \dotfill 17
+     \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{Design} \dotfill 17
+        \item \textit{Implementation} \dotfill 18
+        \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+            \item Avatar Creation \dotfill 19
+            \item Persistence \dotfill 20
+            \item Authentication \dotfill 20
+        \end{enumerate}
+        \item \textit{Limitations} \dotfill 21
+        \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+            \item Time constraints \dotfill 21
+            \item Avatar complications \dotfill 21
+        \end{enumerate}
+    \end{enumerate}
+    \item ScreenAware User Study \dotfill 21
+    \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{Results} \dotfill 24
+        \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+            \item Goal-Oriented Approach \dotfill 25
+            \item Badges/Profile Page \dotfill 26
+            \item Improvements \dotfill 27
+        \end{enumerate}
+        \item \texit{Conclusions} \dotfill 27
+    \end{enumerate}
+    \item Future Work \dotfill 28
+    \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{Limitations} \dotfill 28
+    \end{enumerate}
+    \item Acknowledgements \dotfill 29
+     \item User Study Questionnaires \dotfill 30
+    \begin{enumerate}[label*=.\arabic*,leftmargin=*,labelsep=2ex]
+        \item \textit{SUS} \dotfill 30
+        \item \textit{PUMP} \dotfill 30
+        \item \textit{MTUAS} \dotfill 31
+    \end{enumerate}
+    \item References \dotfill 32
+   
+\end{enumerate}
+\title{Exploring a goal-based approach to smartphone management}
+\author{Zoe Beals}
+% \maketitle
+\newpage
+\section*{Abstract}
+Current smartphone management tools, like Apple’s ScreenTime, focus on time-based restrictions and have been shown to cause negative emotions like feelings of shame or stress from how much time is spent on an individual’s smartphone. Our initial solution for an alternate approach for smartphone management called ScreenSnooze focused on making a user mindful about when they unlock their phone. However, prior research shows that it is the nature and content of use and not the time spent on the phone that determines problematic smartphone use. We conducted focus groups with 38 college students to better understand how to help users build better phone habits. Based on our findings, we hypothesized that a tool to help people reduce problematic smartphone behavior should account for their goals for using their phone and may best help by allowing the user to create personal, measurable goals for their phone use based on their values. I developed an iOS app called ScreenAware that allows people to set daily goals for their smartphone use, mark goals as complete, and track their progress. I also added incentives such as badges and avatars to engage the user, based on feedback from the focus groups. We conducted a week-long user study to understand the effectiveness of the app in helping people manage their smartphone use, during which participants installed and used the ScreenAware app on their iPhones. To understand how the goal-based approach affects users' emotions, we also asked users to record their emotions via a popup when they create and complete a goal. I will present findings from the focus groups, describe and provide screenshots of the ScreenAware app, report our findings from the user study, and finally, discuss the future of ScreenAware.
+\newpage
+\section*{Introduction}
+Increase in smartphone adoption has led to concerns of problematic smartphone use and its negative effects on the smartphone user’s well-being \cite{lukoff2018makes, elhai2017problematic, babic2017longitudinal, elhai2017typeqs, wang2015role}. These negative effects include but are not limited to depression, anxiety, lack of sleep, feeling a loss of productivity, feeling isolated and timelessness\cite{kliesener2022associations, elhai2017non, tran2019modeling}. One approach that the research community has investigated to combat the negative feelings regarding smartphone use has been applications involving time-based restrictions. The time-based restrictions were meant to help smartphone users because the research community was under the assumption that excessive smartphone use was the cause of the negative effects on the individual's well being. Example applications that implement time-based restrictions include Apple's ScreenTime and Flora\cite{flora}. However, alternative research has shown that it is not necessarily the amount of time spent using a smartphone that is what causes the negative effects or feelings, but the nature or intention of the phone use\cite{human14:connected}. Through other research, we also found that time-based restrictions can often cause additional mental health burden, as the negative reinforcement of an app lock-out when a time limit had been reached can cause feelings of shame\cite{warnings20}. \par When I began tackling this problem, we wanted to explore mindfulness as a tactic to encourage awareness of a user's smartphone use, rather than to restrict use. In this document, I will discuss the following contributions I have made to this research.
+\begin{itemize}
+    \item I conducted extensive literature review about the intersection of mindfulness and smartphone use management.
+    \item I contributed to the design of a smartphone app prototype, titled ScreenSnooze, that incorporated mindfulness techniques, and learned how to create wireframes on AdobeXD to create a wireframe of ScreenSnooze.
+    \item I conducted a series of focus groups to understand what Skidmore College students consider problematic and healthy smartphone use.
+    \item I learned iOS app development and implemented an iOS app, titled ScreenAware, that incorporated the findings from the focus groups.
+    \item Finally, I conducted a pilot study on ScreenAware to determine the effectiveness of the app design and functionality in helping people manage smartphone use without negative effects to their mental health.
+\end{itemize}
+This document is organized in the following manner: In the Related Works section, I will list the existing smartphone apps that address problematic smartphone use, and present findings from other researchers in the community who are focused on this issue. In the section titled ScreenSnooze, I will discuss in detail the various design approaches that we considered when incorporating mindfulness into our solution for addressing problematic smartphone use. In the section titled Focus Groups, I will describe the structure of the focus groups I conducted, as well as summarize our findings. In the section App Development, I will discuss the topics I learned and used in the development of ScreenAware. In both ScreenAware sections, I will include screenshots of the app's user interface as it was at that point in development, as well as descriptions of the functionality. In the User Study section, I will describe the study we conducted on ScreenAware, and our findings. Finally, the Future Work section will describe future research directions based on this work. 
+
+\section*{Related Work}
+In this section, we will compare our work with existing smartphone apps on the market, as well as prior research on addressing problematic smartphone use.
+\subsection*{Smartphone Apps}
+We reviewed a variety of smartphone management apps when considering the design and implementation of ScreenAware. 
+
+AppDetox\cite{appDetox} is a free Android app that is marketed to "calm down your mobile app usage, and take a digital detox." This app allows the user to set their own guidelines for their app usage to discourage heavy usage. For example, you can create time based locks on specific apps, or limit the number of unique launches of an app. Each time a rule is violated, the app reminds you to take a break. It also keeps track of violations in an in-app log. This app has been used specifically by parents to control their child's screen time.
+
+Flipd\cite{flipd} is a free iOS and Android app that claims the user will never have to be distracted by their phone again. They are allegedly backed by research, and are the leading app that hides social media applications or games to encourage focus and staying on-task. Flipd states that users can challenge themselves to stay off their phone and to track their productivity/progress over time. For example, the app will remind you to stay on task, allow users to schedule reminders for whenever you must Flip Off, and encourage users to use the Full Lock functionality to hide any distracting apps and games.
+\par 
+OFFTIME\cite{offtime} is an iOS and Android app that encourages finding digital balance in a "hyperconnected" world. It encourages smartphone usage monitoring and digital timeouts. The app analyzes user behavior to identify smartphone use habits and helps the user take action to change them. The app claims to improve self control, and tame any chaotic behavior through setting reminders or restricting access to apps, or blocking specific people or functions of your phone to encourage focus.
+\par 
+QualityTime\cite{qualityTime} is an Android app that generates in-depth analysis of smartphone activities. It tracks things like total usage, individual app usage, and presents the user with daily and weekly summary reports. You are able to create your own time restrictions like taking breaks or schedule a break. You can customize these two functions to cater to your needs.
+
+\par 
+Forest\cite{forrest} is a free iOS and Android app similar to Flora\cite{flora} where the user is prompted to work on any tasks they may need to complete, or stay off their phone. During the time they are successfully working or off their phone, a tree grows. As the time a user stays off their phone increases, a forest begins to grow, and the forest gets more lush as the user works harder. Like Flora, the trees in the forest will be killed one by one if the user leaves the app during a time period where they are supposed to be off their phone or working. This app incorporates the idea of an entity for a user to connect to. The user is also able to compete with friends and family within the app to see whose forest is larger.
+
+\par
+Yukan\cite{yukan} is a free iOS and Android app that encourages you to use your smartphone in a controlled way. You are able to decide how long you will be off your phone and you can dedicate that offline time to working on a specific project or task. For example, users are able to designate offline time for a social cause that you may care about, or a specific project at school or work.
+\par 
+Channel\cite{channel} is a free iOS app that allows the user to browse through a list of apps they frequently use and block distracting features of those apps in one step. For example, if a user feels they use YouTube too much, they are able to turn off specific distracting features like desktop notifications or email notifications within the Channel app. There is a feature within the Channel app that allows the user to learn the psychology behind why a user may get so many notifications from an app or why you binge watch videos. The most common social media and entertainment apps like Facebook, LinkedIn, Netflix, and YouTube are supported by Channel.
+\par
+One Sec App\cite{oneSec} is a free iOS app that uses the built in iOS Shortcuts Automation to encourage users to take a physical deep breath before they enter a specific app. This forced pause brings conscious attention to why a user may be clicking on an app. The One Sec App gives the user the option to either enter the app they had clicked on or not. The app also displays the number of attempts to open a specific app within the past 24 hours. You are forced to reflect on your app usage habits as well, by typing into a popup the purpose of opening the app. This app incorporates mindfulness by integrating HealthKit into One Sec App by sending all deep breath moments to the Health App.
+\par
+Users can feel ashamed or embarrassed that they use their phone too much and can even feel this way if they use their phone too little\cite{elhai2017non}. Time based restrictions\cite{kim2019lockntype}, and applications that incorporate a “running total” of time spent on a smartphone can be very unhelpful to those who are actively trying to change their smartphone behavior. 
+\par Apps like Apple’s ScreenTime\cite{babic2017longitudinal}, which uses time-based restrictions in the form of password protected access to certain apps if pre-set time limits are set on them, or a running total of screen time per day/week can make people feel very bad about how they use their phone. Apps like Flora, which punishes users for exceeding time limits on screen time, are also very harmful\cite{elhai2017problematic}. This app allows a user to plant and grow a tree that will flourish in the event you do not use your phone. The instant that you open your phone, and the app is alerted you are spending time on it, the tree will die, which can be very stressful and discouraging for people\cite{borghouts2020timetofocus}. \par Through my research, I was interested in finding a way to reduce the negative feelings of shame or any mental health struggles associated with smartphone use behavior changes\cite{diefenbach2019smartphone}. I investigated many different approaches, like mindfulness practices, and goal based alternative applications to find a way to do so\cite{keller2021mobile}. I am heavily focused on the result of any application created to change smartphone behavior and proving that this approach can change the behavior without raising any mental health concerns\cite{pinder2019push}. Beginning in the Spring of 2020, I investigated ways to achieve the goals mentioned above, and used a variety of methods to test my ideas\cite{monge2019race}.
+\section*{ScreenSnooze}
+In the Spring 2020 semester, I dove into my first approach: mindfulness techniques\cite{regan2020does}. From previous studies, we know that excessive smartphone use can be a result of habitual phone checking that is often mechanic and unintentional\cite{heras2021neither}. We see from prior research that mindfulness can be a mechanism for positive change in behavior. To prevent the unintentional behavior, drawing conscious attention to the things we are doing and putting a focus on why we are doing what we are doing, and fully understanding the motive behind it, allows for people to make decisions they may not regret when looking back. In the context of smartphone use, mindfulness may help reduce anxiety\cite{zhang2015effectiveness} that problematic smartphone use causes. I applied this research to the creation of a prototype of a smartphone app called ScreenSnooze. This prototype extended the initial research idea from Professor Prasad's Summer 2019 research with Aaron Slonaker.
+
+\begin{figure}[b]
+\minipage{0.15\textwidth}
+  \includegraphics[width=\linewidth]{ScreenSnooze1.png}
+  \caption{}
+\endminipage
+\hspace{2cm}
+\minipage{0.15\textwidth}
+  \includegraphics[width=\linewidth]{ScreenSnooze2.png}
+  \caption{}
+\endminipage
+\hspace{2cm}
+\minipage{0.15\textwidth}%
+  \includegraphics[width=\linewidth]{ScreenSnooze3.png}
+  \caption{}
+\endminipage
+\end{figure}
+\par This application incorporated an entity into its design. We have seen from prior research that individuals are more likely to engage with an app if there is something they can connect to or care for\cite{norris2014quantifying}. Because of this research, I toyed with the idea of many different entities. I thought about a plant, like the app Flora, but ruled it out after seeing the distaste when the plant died when smartphone use increased. I hypothesized that those who hate cats wouldn’t use the app, which would rule out any negative feelings regarding discomfort towards solely the cat, not the app itself. With a group of other researchers, I went through many different designs of the app and the cat itself. We settled on a few different poses or “states” for the cat to be in throughout the functionality of the app. One of which is sleeping, one yawning and waking up, and one fully awake. The idea behind the ScreenSnooze application was to incentivize the user with the cat’s sleep schedule. If the cat was asleep, or when the user was not using their phone, you were encouraged to continue to not use your phone, to allow the cat to sleep\cite{gencc2020designing}. Since we all know cats love to sleep, we figured this would be a good encourager. Additionally, when you open your phone, the cat slowly wakes up and you are given a reminder to use your time on your phone wisely, since the cat just wants to sleep, and wants your phone to remain off (see Figures 1, 2). 
+\par To make this process of lessening smartphone use easier, we developed a concept called an Aware Zone\cite{kim2019goalkeeper}. As shown in Figure 3, an Aware Zone is a part of the functionality of the app where the user can set time periods throughout the day for as long or as short as they please where they will not use their phone. The initial thought behind these time frames was that the user is not using their phone at all, and their phone is locked, and the user can get into their phone only in the case of an extremely important situation. Additionally, we thought of a less intense way to manage smartphone use, and to encourage the user to incorporate mindfulness into their smartphone use. We designed another “zone” called a Mindfulness Period\cite{weissinger2019mindful}. These time frames are set the same way as an Aware Zone, where the user can choose when and how long they would like to do one. The difference is that these periods encourage the user to engage with their phone as mindfully as possible. They are instructed by the app to be intentional with their use, and make sure they understand the motive behind the actions they are taking on their phone. Whether that be texting a friend, or scrolling on social media, the actions must be intentional, and not mindless. 
+\par We noted that rewarding users for their interaction, or gamifying an app, can reinforce mindful behavior so we included the ability to earn points and badges\cite{weber2018convergence}. For example, if the user creates their first Aware Zone they can earn a badge. Or, if the user logs in to the app and interacts with it for 3 days in a row, they can earn a badge\cite{miller2016game}. The points work the same way as badges, where the user can earn x amount of points for completing a certain task. We decided to include both points and badges\cite{toth2016introduction} to see which focus group participants liked more.
+\par This application was the first prototype of what will become ScreenAware. With the team of researchers, we designed this application using AdobeXD, and created a wireframe to eventually conduct a series of focus groups with. AdobeXD is a vector-based user experience design tool for web and mobile apps. Owned by Adobe, this application allows its users to create wireframes and prototypes of an app  with digital drawings of how the app will look in terms of components and functionality. 
+We were intentional with the color scheme as well as the expressions of the cat within the prototype, using pastel, calming colors like baby blue and pink\cite{yildirim2011effects}, as well as calm facial expressions of the cat\cite{salminen2022can}, even when it is being awakened. We made these decisions to alleviate any shame or guilt the user may have when using the app\cite{wang2015role}.
+\section*{Focus Groups}
+I received a grant from Skidmore College to conduct a 5 week long
+research study to understand what people consider problematic or healthy smartphone use, as well as gain an understanding of the effectiveness of ScreenSnooze in its current form. Working with the researchers from the design period, we crafted a series of questions to ask participants in these focus groups.
+
+\par We created the questions by thinking about the benefits and drawbacks of smartphone use in general, as well as how the information gained from the participants' responses could affect what they get out of our app. We incorporated a mindfulness exercise to show focus group participants what completing an exercise like this looks and feels like, and how they could mix in one of these periods into their everyday smartphone use. To get a better idea of how the aspects of the app may affect each participant, we then asked a series of questions about what they liked or disliked. 
+\par These focus groups consisted of 3-5 individuals per run and were conducted via Zoom. I was one of the researchers who conducted the focus groups. I recorded the focus groups I ran via Zoom and later transcribed them so they could be used to identify common themes amongst the participant responses. I incorporated the questions as well as a mindfulness exercise and a showing of the prototype of the app. Demographic information was collected and then the following questions were asked to each group of participants: 
+\begin{enumerate}
+    \item Do you wish to change your smartphone behavior? (Y/N/Maybe)\cite{ajibola2022disposition}
+    \item How do you wish to change your behavior? List at least 2 goals.
+    \item Give an example, if any, of how your phone use has positively affected your relationship with family or friends.
+    \item Give an example, if any, of how your phone use has negatively affected your relationship with family and friends. 
+    \item Give an example, if any, of when someone in your life has indicated you exhibited good smartphone behavior.
+    \item Give an example, if any, of when someone in your life indicated you exhibited problematic smartphone behavior.
+    \item Give an example, if any, of a time when your phone use helped you do something important or meaningful.
+    \item Give an example, if any, of a time when your phone use kept you from doing something important or meaningful.
+\end{enumerate}
+After hearing from any of the participants who wanted to answer any of the above questions, we conducted the mindfulness exercise. I prompted the participants to pull out their smartphones, and for the next 10 minutes, use their phone mindfully. This was the prompt that was read: “What we mean is for the next 10 minutes, we want you to be aware of how you use your phone. There may be tasks you have wanted to do -- respond to a text, check your email, look up a recipe, whatever you do, we want you to be aware of what app you are using and why. The moment you find yourself doing something unintentionally and start browsing social media applications or the Internet mindlessly, stop and check the time and write it down.”
+After the ten minutes were up, I asked the following:
+\begin{enumerate}
+    \item At what time did you get distracted – what were you starting to do when you checked the time?
+    \item When is a good time during the day for you to do this mindfulness practice?
+\end{enumerate}
+After hearing their responses, I then shared a link to the ScreenSnooze prototype via the Zoom chat, and walked the participants through the functionality of the app. I explained each screen as well as how to use the app and then asked the users the last three questions: 
+\begin{enumerate}
+    \item What do you think about the rewards?
+    \item What do you think about points?
+    \item Will this help you achieve the goals you mentioned earlier to change your smartphone behavior? If not, what else would you like?
+\end{enumerate}
+After running a total of 38 participants from June-November 2020, and transcribing each focus group, we identified common themes amongst the participant responses through conducting qualitative analysis using grounded theory framework. Some of the most common positive themes were:
+\begin{enumerate}
+    \item Phone use allows individuals to stay in touch with loved ones\cite{elhai2017types}
+    \begin{enumerate}
+        \item In focus group 8, participant 1 said: “I think that is one big benefit and I think the ability to stay connected to people no matter your location is really important and really cool.”
+        \item FG 9, participant 1: “Ya, I use it a lot to connect with people back home or those who are further from me. During quarantine me and my friends would FaceTime almost everyday and it was really nice to be able to connect with them and share what I am doing with them.”
+    \end{enumerate}
+    \item Phone use allows individuals to capture important/meaningful moments
+    \begin{enumerate}
+        \item FG 10, participant 2: “Also, for capturing the moments of joy, and posting photos on Facebook and having parents be like, ‘Oh my gosh that's my little Suzie, look at her surfing’"
+    \end{enumerate}
+\end{enumerate}
+On the flip side, there were some negative themes identified as well:
+\begin{enumerate}
+    \item Phone use decreases quality time spent with loved ones\cite{dabbish2011keep}
+    \begin{enumerate}
+        \item FG 12, participant 2:  “Yeah I definitely think that it does take away from personal relationships in the fact that yeah, people do spend so much time on their phones and that can affect other people around them, like not paying full attention to others can feel that they’re not important to the person who’s on their phone."
+        \item FG 13, participant 3: “I definitely think it makes me miss a lot. There are times when I will be watching Netflix and scrolling through social media, and my family will be doing something in a different room and I am just not there."\cite{tran2019modeling} 
+    \end{enumerate}
+    \item Phone use decreases productivity
+    \begin{enumerate}
+        \item FG 11, participant 1: “Yeah, definitely plenty of times where I just spend time on my phone, just doing whatever, unimportant things. And then there's not enough time in the day to do whatever I want to accomplish."
+    \end{enumerate}
+\end{enumerate}
+The identified themes and other evidence from participant responses led us to the conclusion that positive reinforcement, in the form of badges and points, often give individuals more encouragement to stick to an application or a goal they may have. Additionally, the key conclusions made from this analysis are:
+\begin{enumerate}
+    \item \textbf{People experience positive emotions when they use phones with an intended purpose of primary value and when they are actively aware of their phone use.}
+    \item \textbf{People experience negative emotions when phone use disrupts their primary goal.}
+\end{enumerate}
+After these key findings were understood, we decided to make edits to the app's design, and implement a positive, goal-based approach\cite{kim2020understanding}.
+% \section*{App Development Process}
+% % these are the set of requirements - this is how i implemented it% 
+% After compiling the results from the focus groups, we solidified a set of required components and aspects our app implementation needed.
+% During the Spring 2021 Semester, I took an independent study with Prof. Prasad, my thesis advisor, called Mobile Computing. In this class I learned the ins and outs of iOS app development. We worked together twice a week to tackle the implementation of specific aspects of the UI design as well as learning about different concepts like persistence and how data travels around an app as a user interacts with it. After taking this class, I spent 10 weeks during the summer of 2021 compiling all that I had learned and implementing the ScreenAware app. During this time frame, I completed the following things:
+% \begin{enumerate}
+%     \item Implemented ScreenAware iOS app using Apple's Swift 5 programming language on the Xcode 12.5.1 development environment.
+%     \item Developed the graphical user interface using UIKit framework.
+%     \item Implemented storage persistence using property list files that store the data locally on the user's phone.
+%     \item Implemented cloud storage using Google's Firebase platform to store data in a no-SQL document-oriented database using JSON.
+%     \item Implemented user authentication using Firebase's authentication API.
+% \end{enumerate}
+
+% Before we tackled the storage, persistence and authentication aspects of ScreenAware, we had to decide which mode of persistence made the most sense for our intentions with distributing the app. We knew that we wanted to be able to run a user study on ScreenAware, so we needed to find a way to be able to store unique user's information separately from each other. When doing research on property lists, which are a type of storage persistence that store data locally on each individual user's device, we discovered it was difficult to be able to compile the data from each property list without having the user's phone and downloading the file during the study. We wanted to find a way so that our participants did not have to interact with researchers each day they would work with our app, so we scratched the idea of property lists. We did extensive research on the benefits of cloud storage and explored different options of database structure as well. We ended up implementing Google's Firebase framework. Firebase is a no-SQL cloud-based database that connects easily with any Xcode project using a CocoaPod. CocoaPods are a dependency manager that allows a developer the ability to import frameworks and APIs into their apps in a streamlined manor. We
+% %explain what a JSON language is, and also images of examples of json and firebase databases%
+% %how did we set up firebase, how did we implement it, what issues did we have, etc%
+% specifically used the Firebase Realtime Database, which is a JSON database that allowed us to write specific data types to our database in a treelike fashion, and separate individual user interaction with the app by randomly generated numerical user ID\cite{prasad2017enact}. Firebase worked well for us and stored multiple users information for the purposes of our user study. However, we ran out of time during the 10 week summer research program to be able to completely implement the functionality of the Firebase database. 
+
+
+% After we completed the first development of ScreenAware, we attempted to implement different types of persistence to save states of the app as the user peruses between different apps and to save any data the user creates while interacting with the app\cite{fereidooni2017fitness}. We first tried to use the built in functionality of a property list that saves data to a file connected to the app build. This file is formatted in terms of key value pairs, and saves any data into a .plist file. This functionality worked well, but when we began to think about persistence in the context of testing our app with individuals with their own personal devices, we ran into issue. There is no good way to get the information from these .plist files unless you have direct access to the individual device the app will run on, so we scratched this idea and looked for other things to try. \par We then moved onto a no-SQL cloud-based database through Firebase. This database system is created and owned by Google and is able to be imported into any Xcode project using a CocoaPod. The Firebase Realtime Database is a JSON database that allowed us to write specific data types to our database in a treelike fashion, and separate individual user interaction with the app by a randomly generated numerical user ID\cite{prasad2017enact}. Firebase was working for us very well to be able to store multiple users information for the purpose of our user study. However, we ran out of time to be able to fully implement Firebase functionality to save every piece of data within the app. We began doing this about 2.5 weeks through the summer research period of Summer 2021, and were unable to finish the implementation. 
+
+%split sections into app development vs actual app content.%
+\section*{ScreenAware - First Version}
+%separate into design and development section as well as a limitations section and final version section
+\par During the Spring 2021 Semester, I took an independent study with my thesis advisor, Prof. Aarathi Prasad, called Mobile Computing. In this class I learned the ins and outs of iOS app development. Prof. Prasad and I met twice a week for an hour and a half, to walk through sections of an iOS development textbook. Since we gained an understanding of how we would like our app to work from the research we had done up to this point, implementing the initial skeleton of ScreenAware was easy. After learning from the focus groups we conducted, and coming up with aspects of a smartphone app that people may value, we decided to implement the app using a goal based design. We split the app into three separate pages using a tab bar on the bottom of the screen: the home/information page, add goals page, and the badges page.
+\begin{figure}[h]
+\minipage{0.15\textwidth}
+  \includegraphics[width=\linewidth]{info.png}
+  \caption{}
+\endminipage
+\hspace{2cm}
+\minipage{0.15\textwidth}
+    \includegraphics[width=\linewidth]{oldGoals.png}
+    \caption{}
+\endminipage
+\hspace{2cm}
+\minipage{0.16\textwidth}
+    \includegraphics[width=\linewidth]{ScreenAware3.png}
+    \caption{}
+\endminipage
+\end{figure}
+\subsection*{Design}
+%include the system diagram - interaction between user, iOS app user interface, researcher, database%
+We created a set of required components that our app, ScreenAware, must include in the working version.
+\begin{itemize}
+    \item Page to add and edit goals (figure 5)
+    \item Ability to view all created goals in list form (figure 5)
+    \item Associate each goal with an app (figure 5)
+    \item Associate a priority with each goal (figure 5)
+    \item Associate a shade of blue with each goal's priority - the darker the shade, the higher the priority (figure 5)
+    \item Page to view all badges earned (figure 6)
+    \item Functionality to earn a badge when a task is completed (figure 6)
+    % \item Page to view usage statistics, like how many goals are created in a day
+    \item Page to view step by step instructions on how to use the app (figure 4)
+    \item Implement storage persistence in a cloud database
+    % \item Incorporate an avatar
+    % \item Include popups prompting user to express how they feel at certain points of interaction with the app
+\end{itemize}
+\subsection*{Implementation}
+To create a user interface that allowed for interaction and implemented the required components listed above, I used Swift 5, Apple's iOS programming language, and their integrated development environment for iOS development, Xcode 13. Three things were necessary in creating a successful app: the implementation of views, persistence, and user authentication.
+\subsubsection*{Views}
+\begin{figure}[h]
+\minipage{0.2\textwidth}
+  \includegraphics[width=\linewidth]{mvc.png}
+  \caption{}
+\endminipage
+\hspace{2cm}
+\minipage{0.2\textwidth}
+    \includegraphics[width=\linewidth]{json.png}
+    \caption{}
+\endminipage
+\end{figure}
+The Model-View-Controller, shown in figure 7, design pattern is a common convention among graphical user interfaces. Models directly manage the data of the application, Views represent information, and Controllers handle inputs and converts it to information the views and models lay out. Xcode and Swift are built to work with this design pattern, so it was perfect for the implementation of ScreenAware. Each page I created incorporates the MVC ideals. 
+\par I used UIKit, Apple's infrastructure for handling the content and display of the window and view architecture, to include things called View Controllers into my app. View controllers manage views and display content based on constraints unique to the type of view controller being implemented. UITableViewControllers were very useful in the implementation of ScreenAware. These view controllers organize data and objects into cells, and display them in an organized fashion. Each cell holds the ability to display and format any data objects the user wants to add. I implemented the Add Goals page in ScreenAware using a UITableViewController, with each goal and its associated information in an individual cell. 
+\par
+Additionally, view controllers can be used to manage multiple different pages of an app. I implemented a UITabBarController, which allows a user to peruse between pages of an application using a tab bar on the bottom of the screen. The developer can choose to connect different view controllers, like the UITableViewController, to the parent UITabBarController. This functionality is expressed in ScreenAware.
+\subsubsection*{Persistence}
+Storage persistence is necessary in creating a working app that is able to store the current state of user interaction. Mobile applications use something called a property list. Property lists, or .plist files, are a hierarchical representation of data stored in key-value pairs that are saved locally on the device they run on. These files come in handy when it comes to saving and re-loading states of an application. 
+\par However, there is no good way to be able to view a user's interaction with an application through solely a property list. If a researcher was interested in getting that data, they would have to have the user download the .plist files from their phone, which is not an ideal process. Typically, external databases are used to store and view any interaction with an application. Common forms are JSON databases, which are stored in an ordered collection of name-value pairs. As shown in figure 8, data is stored in a tree-like fashion with object names and their respective values. ScreenAware ended up implementing both property lists for in app storage persistence, as well as a JSON database for storage persistence that can be accessed outside of a local file saved to the user's personal device.
+\par I created a property list for each data type I created within ScreenAware. At this point in its development, I had two property list files: one for goals, and one for badges. Each time the user left the add goals page, the built in viewWillDisappear() method was called, and the goals created and displayed in the UITableViewController were saved to the goals.plist file. When the user came back to the add goals page, the built in viewWillAppear() method was called, and the goals that had been saved were re-loaded to the UITableViewController from the goals.plist file. The same functionality of storing and re-loading from a badges.plist file was implemented for the badges.
+\par Thinking ahead to our intention to distribute and test ScreenAware, we decided a database in addition to the property list storage persistence for saving app states was necessary to view the user's interaction with the app. We did extensive research on different existing database services, and decided upon Google's Firebase. We incorporated Firebase's Realtime Database into ScreenAware, which is a no-SQL cloud-based JSON database. We were able to write specific data types to our database in a treelike fashion, and separate individual user interaction with the app by a randomly generated numerical ID\cite{prasad2017enact} This database system is created and owned by Google and is able to be imported into any Xcode project using a CocoaPod. CocoaPods are a dependency managements system that allows a developer to import existing frameworks and APIs into an iOS application seamlessly. 
+\subsubsection*{Authentication}
+Lastly, user authentication is imperative in creating a mobile application. Firebase has built in authentication services that allow a developer to choose from a series of external sign-in methods. For example, a user could use a native provider, like signing in with an email and password or using an anonymous guest account. Firebase also offers the ability for a user to sign in using an external method, like with an existing Google or Facebook account. After looking into the pros and cons of specific methods, we settled on using the Anonymous Authentication service. I imported the Firebase Authentication CocoaPod and imported Firebase packages into my ApplicationDelegate Swift file within the ScreenAware app. The ApplicationDelegate file initializes the app and creates any views necessary to show to the user.
+\par The anonymous authentication framework assigns each unique device a randomly generated numerical ID. In the Swift files that correspond to each page in the app, I implemented the Firebase functionality to write any necessary data to the database, stored with the unique individual user ID as the parent to all subsequent information.
+\subsection*{Limitations}
+Firebase worked for us very well in terms of accessing interaction our future study participants would have with ScreenAware, but I ran out of time within my 10 week Student-Faculty Summer Research time period to complete the Firebase implementation.
+% \subsection*{Home/Information Page}
+% This page was designed to be the first page that is displayed when the user opens the app (see Figure 4). It details how to use the app with the following statement: \\
+% \par"ScreenAware is a smartphone management app that uses a goal-based design. This app caters to each individual user's needs, instead of implementing a one-size-fits-all design.
+
+% \par-To add goals, click the add goal page on the bottom bar.
+% \par-Each goal is catered to a specific app, and holds a priority on a scale 1-6, with 6 being most important to you.
+% \par-The goals will be sorted by priority (color), with the highest priority being the darkest color.\cite{heemotion} 
+% \par-When a goal is completed, click the switch on each goal, and mark how satisfied you are with the completion of the goal.
+% \par-When you complete goals, you earn badges
+% \par-To view the badges you have earned, click the badge page on the bottom bar." 
+
+% \subsection*{Add Goals Page}
+% This page allows a user to add goals using a + button in the top right corner of the screen. When the user adds a goal, they see a new goal added to the screen. Once the user clicks on that new goal, they can add whatever goal they would like, the app associated with the goal, and how important that goal is to them. They can then press the back button and they will see their new goal on the screen, with a color background associated with the priority (see Figure 5). The darker the color the more important the goal is to the user. The user can also complete goals on this page by pressing the slider on the right portion of the goal cell. They can add and complete as many goals as they would like per day, and the app will automatically sort their goals from highest priority to lowest priority.
+
+% \subsection*{Badges Page}
+% The third and final page of the initial app design held all the badges the user could earn. The badges begin grayed out, and when a user completes certain tasks to earn a badge, they become colorful. Example badges include: creating at least 1 goal a day for 3 days, completing all goals for 1 day, and creating a goal everyday for 5 days. 
+\section*{ScreenAware - Most Recent Version}
+After summarizing results from findings from reading research papers, conducting focus groups, and speaking to friends and family about what aspects of a smartphone app may encourage individuals to use it, I decided to incorporate some sort of entity to the app. This stems from our initial idea with the cat, which allowed the user to feel they are connected to the app, and therefore use the app more. We then decided to incorporate an avatar\cite{wood2020me}, similar to Snapchat's implementation of the Bitmoji. 
+\subsection*{Design}
+Following a similar protocol that we used to create the first version of ScreenAware, we created a more updated list of required components of the application:
+\begin{itemize}
+    \item Page to add and edit goals (figure 10)
+    \item Ability to view all created goals in list form (figure 10)
+    \item Associate each goal with an app (figure 9)
+    \item Associate a priority with each goal (figure 9)
+    \item \sout{Associate a shade of blue with each goal's priority - the darker the shade, the higher the priority}
+    \item Page to view all badges earned (figure 11)
+    \item Functionality to earn a badge when a task is completed (figure 12)
+    \item \sout{Page to view step by step instructions on how to use the app}
+    \item Implement storage persistence in a cloud database
+    \item \textbf{Sort goals by the day they were created, and lock interaction with the goals on any day after they were created} (figure 10)
+    \item \textbf{Page to view usage statistics, like how many goals are created in a day} (figure 14)
+    \item \textbf{Incorporate an avatar} (figure 15)
+    \item \textbf{Connect the badges and avatar by showing the most recently earned badge being worn by the avatar} (figure 11)
+    \item \textbf{Incorporate popups when a user earns a badge, and play a sound to congratulate them} (figure 12)
+    \item \textbf{Include popups prompting user to express how they feel at certain points of interaction with the app} (figure 13)
+    \item \textbf{Create a Notes Page to allow users to enter reasoning behind why a certain goal was not created or completed on a previous day} (figures 16-18)
+\end{itemize}
+\begin{figure}[h]
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{ScreenAware2.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{exampleGoals.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+ \minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{badges.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{newBadge.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{EMOJI.png}
+    \caption{}
+\endminipage
+\end{figure}
+\begin{figure}[h]
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{profile.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{avatarLink.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{emptyNote.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{notePage.png}
+    \caption{}
+\endminipage
+\hspace{1.5cm}
+\minipage{0.1\textwidth}
+    \includegraphics[width=\linewidth]{noteFilled.png}
+    \caption{}
+\endminipage
+\end{figure}
+\subsection*{Implementation}
+To create the most recent version of ScreenAware, I used Swift 5 and Xcode 13.3. This go around, I focused on the concepts of Avatar Creation, View implementation, storage persistence, and authentication, all in the context of the user study I hoped to run in the months following the app's completion.
+\subsubsection*{Avatar Creation}
+We brainstormed many different ways to implement an avatar into ScreenAware including drawing a set of customizable avatar combinations, with different hairstyles, clothes, and facial features. We soon learned that this would take extensive time as well as artistic capability, so we decided to scratch this plan based on the time we wanted to spend implementing this aspect.
+\par We then attempted to implement Snapchat's built in BitmojiKit\cite{snapchat}, which allows the user to connect their existing Snapchat account to our app, and use their Bitmoji and all the functionality that comes with it, within ScreenAware. We came across two problems with this idea: one being that not all of our potential study participants may have a Snapchat account, or be comfortable sharing their Snapchat account information with us, and two being that the documentation for integrating BitmojiKit into an iOS application was outdated and non-functional. The documentation states that BitmojiKit must be imported using a CocoaPod, similar to how Firebase was incorporated. However, the CocoaPod had not been updated in several years, and seemed to be incompatible with the development system I was using to create the ScreenAware app.
+\par Additionally, when I considered the acceptance and verification process an app must go through to be cleared for distribution on Apple's Testflight, an online service for over-the-air installation and testing of mobile applications, I scratched the idea of BitmojiKit. When a developer wants to get user's personal data, or access external accounts or information, it must go through a more extensive verification process for Apple to assert that the information gathered from a user will not be used against them or stored for any malicious intent. Of course, we held no bad intentions, but Apple may hold the release of our app via TestFlight for a longer verification period than they would had BitmojiKit not been integrated into ScreenAware.
+\par After we moved on from incorporating Snapchat's functionality, we made the decision to use an external website to be able to create an avatar\cite{avatar}. We chose an existing website that allows the user to customize a range of attributes of their character, including the clothes the entity wears. To implement the ability for a user to import an avatar image from an external website into ScreenAware, I chose to use Apple's UIPasteboard. UIPasteboards allow a user to share data between locations of an app as well as between separate applications. I implemented the UIPasteboard functionality that checks if something has been copied into the user's clipboard. For iOS devices, when the user long presses on an object on their screen, an option to copy that object is displayed. Upon choosing this option, the information that has been copied is stored in the clipboard, and can be accessed using a UIPasteboard.
+\par I set up the functionality to work as follows: 
+\begin{enumerate}
+    \item A user presses a button to create an avatar
+    \item The button displays a Safari window that prompts the user to create their avatar in the external website
+    \item The user then long presses on their avatar, selects copy, and navigates back to ScreenAware
+    \item The user presses the paste button to paste their avatar into the app
+\end{enumerate}
+The buttons and UIPasteboard work in tandem to take whatever information was copied into the user's clipboard, parse that information as an image, and display it on the Profile page of ScreenAware.
+% \subsubsection*{Views}
+\subsubsection*{Persistence}
+This version of the application incorporates the use of multiple property list files to save and load the states of each data type display. I implemented the .plist functionality for the goals, badges, statistics for the profile, and the notes.
+\subsubsection*{Authentication}
+For the purpose of our study, we decided to assign each participant a user ID at the beginning of their participation, rather than implement Firebase's authentication and database system.
+\subsection*{Limitations}
+There were two large limitations in the creation of this version of ScreenAware. While neither affected the app's ability to compile and run, both limited the depth and functionality of the application.
+\subsubsection*{Time constraints}
+Similar to the issue we ran into with the first version of ScreenAware, we ran out of time to implement Firebase functionality into this version. We spent the Fall 2021 semester finalizing the existing components of the app, and spent the majority of the time testing ScreenAware on different devices, and figuring out ways to make views and layouts conform to any size screen. We had some new aspects to implement as well, like the notes page, emoji popups, and editing the goals page.
+\subsubsection*{Avatar complications}
+As stated earlier, property list files are imperative to saving states within an app, and they are very good at being able to store and reload any data that the user needs to access. However, property lists only allow specific data types to be added to a file. UIImages, or the object used to store the Avatar once it is copied in from the external website, are not something a property list understands. We attempted to save the image title to the .plist file, but were unable to load in and display an image correctly. Unfortunately, storage persistence is not implemented for the avatar. But, the user can always re-click the button to create their avatar again and follow the same steps listed above to re-insert their avatar into ScreenAware.
+
+% \section*{Continuation of Senior Thesis - Spring 2022}
+% \par During this time, we created a final, ready to send out version of ScreenAware. The final app includes four pages: the same goals page as the initial design, with a few small changes, the same badge page, a profile page that allows the user to see their statistics regarding app usage, like how many goals they complete on average per day, etc... The last page we implemented was a notes page, which is designed to function as a space for the user to mark down any specific feedback they have about a goal they made, or any information they have regarding why they did not complete a goal.
+% \subsection*{Goals Page}
+% The final goals page includes the functionality of sorting the goals into groups by the day they were created, as seen in Figure 5. You can add a goal the exact same way as before, by clicking the plus button on the top right of the screen. Once a goal is added you can then edit the information associated with it. We took away the sorting by priority of how important a goal is to the user, and instead just ask the user to mark how important it is in terms of none, low, medium and high priority. The user types in the goal title and associated app just like they did in the previous version, as shown in Figure 4. Now, when a user adds a goal and completes a goal, a pop up is presented that prompts the user to choose an emoji based of a set of 6 different feelings that represents how they feel in the current moment. The emojis include a sad, happy, angry, neutral, surprised and anguished (see Figure 6). The emoji they choose is then reflected in the goal information and displayed when you click on the goal that you just created/completed.
+% \subsection*{Badges Page}
+% The final badges page has the same badges as before, but now includes the avatar that is created displayed at the top of the page (shown in Figure 5). When a badge is earned, a popup displays notifying the user that a certain badge has been earned, and a sound plays to congratulate them (see Figure 8). The badge the user most recently earned is displayed in the corner of the avatar displayed at the top of the page, to mimic the user wearing the badge as a pin. 
+% \subsection*{Profile Page}
+% The profile page is a new page that holds statistics based on user's goal creations, completions and maximum effort statistics like the highest number of goals created and completed in the history of using the app (see Figure 9). It also holds the functionality for the user to create their avatar. Like previously mentioned, the user must go to an external website linked to a button on this page, complete the creation, and then copy the final image into the app (see Figure 10). The avatar will then be displayed at the top of the page. 
+% \subsection*{Notes Page}
+% The notes page is a new page that allows the user to write feedback about their experience with a certain goal, or to explain why they may not have completed a goal or if they meant to create a certain goal and forgot to, etc... (see Figures 10-12).
+\par \textbf{This version of ScreenAware will be used to complete the study during the end of the Spring 2022 semester.}
+\section*{ScreenAware User Study}
+Beginning after Spring Break of the Spring 2022 semester, we began recruiting individuals to participate in a user study of ScreenAware. 
+We will recruit people via email, or word of mouth, and expect all participants to both use an iPhone daily for things other than to make or receive phone calls as well as be interested in changing their smartphone use behavior. The blurb we sent to prospective participants is:\\\\ \textbf{Are you interested in changing your smartphone use? \\ Are you interested in being paid** to test an iOS app to manage your smartphone use? \\ \\We, a team of researchers at Skidmore College, are looking for iPhone users* who wish to change their smartphone use behavior, to participate in a study to test an iOS app that we developed. This app uses a goal-based approach to help users manage their smartphone use. Participants will be required to complete a set of tasks on their personal iPhone for 7 days - these tasks should not take more than 10 minutes. Additionally, participants will also be asked to attend two sessions (either face-to-face or virtually over Zoom) before and after the 7-day study.\\ \\ If interested, email skidsdlab@gmail.com \\\\ **You must be older than 18 and own an iPhone that you use every day to do tasks other than make or receive phone calls. \\ ***You may receive up to \$30 for your participation in the study.}
+\\ 
+\par The session on day 1 should take 20 minutes during which time participants will complete a set of questions about technology use (MTUAS \cite{rosen2013media}) and problematic smartphone use and its effect (PUMP scale \cite{merlo2013measuring}).  The session on day 7 should take 30 minutes during which time participants will complete a post-study survey involving the System Usability Scale (SUS)\cite{sus} and participate in a voice-recorded interview where they will answer some questions about their experiences using the app. 
+\par 
+We aimed to recruit 10 individuals (a combination of Skidmore students and faculty/staff). Once recruiting is done, researchers will begin scheduling the initial meeting time and running the study with the participants. On day 1 of the study, we will get each participant familiar with the study by having them read the consent form. Then we will have them download the app TestFlight, an Apple developer tool that allows  apps to be shared for testing, on their personal iPhone. A link to a copy of the ScreenAware app will be shared with them and they will follow the instructions to install the app on their personal iPhone through TestFlight. We will walk them through creating their first goal as well as the protocol regarding choosing an emoji to best represent your emotions when a goal is created, as well as completed. We will also explain how the badges page works as well as how to create an avatar. We will hand the participant a printout containing information about what they must do each day to receive monetary compensation. During this initial meeting, we will also schedule a time to meet up to complete an exit survey as well as an exit interview style conversation about their experience with the app. The printout given to each participant will contain the following information:
+\\ \textbf{For the next five days from (start date) to (end date), you are expected to do the following tasks on the ScreenAware app: \\ -Create at least two goals \\ -Complete at least one goal and/or leave a note for all goals not completed \\ -Choose an emoji that represents how you feel when you create and complete a goal \\ Next, we will meet in CIS350 / Zoom meeting ID: (meeting ID) password (password) on (meeting date) at (meeting time)}
+\par On day 7, they meet with the researcher again to complete the PUMP and SUS questionnaires and participate in a semi-structured interview about their experience using the ScreenAware app. We have had only five participants enrolled in the study so far, but we are planning to continue running the study for another month. We will have them complete a survey as well as asking them to complete a screen-recording of all of the things they did on the ScreenAware app. We will ask them to record their goals page, and scroll to the bottom (if applicable), as well as clicking on each of the goals they created to view the emojis associated with that goal, and to check for goals not completed, and if there are any corresponding notes in the Notes page. We will then calculate their payment for each day: \$2 for at least two goals and \$1 for completing or making a note for each goal. We then add this number and a base pay of \$10 to calculate their total payment. We will pay them in their preferred way of either cash or Venmo. After this, we ask that they send their screen-recording to the skidsdlab@gmail.com email so we can have a record of their interaction with ScreenAware.
+\par Lastly, for the exit interview, we will record using Voice Memos on a researcher's iPhone if in person, or on Zoom if online. We will ask the following questions\cite{sato2017navcog3}: \begin{enumerate}
+    \item Did you find the goal-oriented approach helpful in managing your smartphone behavior?
+    \item If yes, for 1, do you anticipate using a goal-oriented approach for managing your smartphone behavior going forward?\cite{park2007acceptance}
+    \item Did you find the badges and the profile page motivating to make and complete goals? Why or why not?
+    \item If you did not find the app helpful, what additional features or alternate approach would help you manage your smartphone behavior better?
+\end{enumerate}
+We will then stop the recording and pay the participant. They will sign and date a receipt saying they received \$X for participating in the study titled "5-day field study of the ScreenAware app", conducted by Professor Aarathi Prasad in the Computer Science department.
+\par Once this study is completed, we plan to take our findings and adjust the app's layout and/or functionality as needed.
+\subsection*{Results}
+Thus far, we have conducted the study on 5 participants (3 male, 2 female). All are current Skidmore College students who were interested in changing their smartphone behavior at the beginning of the study. 
+\par After compiling the data, we calculated each participant's SUS score. To do this, you complete a few algebraic steps:
+\begin{enumerate}
+    \item Assign each answer choice the following points: \begin{itemize}
+        \item Strongly Disagree: 1
+        \item Disagree: 2
+        \item Neutral: 3
+        \item Agree: 4
+        \item Strongly Agree: 5
+    \end{itemize}
+    \item Add up the total score for odd-numbered questions, and subtract 5 from the total to get (X).
+    \item Add up the total score for even-numbered questions, and subtract that total from 25 to get (Y).
+    \item Add (X) + (Y) and multiple this sum by 2.5.
+\end{enumerate}
+Scores above 68 indicate a generally usable application. Scores below 68 point to design issues. Scores below 51 require immediate attention with regard to usability. We received the following scores: [87.5, 72.5, 52.5, 30.0, 80.0]. These SUS scores indicate that most participants found the app usable, while some found the app hard to use. 
+\par We also analyzed the MTUAS results. This scale measures usage and attitudes regarding smartphone user interaction. Participants were asked a series of questions regarding how often they used their smartphone for certain tasks. The following frequencies were offered as choices for the questions: 
+\begin{itemize}
+    \item Never - 1
+    \item Once a month - 2
+    \item Several times a month - 3
+    \item Once a week - 4
+    \item Several times a week - 5
+    \item Once a day - 6
+    \item Several times a day - 7
+    \item Once an hour - 8
+    \item Several times an hour - 9
+    \item All the time - 10
+\end{itemize}
+We took the average of the number associated with each frequency to calculate each user's score. Scores above 5.0 indicate that an individual is addicted to their smartphone according to the MTUAS. We received the following scores: [6.111, 5.111, 6.444, 7.0, 6.111]. 
+%report on emotions feedback from the app.
+%make excel sheet with all the goals each participant created and their emojis and if not completed.
+We will take this feedback as well as the qualitative feedback about ScreenAware to make improvements in the future.
+\par Additionally, we transcribed the conversation with each participant detailing their thoughts on the application and how it worked for them. We conducted qualitative analysis of the transcriptions using grounded theory framework.
+\subsubsection*{Goal-Oriented Approach}
+We received a variety of responses when participants were asked how the goal-oriented approach worked for them in managing their smartphone use. We identified the following common themes: 
+\begin{enumerate}
+    \item ScreenAware's structure allowed users to pay more conscious attention to their smartphone use.
+    \begin{itemize}
+        \item Participant 1001: "I felt like I was on my phone for more of a purpose, rather than just doing something mindlessly."
+        \item Participant 1003: "My [screen time] did go down by roughly 20 percent this week but that's just because using this app made me more aware of my smartphone use in general"
+    \end{itemize}
+    \item Users feel satisfied when they complete a goal
+    \begin{itemize}
+        \item Participant 1001: "I’m competitive, so I wanted to complete the goals more so for myself.”
+        \item Participant 1003: “I found the goal-oriented approach because its satisfying when you complete a goal and it can be sad when you don't complete a goal and that makes you want to complete your goals."
+        \item Participant 1003: "I just got motivation from completing the goals themselves.”
+    \end{itemize}
+    % \item ScreenAware is too similar to other existing applications 
+    % \begin{itemize}
+    %     \item Participant 1005: "I can set goals or the tasks essentially to do on my google calendar, and that actually notifies me, I can set a time for it, I can color code it, set it to repeat, I can do everything that I need to do much better in Google Calendar, why would I need ScreenAware for that.”
+    % \end{itemize}
+\end{enumerate}
+Some participants felt they were more mindful of their phone use during the time they used ScreenAware. This coupled with the satisfaction they felt when completing a goal will hopefully encourage participants to continue to use a goal-oriented approach to promote longevity of smartphone behavior change.
+\subsubsection*{Badges/Profile Page}
+When asking participants about the effects of the badges and profile page, we identified the following theme:
+\begin{enumerate}
+    \item Motivation came from completing goals, not earning badges
+    \begin{itemize}
+        \item Participant 1003: “I didn’t really check the badge page to be honest. I just got motivation from completing the goals themselves.”
+        \item Participant 1003: "I didn't need [badges] to be motivated. I kinda just had the driving factor within myself. I'm competitive, so I wanted to complete the goals more so for myself."
+        \item Participant 1004: "I feel like I wasn't really getting anything back just for making a goal. I thought the reward was just making sure you finish the goals."
+    \end{itemize}
+\end{enumerate}
+Unfortunately, none of the participants seemed to be interested in the profile page, aside from the avatar. They did not necessarily find the statistics displayed on this page helpful or unhelpful.
+\subsubsection*{Improvements}
+As listed in the Limitations section of ScreenAware - Most Recent Version, we ran into some trouble with persistence of the avatar. Unfortunately, because of the structure of property lists, we were unable to save and re-load a UIImage, which caused the avatar to disappear each time a user closed the application. Most of the participants noticed this flaw: 
+\begin{itemize}
+    \item Participant 1005: "I didn't like the profile page. The avatar kept disappearing. What is the point of me spending so much time creating an avatar to say who I am if it will just disappear when I close the app?"
+    \item Participant 1003: "It deleted my avatar, and I was sad because I made that avatar using randomly generated stuff and I couldn't remember how to make it again."
+\end{itemize}
+Additionally, when participants were asked what improvements or alternative approaches they would make to ScreenAware, we got the following feedback:
+\begin{enumerate}
+    \item Users appreciated current functionality of ScreenAware
+    \begin{itemize}
+        \item Participant 1001: "I liked the note taking functionality. I liked being able to put feedback in it and to be able to go back and look at it later.”
+    \end{itemize}
+    \item Adding more features may improve engagement with ScreenAware
+    \begin{itemize}
+        \item Participant 1004: "I think a reminder feature could be helpful, so if you're a few hours away from the end of a day and you haven't completed a goal yet, you get reminded to do so."
+        \item Participant 1005: "I like the idea of locking your iPhone so that you cannot open it for a certain amount of time to force you to do your tasks."
+        \item Participant 1005: "[I want to see badges] you can do and how many you can collect"
+    \end{itemize}
+\end{enumerate}
+\subsection*{Conclusions}
+Seeing a change in behavior often relies on the combination of external reinforcement in the journey towards that behavior change, and the intrinsic motivation in the individual to change their behavior, creating a smartphone app that works for everyone is difficult. Some people prefer apps that include time-based restrictions, and use lockout tactics to decrease screen time and manage smartphone use, while others prefer being able to set goals based on tasks that may involve using their phone more. Perhaps the most optimal solution is to include functionality that incorporates both approaches.
+\par Similarly, it is clear that the avatar functionality is important to people, and may affect their interest in using a smartphone application. Participants noted they felt sad or upset that the avatar was disappearing after they spent time creating an entity they could relate to.
+\par Overall, it is clear that for a smartphone app to promote behavior change, a user must already want that change to occur. For those who do not use their smartphones, or would prefer to only decrease screen time, a goal-oriented approach may not be optimal. However, this application has the potential to help users manage their smartphone use and promote a behavior change, so long as they want it to.
+\section*{Future Work}
+\subsubsection*{Limitations}
+Since we only conducted the user study on 5 people, we were unable to make any claims about the results from both the MTUAS and PUMP questionnaires. However, we used the data collected to guide our creation of scripts to analyze the effect that ScreenAware has on user's problematic smartphone behavior. 
+\par
+Going forward, I plan to make changes to the ScreenAware application. I will be addressing all of the limitations listed in the sections above, beginning with fixing the avatar persistence functionality. I will take into consideration any additional functionality that may allow a user to choose between using phone lockout tactics and creating goals to manage smartphone use. I will set up notifications to remind a user to complete a goal towards the end of a day, as well as notifications to encourage the user to interact with ScreenAware each day. I plan to do more research on the benefits of displaying statistics on a user's interaction with the app, either by refactoring which statistics are shown or altering its display, (i.e incorporating graphs and charts rather than a list of statistics). I will pay close attention to any minor issues with the app, and dive deeper into the SUS scores to figure out what aspects of the application could be improved in the context of usability.
+\par Eventually, once these fixes are made, I plan to submit a version of ScreenAware to the Apple App Store, so that there is an option of goal-based approach available to users.
+
+
+\section*{Acknowledgements}
+I would like to thank the Skidmore College Computer Science Department and Professor Aarathi Prasad for their continued support throughout the process of working on this research project. I would also like to thank Skidmore's Faculty-Student Summer Research Program for the opportunity to work on this project for the summers of 2020 and 2021. Additionally, I would like to thank Professor Lucas Lafreniere's Smartphone Use Intervention Team, Heidi Birch '22, Aaron Slonaker '21, Isabel Hacala '21, Vaasu Taneja (UAlbany Graduate student), Cassie Davidson '25 and any friends and family who reviewed any presentation, version, or listened to any in-the-works talk I worked on for this project. 
+\newpage
+\section*{User Study Questionnaires}
+\subsection*{SUS}
+The System Usability Scale questions include:
+\begin{enumerate}
+    \item I think that I would like to use this system frequently.
+    \item I found the system unnecessarily complex.
+    \item I thought the system was easy to use.
+    \item I think that I would need the support of a technical person to be able to use the system.
+    \item I found the various functions in this system were well integrated.
+    \item I thought there was too much inconsistency in this system.
+    \item I felt very confident using the system.
+    \item I needed to learn a lot of things before I could get going with this system.
+\end{enumerate}
+\subsection*{PUMP}
+The Problematic Use of Mobile Phones scale asks users to answer the following questions by choosing between a range of Strongly Disagree to Strongly Agree:
+\begin{enumerate}
+    \item When I decrease the amount of time spent using my cellphone, I feel less satisfied.
+    \item I need more time using my cell phone to feel satisfied than I used to need.
+    \item When I stop using my cellphone, I get moody and irritable.
+    \item It would be very difficult, emotionally, to give up my cell phone.
+    \item The amount of time I spend using my cell phone keeps me from doing other important work.
+    \item I have thought in the past that it is not normal to spend as much time using a cell phone as I do.
+    \item I think I might be spending too much time using my cell phone.
+    \item People tell me I spend too much time using my cell phone.
+    \item When I am not using my cellphone, I thinking about using it or planning the next time I can use it.
+    \item I feel anxious if I have not received a call or message in some time.
+    \item I have ignored the people I'm with in order to use my cell phone.
+    \item I have used my cell phone when I knew I should be doing work/schoolwork
+    \item I have used my cell phone when I knew I should be sleeping.
+    \item When I stop using my cell phone because it is interfering with my life, I usually return to it.
+    \item I have gotten into trouble at work or school because of my cell phone use.
+    \item At times, I find myself using my cell phone instead of spending time with people who are important to me and want to spend time with me.
+    \item I have used my cell phone when I knew it was dangerous to do so.
+    \item I have almost caused an accident because of my cell phone use.
+    \item My cell phone use has caused me problems in a relationship.
+    \item I have continued to use my cell phone even when someone asked me to stop.
+\end{enumerate}
+\subsection*{MTUAS}
+The Media and Technology Usage and Attitudes Scale begins with asking the user to rank how frequently they do the following tasks:
+\begin{enumerate}
+    \item Read e-mail on a mobile phone.
+    \item Get directions or use GPS on a mobile phone.
+    \item Browse the web on a mobile phone.
+    \item Listen to music on a mobile phone.
+    \item Take pictures using a mobile phone.
+    \item Check the news on a mobile phone.
+    \item Use apps (for any purpose) on a mobile phone.
+    \item Search for information with a mobile phone.
+\end{enumerate}
+Then, the user is asked to rank on a scale of Strongly Disagree to Strongly Agree on how they feel about the following statements:
+\begin{enumerate}
+    \item I feel it is important to be able to find any information whenever I want online.
+    \item I feel it is important to be able to access the Internet any time I want.
+    \item I think it is important to keep up with the latest trends in technology.
+    \item I get anxious when I don't have my cell phone.
+    \item I am dependent on my technology.
+    \item TEchnology will provide solutions to many of our problems.
+    \item With technology anything is possible.
+    \item I feel that I get more accomplished because of technology.
+    \item New technology makes people waste too much time.
+    \item New technology makes life more complicated.
+    \item New technology makes people more isolated.
+\end{enumerate}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{NewBib}
+
+\end{document}

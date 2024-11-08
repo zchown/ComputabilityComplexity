@@ -40,46 +40,46 @@ parseHeader linesOfFile = do
   let nonEmptyLines = filter (not . null) linesOfFile
   headerPairs <- traverse parseHeaderLine nonEmptyLines
   let headerMap = Map.fromList headerPairs
-  name <- getRequired "NAME" headerMap
-  dataType <- getRequiredParsed "TYPE" tspDataTypeFromStr headerMap
-  let comment = Map.lookup "COMMENT" headerMap
-  dimension <- getRequiredParsed "DIMENSION" readMaybe headerMap
-  edgeWeightType <-
+  name' <- getRequired "NAME" headerMap
+  dataType' <- getRequiredParsed "TYPE" tspDataTypeFromStr headerMap
+  let comment' = Map.lookup "COMMENT" headerMap
+  dimension' <- getRequiredParsed "DIMENSION" readMaybe headerMap
+  edgeWeightType' <-
     getOptionalParsed "EDGE_WEIGHT_TYPE" edgeWeightTypeFromStr headerMap
-  edgeWeightFormat <-
+  edgeWeightFormat' <-
     getOptionalParsed "EDGE_WEIGHT_FORMAT" edgeWeightFormatFromStr headerMap
-  edgeDataFormat <-
+  edgeDataFormat' <-
     getOptionalParsed "EDGE_DATA_FORMAT" edgeDataFormatFromStr headerMap
-  nodeCoordType <-
+  nodeCoordType' <-
     getOptionalParsed "NODE_COORD_TYPE" nodeCoordTypeFromStr headerMap
   let initialData =
-        case edgeWeightType of
+        case edgeWeightType' of
           Just EXPLICIT -> EdgeWeightData []
           _ -> NodeCoordData []
   Right $
     TspProblemHeader
-      { name = name
-      , dataType = dataType
-      , comment = comment
-      , dimension = dimension
-      , edgeWeightType = edgeWeightType
-      , edgeWeightFormat = edgeWeightFormat
-      , edgeDataFormat = edgeDataFormat
-      , nodeCoordType = nodeCoordType
+      { name = name'
+      , dataType = dataType'
+      , comment = comment'
+      , dimension = dimension'
+      , edgeWeightType = edgeWeightType'
+      , edgeWeightFormat = edgeWeightFormat'
+      , edgeDataFormat = edgeDataFormat'
+      , nodeCoordType = nodeCoordType'
       , tData = initialData
       }
   where
-    getRequired field map =
-      case Map.lookup field map of
+    getRequired field m =
+      case Map.lookup field m of
         Nothing -> Left $ MissingRequiredField field
         Just v -> Right v
-    getRequiredParsed field parser map = do
-      value <- getRequired field map
+    getRequiredParsed field parser m = do
+      value <- getRequired field m
       case parser value of
         Nothing -> Left $ InvalidFieldValue field value
         Just v -> Right v
-    getOptionalParsed field parser map =
-      case Map.lookup field map of
+    getOptionalParsed field parser m =
+      case Map.lookup field m of
         Nothing -> Right Nothing
         Just value ->
           case parser value of
@@ -90,7 +90,7 @@ parseNodeLine :: String -> Either TspParseError Node
 parseNodeLine line =
   case words line of
     [idStr, xStr, yStr] -> do
-      nodeId <-
+      nodeId' <-
         maybe (Left $ InvalidNodeData "Invalid node ID") Right $ readMaybe idStr
       x <-
         maybe (Left $ InvalidNodeData "Invalid x coordinate") Right $
@@ -98,9 +98,9 @@ parseNodeLine line =
       y <-
         maybe (Left $ InvalidNodeData "Invalid y coordinate") Right $
         readMaybe yStr
-      Right $ Node2D nodeId (Point2D x y)
+      Right $ Node2D nodeId' (Point2D x y)
     [idStr, xStr, yStr, zStr] -> do
-      nodeId <-
+      nodeId' <-
         maybe (Left $ InvalidNodeData "Invalid node ID") Right $ readMaybe idStr
       x <-
         maybe (Left $ InvalidNodeData "Invalid x coordinate") Right $
@@ -111,11 +111,11 @@ parseNodeLine line =
       z <-
         maybe (Left $ InvalidNodeData "Invalid z coordinate") Right $
         readMaybe zStr
-      Right $ Node3D nodeId (Point3D x y z)
+      Right $ Node3D nodeId' (Point3D x y z)
     _ -> Left $ InvalidNodeData $ "Invalid node data format: " ++ line
 
 parseBody :: TspProblemHeader -> [String] -> Either TspParseError TspProblemBody
-parseBody header [] = Left $ InvalidFormat "Missing data section"
+parseBody _ [] = Left $ InvalidFormat "Missing data section"
 parseBody header allLines = do
   let sections = splitSections allLines
   parsedSections <- traverse (parseSectionData header) sections
@@ -124,12 +124,12 @@ parseBody header allLines = do
 
 splitSections :: [String] -> [(String, [String])]
 splitSections [] = []
-splitSections (line:lines)
+splitSections (line:ls)
   | isSectionMarker line =
-    let (sectionData, rest) = break isSectionMarker lines
+    let (sectionData, rest) = break isSectionMarker ls
         remainingSections = splitSections rest
      in (strip line, takeWhile (/= "EOF") sectionData) : remainingSections
-  | otherwise = splitSections lines
+  | otherwise = splitSections ls
   where
     isSectionMarker =
       (`elem` [ "NODE_COORD_SECTION"
@@ -140,42 +140,39 @@ splitSections (line:lines)
 
 parseSectionData ::
      TspProblemHeader -> (String, [String]) -> Either TspParseError TspData
-parseSectionData header ("NODE_COORD_SECTION", lines) = do
+parseSectionData _ ("NODE_COORD_SECTION", ls) = do
   nodes <-
-    traverse
-      parseNodeLine
-      (filter (\s -> not (null s) && (strip s) /= "EOF") lines)
+    traverse parseNodeLine (filter (\s -> not (null s) && strip s /= "EOF") ls)
   Right $ NodeCoordData nodes
-parseSectionData header ("EDGE_WEIGHT_SECTION", lines) = do
-  weights <- parseEdgeWeightSection header lines
+parseSectionData header ("EDGE_WEIGHT_SECTION", ls) = do
+  weights <- parseEdgeWeightSection header ls
   Right $
     case weights of
       TspProblemBody (EdgeWeightData matrix) -> EdgeWeightData matrix
       _ -> EdgeWeightData []
-parseSectionData header ("FIXED_EDGES_SECTION", lines) = do
+parseSectionData _ ("FIXED_EDGES_SECTION", ls) = do
   edges <-
-    parseFixedEdgesSection
-      (filter (\s -> not (null s) && (strip s) /= "EOF") lines)
+    parseFixedEdgesSection (filter (\s -> not (null s) && strip s /= "EOF") ls)
   Right $ FixedEdgesData edges
 parseSectionData _ (section, _) =
   Left $ UnsupportedFormat $ "Unknown section: " ++ section
 
 parseFixedEdgesSection :: [String] -> Either TspParseError [FixedEdge]
-parseFixedEdgesSection lines = do
-  let edgeLines = takeWhile (/= "-1") lines
+parseFixedEdgesSection ls = do
+  let edgeLines = takeWhile (/= "-1") ls
   traverse parseFixedEdgeLine edgeLines
 
 parseFixedEdgeLine :: String -> Either TspParseError FixedEdge
 parseFixedEdgeLine line =
   case words line of
     [fromStr, toStr] -> do
-      fromNode <-
+      fromNode' <-
         maybe (Left $ InvalidFixedEdge "Invalid from node") Right $
         readMaybe fromStr
-      toNode <-
+      toNode' <-
         maybe (Left $ InvalidFixedEdge "Invalid to node") Right $
         readMaybe toStr
-      Right $ FixedEdge fromNode toNode
+      Right $ FixedEdge fromNode' toNode'
     _ -> Left $ InvalidFixedEdge $ "Invalid fixed edge format: " ++ line
 
 combineSectionData :: [TspData] -> TspData
@@ -197,17 +194,17 @@ combineSectionData sections =
     collectFixedEdges _ acc = acc
 
 parseNodeCoordSection :: [String] -> Either TspParseError TspProblemBody
-parseNodeCoordSection lines = do
-  let (coordLines, _) = break (== "EOF") lines
+parseNodeCoordSection ls = do
+  let (coordLines, _) = break (== "EOF") ls
   nodes <- traverse parseNodeLine (filter (not . null) coordLines)
   Right $ TspProblemBody $ NodeCoordData nodes
 
 parseEdgeWeightSection ::
      TspProblemHeader -> [String] -> Either TspParseError TspProblemBody
-parseEdgeWeightSection header lines = do
-  let (weightLines, _) = break (== "EOF") lines
+parseEdgeWeightSection header ls = do
+  let (weightLines, _) = break (== "EOF") ls
       dim = dimension header
-      numbers = concat $ map words $ filter (not . null) weightLines
+      numbers = concatMap words $ filter (not . null) weightLines
   weights <-
     case traverse readMaybe numbers of
       Nothing -> Left $ InvalidFormat "Invalid number in weight matrix"
@@ -306,7 +303,7 @@ constructMatrix dim weights triangleType includeDiagonal =
         Upper -> i < j
         Lower -> i > j
     getStoredWeight i j = weights !! getIndex i j
-    getDiagonalWeight i = weights !! (diagonalIndex i)
+    getDiagonalWeight i = weights !! diagonalIndex i
     getIndex i j =
       case triangleType of
         Upper -> upperTriangularIndex (min i j) (max i j) dim includeDiagonal
@@ -325,14 +322,14 @@ upperTriangularIndex i j dim includeDiagonal
      in offset + (j - row - 1)
 
 lowerTriangularIndex :: Int -> Int -> Int -> Bool -> Int
-lowerTriangularIndex i j dim includeDiagonal
+lowerTriangularIndex i j _ includeDiagonal
   | includeDiagonal =
     let row = j
         offset = sum [k + 1 | k <- [0 .. row - 1]]
      in offset + i - row
   | otherwise =
     let row = j
-        offset = sum [k | k <- [0 .. row - 1]]
+        offset = sum [0 .. row - 1]
      in offset + i - row
 
 expectedWeights :: Int -> EdgeWeightFormat -> Int
