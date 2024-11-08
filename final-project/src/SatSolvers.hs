@@ -54,7 +54,7 @@ tryBothAssignments ::
   -> VarAssignment n
   -> Int
   -> SatSolution n
-tryBothAssignments !prob !va@(VarAssignment !vp !vn) !i =
+tryBothAssignments !prob (VarAssignment !vp !vn) !i =
   case SatTypes.setBit vp i of
     Just !vp' ->
       case dpll' prob (VarAssignment vp' vn) i of
@@ -70,7 +70,7 @@ checkClauses ::
   => V.Vector (Clause n)
   -> VarAssignment n
   -> ClauseStatus
-checkClauses !cs !va@(VarAssignment !vp !vn)
+checkClauses !cs (VarAssignment !vp !vn)
   | V.null cs = AllSatisfied
   | V.any isEmptyClause cs = EmptyClause
   | V.all isSatisfiedClause cs = AllSatisfied
@@ -86,7 +86,7 @@ selectVariable ::
   => VarAssignment n
   -> Int
   -> Maybe Int
-selectVariable !va@(VarAssignment !vp !vn) !i =
+selectVariable (VarAssignment !vp !vn) !i =
   let !assigned = vp .|. vn
       !n = varListSize assigned
    in find (not . testBit assigned) [i .. n - 1]
@@ -103,10 +103,10 @@ unitPropagateReduce ::
   => SatProblem n
   -> VarAssignment n
   -> (SatProblem n, VarAssignment n)
-unitPropagateReduce !p !cva@(VarAssignment !vap !van) =
+unitPropagateReduce !p cva@(VarAssignment !vap !van) =
   case findUnits p of
     Nothing -> (p, cva)
-    Just !up@(UnitPropagate (VarAssignment !vp !vn)) ->
+    Just up@(UnitPropagate (VarAssignment !vp !vn)) ->
       if not (varListIsZero (vp .&. vn))
         then (SatProblem V.empty, cva)
         else let !p' = unitPropagate p up

@@ -3,7 +3,6 @@ module TestKnapsack
   ) where
 
 import Knapsack
-import System.Environment (lookupEnv)
 import Test.Hspec
 
 doubleConversion ::

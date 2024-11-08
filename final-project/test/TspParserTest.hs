@@ -2,12 +2,10 @@ module TspParserTest where
 
 import Control.Monad (filterM)
 import Data.List (isSuffixOf)
-import Data.Maybe (fromJust)
 import System.Directory (doesFileExist, listDirectory)
-import System.FilePath ((</>), takeExtension)
+import System.FilePath ((</>))
 import Test.Hspec
 import TspLibParser
-import TspTypes
 
 findTspGzFiles :: FilePath -> IO [FilePath]
 findTspGzFiles dir = do

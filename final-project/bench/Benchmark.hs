@@ -3,7 +3,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE FlexibleContexts #-}
 
 module Main where
@@ -16,26 +15,26 @@ import Data.Time.Clock (getCurrentTime)
 import Data.Time.Clock.POSIX (POSIXTime, getPOSIXTime)
 import Data.Time.Format (defaultTimeLocale, formatTime)
 import qualified Data.Vector.Unboxed as V
-import GHC.TypeLits (KnownNat, Nat, natVal)
+import GHC.TypeLits (KnownNat, natVal)
 import SatSolvers
 import SatTypes
-import System.IO (Handle, IOMode(..), hPutStrLn, stdout, withFile)
+import System.IO (Handle, IOMode(..), hPutStrLn, withFile)
 import System.Random
 
 instance NFData (VarList n) where
-  rnf !v@(VarList vec) = v `seq` rnf (V.toList vec)
+  rnf v@(VarList !vec) = v `seq` rnf (V.toList vec)
 
 instance NFData (Clause n) where
-  rnf !c@(Clause p n) = c `seq` rnf p `seq` rnf n
+  rnf c@(Clause !p !n) = c `seq` rnf p `seq` rnf n
 
 instance NFData (SatProblem n) where
-  rnf !p@(SatProblem cs) = p `seq` rnf cs
+  rnf p@(SatProblem !cs) = p `seq` rnf cs
 
 instance NFData (VarAssignment n) where
-  rnf !a@(VarAssignment !p !n) = a `seq` rnf p `seq` rnf n
+  rnf a@(VarAssignment !p !n) = a `seq` rnf p `seq` rnf n
 
 instance NFData (SatSolution n) where
-  rnf !s@(Satisfiable v) = s `seq` rnf v
+  rnf s@(Satisfiable !v) = s `seq` rnf v
   rnf Unsatisfiable = ()
 
 tee :: Handle -> String -> IO ()
@@ -63,7 +62,7 @@ generateSATProblems ::
   -> Int
   -> Int
   -> IO [SatProblem n]
-generateSATProblems proxy n m = do
+generateSATProblems _ n m = do
   clauses <- replicateM m (generate3SATClause n)
   case satProblemFromList @n clauses of
     Just problem -> return [problem]
@@ -77,10 +76,11 @@ timeAction ::
   -> IO POSIXTime
 timeAction handle label problem = do
   start <- getPOSIXTime
-  let !result = dpll problem (emptyAssignment @n)
+  let !_ = dpll problem (emptyAssignment @n)
   end <- getPOSIXTime
   let diff = end - start
-  tee handle $ label ++ ": " ++ show (realToFrac diff * 1000) ++ " ms"
+  tee handle $
+    label ++ ": " ++ show ((realToFrac diff * 1000) :: Double) ++ " ms"
   return diff
 
 emptyAssignment ::
@@ -99,9 +99,9 @@ benchmarkWithVars handle proxy = do
   let clauseCounts = [32,64 .. 640]
   let numProblems = 5
   problems <-
-    sequence $
-    replicate numProblems $
-    concat <$> mapM (\c -> generateSATProblems proxy numVars c) clauseCounts
+    replicateM numProblems $
+    concat <$> mapM (generateSATProblems proxy numVars) clauseCounts
+    -- replicateM numProblems $ concat <$> mapM (\c -> generateSATProblems proxy numVars c) clauseCounts
   let zippedProblems = zip clauseCounts $ transpose problems
   tee handle "\nRunning benchmarks..."
   forM_ zippedProblems $ \(numClauses, problemSet) -> do
@@ -115,7 +115,7 @@ benchmarkWithVars handle proxy = do
     let avgTime = realToFrac (sum times) * 1000 / fromIntegral numProblems
     tee handle $
       "Average time for " ++
-      show numClauses ++ " clauses: " ++ show avgTime ++ " ms\n"
+      show numClauses ++ " clauses: " ++ show (avgTime :: Double) ++ " ms\n"
 
 main :: IO ()
 main = do
