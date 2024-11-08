@@ -1,11 +1,9 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE KindSignatures #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE UnboxedTuples #-}
-{-# LANGUAGE MagicHash #-}
 
 module SatTypes where
 
@@ -61,7 +59,7 @@ evaluateSatProblem ::
   => SatProblem n
   -> VarAssignment n
   -> Bool
-evaluateSatProblem !(SatProblem cs) !v = VE.all (evaluateClause v) cs
+evaluateSatProblem (SatProblem !cs) !v = VE.all (evaluateClause v) cs
 
 {-# INLINE evaluateSatProblem #-}
 satProblemFromList ::
@@ -77,7 +75,7 @@ satProblemFromList !xs = do
 -- | Clause Type Operations | --
 --------------------------------
 instance KnownNat n => Show (Clause n) where
-  show !(Clause p n) =
+  show (Clause !p !n) =
     "Clause {positive = " ++
     show (toBitList p) ++ ", negative = " ++ show (toBitList n) ++ "}"
 
@@ -93,11 +91,11 @@ isClauseEmpty ::
      forall n. KnownNat n
   => Clause n
   -> Bool
-isClauseEmpty !(Clause p n) = varListIsZero $! p .|. n
+isClauseEmpty (Clause !p !n) = varListIsZero $! p .|. n
 
 {-# INLINE isClauseEmpty #-}
 addClause :: Clause n -> SatProblem n -> SatProblem n
-addClause !c !(SatProblem cs) = SatProblem $! cs VE.++ VE.singleton c
+addClause !c (SatProblem !cs) = SatProblem $! cs VE.++ VE.singleton c
 
 {-# INLINE addClause #-}
 evaluateClause ::
@@ -105,7 +103,7 @@ evaluateClause ::
   => VarAssignment n
   -> Clause n
   -> Bool
-evaluateClause !(VarAssignment vp vn) !(Clause p n) = not x || not y
+evaluateClause (VarAssignment !vp !vn) (Clause !p !n) = not x || not y
   where
     !x = varListIsZero $! vp .&. p
     !y = varListIsZero $! vn .&. n
@@ -150,7 +148,7 @@ addPositiveVar ::
   => Clause n
   -> Int
   -> Maybe (Clause n)
-addPositiveVar !(Clause p n) !i = do
+addPositiveVar (Clause !p !n) !i = do
   !p' <- SatTypes.setBit p i
   return $! Clause p' n
 
@@ -160,7 +158,7 @@ addNegativeVar ::
   => Clause n
   -> Int
   -> Maybe (Clause n)
-addNegativeVar !(Clause p n) !i = do
+addNegativeVar (Clause !p !n) !i = do
   !n' <- SatTypes.setBit n i
   return $! Clause p n'
 
@@ -170,7 +168,7 @@ removePositiveVar ::
   => Clause n
   -> Int
   -> Maybe (Clause n)
-removePositiveVar !(Clause p n) !i = do
+removePositiveVar (Clause !p !n) !i = do
   !p' <- SatTypes.clearBit p i
   return $! Clause p' n
 
@@ -180,7 +178,7 @@ removeNegativeVar ::
   => Clause n
   -> Int
   -> Maybe (Clause n)
-removeNegativeVar !(Clause p n) !i = do
+removeNegativeVar (Clause !p !n) !i = do
   !n' <- SatTypes.clearBit n i
   return $! Clause p n'
 
@@ -190,7 +188,7 @@ isPositiveVar ::
   => Clause n
   -> Int
   -> Bool
-isPositiveVar !(Clause p _) = testBit p
+isPositiveVar (Clause !p _) = testBit p
 
 {-# INLINE isPositiveVar #-}
 isNegativeVar ::
@@ -198,14 +196,14 @@ isNegativeVar ::
   => Clause n
   -> Int
   -> Bool
-isNegativeVar !(Clause _ n) = testBit n
+isNegativeVar (Clause _ !n) = testBit n
 
 {-# INLINE isNegativeVar #-}
 getPositiveVars ::
      forall n. KnownNat n
   => Clause n
   -> [Int]
-getPositiveVars !c@(Clause p _) =
+getPositiveVars c@(Clause !p _) =
   [i | i <- [0 .. varListSize p - 1], isPositiveVar c i]
 
 {-# INLINE getPositiveVars #-}
@@ -213,7 +211,7 @@ getNegativeVars ::
      forall n. KnownNat n
   => Clause n
   -> [Int]
-getNegativeVars !c@(Clause _ n) =
+getNegativeVars c@(Clause _ !n) =
   [i | i <- [0 .. varListSize n - 1], isNegativeVar c i]
 
 {-# INLINE getNegativeVars #-}
@@ -373,7 +371,7 @@ bitChangePattern ::
   -> VarList n
   -> Int
   -> Maybe (VarList n)
-bitChangePattern !f !v@(VarList xs) !i
+bitChangePattern !f v@(VarList !xs) !i
   | i < 0 || i >= varListSize v = Nothing
   | otherwise =
     Just $!
@@ -425,11 +423,7 @@ varAssignmentToBoolAssignment (VarAssignment vp vn) =
       | testBit n i = Just False
       | otherwise = Nothing
 
-createVarAssignment ::
-     forall n. KnownNat n
-  => VarList n
-  -> VarList n
-  -> VarAssignment n
+createVarAssignment :: VarList n -> VarList n -> VarAssignment n
 createVarAssignment = VarAssignment
 
 ------------------------------------------
