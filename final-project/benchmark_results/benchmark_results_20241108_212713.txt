@@ -1,0 +1,38 @@
+SAT Solver Benchmark Results - 2024-11-08 21:27:13
+================================================
+
+Generating test cases with 64 variables...
+
+Running benchmarks...
+Benchmarking with 32 clauses...
+DPLL-64-vars/32 clauses: 0.19799999999999998 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 0.20900000000000002 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 15.86 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 0.14100000000000001 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 0.163 ms - Result: Satisfiable 
+Average time for 32 clauses: 3.3141999999999996 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 64 clauses...
+DPLL-64-vars/64 clauses: 339466.759 ms - Result: Satisfiable 
+DPLL-64-vars/64 clauses: 0.15 ms - Result: Satisfiable 
+DPLL-64-vars/64 clauses: 0.136 ms - Result: Satisfiable 
+DPLL-64-vars/64 clauses: 26937.941 ms - Result: Satisfiable 
+DPLL-64-vars/64 clauses: 0.38499999999999995 ms - Result: Satisfiable 
+Average time for 64 clauses: 73281.0742 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 96 clauses...
+DPLL-64-vars/96 clauses: 70.997 ms - Result: Satisfiable 
+DPLL-64-vars/96 clauses: 0.232 ms - Result: Satisfiable 
+DPLL-64-vars/96 clauses: 1.9 ms - Result: Satisfiable 
+DPLL-64-vars/96 clauses: 109439.71399999999 ms - Result: Satisfiable 
+DPLL-64-vars/96 clauses: 2.205 ms - Result: Satisfiable 
+Average time for 96 clauses: 21903.009599999998 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 128 clauses...
+DPLL-64-vars/128 clauses: 5159.075 ms - Result: Satisfiable 
+DPLL-64-vars/128 clauses: 8050.878000000001 ms - Result: Satisfiable 
+DPLL-64-vars/128 clauses: 12192.034 ms - Result: Satisfiable 
+DPLL-64-vars/128 clauses: 1472.4029999999998 ms - Result: Satisfiable 

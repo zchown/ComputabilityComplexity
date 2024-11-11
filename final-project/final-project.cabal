@@ -68,6 +68,7 @@ test-suite final-project-test
                     , vector
                     , directory
                     , filepath
+                    , text
     buildable:        True
 
 benchmark sat-solver-bench

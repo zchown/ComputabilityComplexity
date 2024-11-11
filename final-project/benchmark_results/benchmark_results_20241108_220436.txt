@@ -1,0 +1,18 @@
+SAT Solver Benchmark Results - 2024-11-08 22:04:36
+================================================
+
+Generating test cases with 64 variables...
+
+Running benchmarks...
+Benchmarking with 32 clauses...
+DPLL-64-vars/32 clauses: 3489.495 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 0.16 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 7.200000000000001e-2 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 6.8e-2 ms - Result: Satisfiable 
+DPLL-64-vars/32 clauses: 7.5e-2 ms - Result: Satisfiable 
+Average time for 32 clauses: 697.9739999999999 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 64 clauses...
+DPLL-64-vars/64 clauses: 233.14499999999998 ms - Result: Satisfiable 
+DPLL-64-vars/64 clauses: 0.174 ms - Result: Satisfiable 

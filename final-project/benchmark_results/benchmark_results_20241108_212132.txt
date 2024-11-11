@@ -1,0 +1,150 @@
+SAT Solver Benchmark Results - 2024-11-08 21:21:32
+================================================
+
+Generating test cases with 32 variables...
+
+Running benchmarks...
+Benchmarking with 16 clauses...
+DPLL-32-vars/16 clauses: 2.4e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,False]
+DPLL-32-vars/16 clauses: 2.0999999999999998e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False]
+DPLL-32-vars/16 clauses: 2.0999999999999998e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False]
+DPLL-32-vars/16 clauses: 2.0999999999999998e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True]
+DPLL-32-vars/16 clauses: 9.8e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,False,True,True,True,True,True,True,True,False,False,False,False]
+Average time for 16 clauses: 3.7e-2 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 32 clauses...
+DPLL-32-vars/32 clauses: 4.0e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,False,True,False,False]
+DPLL-32-vars/32 clauses: 109.236 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,False,False,False]
+DPLL-32-vars/32 clauses: 3.7e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False,True,True,True,True,False]
+DPLL-32-vars/32 clauses: 0.34400000000000003 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,False,True,True,True,True,True,False]
+DPLL-32-vars/32 clauses: 40.994 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,False,False,False,False]
+Average time for 32 clauses: 30.130200000000002 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 48 clauses...
+DPLL-32-vars/48 clauses: 57.293 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,False,True,False,False,True,False,False,False,True,False,False,True,False,True,True,True,True,True,True,True,True,False,False]
+DPLL-32-vars/48 clauses: 3.7529999999999997 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,False,True,True,False,True,False,False,False,True,False,True,True,False,True,True,False]
+DPLL-32-vars/48 clauses: 0.131 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False,True,False,True,True,False,True,True,False,False]
+DPLL-32-vars/48 clauses: 5.9e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,False]
+DPLL-32-vars/48 clauses: 5.6e-2 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,False,True,True,True,False,True,False,True,True,False,False]
+Average time for 48 clauses: 12.2584 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 64 clauses...
+DPLL-32-vars/64 clauses: 0.331 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,False,True,True,True,False,True,True,True,True,True,False,False,True,False]
+DPLL-32-vars/64 clauses: 0.211 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,True,True,True,False,False,True,True,True,True,False,True,True,True,False,True,True,True,False,False,True,False,False,False]
+DPLL-32-vars/64 clauses: 21.055999999999997 ms - Result: Satisfiable VarList [True,True,True,True,True,True,False,True,True,True,True,True,False,True,False,True,True,True,False,True,True,True,True,True,True,True,True,False,True,False,False,False]
+DPLL-32-vars/64 clauses: 20.326 ms - Result: Satisfiable VarList [True,True,True,True,True,False,True,True,False,True,True,False,True,False,True,True,False,True,True,False,False,True,False,False,True,True,True,False,True,False,True,False]
+DPLL-32-vars/64 clauses: 0.5519999999999999 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,False,False,True,True,False,False,False,True,True,True,True,True,False,False,False,True,True,True,True,True,False,True,True,False]
+Average time for 64 clauses: 8.4952 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 80 clauses...
+DPLL-32-vars/80 clauses: 10.494 ms - Result: Satisfiable VarList [True,True,False,True,True,True,True,True,False,True,True,True,True,True,False,False,True,True,True,True,False,True,True,False,True,False,False,False,True,True,True,False]
+DPLL-32-vars/80 clauses: 0.193 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,True,False,True,False,True,False,False,True,True,False,False,True,True,True,True,True,True,True,True,True,True,True,False,False]
+DPLL-32-vars/80 clauses: 3.378 ms - Result: Satisfiable VarList [True,True,True,True,True,True,True,True,False,True,False,False,True,True,True,True,True,False,True,False,False,False,False,True,False,True,False,True,True,False,True,True]
+DPLL-32-vars/80 clauses: 52.253 ms - Result: Satisfiable VarList [True,True,True,True,True,False,True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True,True,False,False,True,True,True,False,True,False]
+DPLL-32-vars/80 clauses: 3.1 ms - Result: Satisfiable VarList [True,True,True,True,True,False,True,True,True,True,True,True,False,False,False,True,True,False,False,True,False,True,True,True,True,False,True,False,True,True,False,False]
+Average time for 80 clauses: 13.883599999999998 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 96 clauses...
+DPLL-32-vars/96 clauses: 83.194 ms - Result: Satisfiable VarList [True,True,True,True,False,True,True,True,True,True,False,True,True,True,True,True,False,False,False,True,True,True,True,True,True,False,True,True,True,True,False,False]
+DPLL-32-vars/96 clauses: 5.348000000000001 ms - Result: Satisfiable VarList [True,True,True,True,True,True,False,True,True,False,True,True,False,False,False,False,True,True,True,True,False,True,True,False,False,True,False,True,False,True,False,False]
+DPLL-32-vars/96 clauses: 594.413 ms - Result: Satisfiable VarList [True,True,True,False,True,True,True,False,True,True,False,True,True,False,True,True,False,False,False,False,True,True,False,False,True,False,True,True,False,True,False,True]
+DPLL-32-vars/96 clauses: 38.506 ms - Result: Satisfiable VarList [True,True,True,True,True,False,True,True,True,True,True,False,True,True,False,True,True,False,False,True,False,False,True,False,True,False,True,True,True,False,True,True]
+DPLL-32-vars/96 clauses: 3.381 ms - Result: Satisfiable VarList [True,True,True,True,True,False,True,True,True,False,True,True,True,False,True,False,True,True,True,False,True,True,True,True,False,False,False,True,False,False,True,False]
+Average time for 96 clauses: 144.9684 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 112 clauses...
+DPLL-32-vars/112 clauses: 99.79 ms - Result: Satisfiable VarList [True,False,True,True,True,True,True,True,True,False,False,True,False,True,True,False,True,False,False,False,True,False,True,False,True,False,False,False,False,True,True,False]
+DPLL-32-vars/112 clauses: 401.75699999999995 ms - Result: Satisfiable VarList [True,False,False,True,True,False,True,True,True,True,False,True,False,False,True,False,True,False,True,False,True,True,True,True,False,False,True,True,True,False,False,False]
+DPLL-32-vars/112 clauses: 1514.918 ms - Result: Satisfiable VarList [True,False,True,True,False,True,True,True,False,False,False,True,True,True,False,False,False,True,True,True,True,True,False,False,False,True,False,True,False,True,False,False]
+DPLL-32-vars/112 clauses: 144.595 ms - Result: Satisfiable VarList [True,True,True,True,True,True,False,False,True,True,False,True,True,True,True,False,False,True,False,False,True,True,True,True,False,False,True,True,False,True,True,False]
+DPLL-32-vars/112 clauses: 347.47299999999996 ms - Result: Satisfiable VarList [True,False,True,True,False,False,False,True,False,True,True,True,True,False,True,True,False,True,True,True,False,True,False,False,False,True,False,False,True,True,False,False]
+Average time for 112 clauses: 501.7066 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 128 clauses...
+DPLL-32-vars/128 clauses: 98.39 ms - Result: Satisfiable VarList [True,False,True,True,False,True,False,False,False,True,True,True,False,True,False,False,True,True,False,False,True,True,True,False,True,False,False,True,True,True,False,True]
+DPLL-32-vars/128 clauses: 345.206 ms - Result: Satisfiable VarList [True,True,False,True,False,False,False,False,False,True,True,False,False,True,False,True,False,True,False,False,True,True,True,False,True,False,False,True,False,False,False,False]
+DPLL-32-vars/128 clauses: 390.139 ms - Result: Satisfiable VarList [False,True,True,False,False,False,True,False,True,False,True,False,True,True,False,True,False,True,True,False,True,True,False,False,True,False,True,False,True,True,True,True]
+DPLL-32-vars/128 clauses: 498.623 ms - Result: Unsatisfiable
+DPLL-32-vars/128 clauses: 347.66799999999995 ms - Result: Satisfiable VarList [False,False,True,True,True,True,True,True,True,True,False,False,True,False,False,True,False,False,False,True,True,True,True,False,True,True,True,True,True,False,True,True]
+Average time for 128 clauses: 336.0052 ms
+Satisfiable problems: 4 out of 5
+
+Benchmarking with 144 clauses...
+DPLL-32-vars/144 clauses: 506.21400000000006 ms - Result: Unsatisfiable
+DPLL-32-vars/144 clauses: 12697.805 ms - Result: Unsatisfiable
+DPLL-32-vars/144 clauses: 67.748 ms - Result: Satisfiable VarList [True,True,True,False,True,True,True,False,True,False,False,False,False,True,False,False,True,False,True,False,False,True,False,False,True,False,True,False,True,False,False,True]
+DPLL-32-vars/144 clauses: 173.587 ms - Result: Satisfiable VarList [True,False,False,True,True,True,True,True,True,False,True,True,True,True,True,True,False,False,False,False,True,False,True,True,True,True,False,True,True,True,False,True]
+DPLL-32-vars/144 clauses: 49.352 ms - Result: Satisfiable VarList [True,True,True,True,True,True,False,False,False,False,True,False,True,False,False,False,False,False,False,True,True,False,True,True,True,True,True,True,True,True,True,True]
+Average time for 144 clauses: 2698.9412 ms
+Satisfiable problems: 3 out of 5
+
+Benchmarking with 160 clauses...
+DPLL-32-vars/160 clauses: 105.93900000000001 ms - Result: Satisfiable VarList [True,False,False,True,False,True,True,False,True,False,True,True,True,True,True,True,True,False,False,False,True,False,True,False,True,False,False,False,False,True,False,False]
+DPLL-32-vars/160 clauses: 363.652 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 321.377 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 358.006 ms - Result: Satisfiable VarList [False,True,True,True,False,False,True,True,True,True,True,False,True,True,True,True,True,False,True,False,True,True,True,False,True,True,False,True,True,True,True,False]
+DPLL-32-vars/160 clauses: 463.038 ms - Result: Unsatisfiable
+Average time for 160 clauses: 322.4024 ms
+Satisfiable problems: 2 out of 5
+
+Benchmarking with 176 clauses...
+DPLL-32-vars/176 clauses: 311.27500000000003 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 593.053 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 419.38 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 450.63399999999996 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 418.467 ms - Result: Unsatisfiable
+Average time for 176 clauses: 438.56180000000006 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 192 clauses...
+DPLL-32-vars/192 clauses: 298.922 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 199.209 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 96.655 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 697.3249999999999 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 124.991 ms - Result: Unsatisfiable
+Average time for 192 clauses: 283.42040000000003 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 208 clauses...
+DPLL-32-vars/208 clauses: 329.87300000000005 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 347.734 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 212.08599999999998 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 398.611 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 174.233 ms - Result: Unsatisfiable
+Average time for 208 clauses: 292.5074 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 224 clauses...
+DPLL-32-vars/224 clauses: 117.248 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 265.767 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 134.231 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 54.903 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 127.00500000000001 ms - Result: Unsatisfiable
+Average time for 224 clauses: 139.8308 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 240 clauses...
+DPLL-32-vars/240 clauses: 82.44 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 40.957 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 261.846 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 328.485 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 278.528 ms - Result: Unsatisfiable
+Average time for 240 clauses: 198.4512 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 256 clauses...
+DPLL-32-vars/256 clauses: 53.316 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 49.634 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 86.33200000000001 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 129.331 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 35.608000000000004 ms - Result: Unsatisfiable
+Average time for 256 clauses: 70.8442 ms
+Satisfiable problems: 0 out of 5
+

@@ -73,15 +73,18 @@ timeAction ::
   => Handle
   -> String
   -> SatProblem n
-  -> IO POSIXTime
+  -> IO (POSIXTime, SatSolution n) -- Modified to return the solution as well
 timeAction handle label problem = do
   start <- getPOSIXTime
-  let !_ = dpll problem (emptyAssignment @n)
+  let !result = dpll problem (emptyAssignment @n)
   end <- getPOSIXTime
   let diff = end - start
   tee handle $
-    label ++ ": " ++ show ((realToFrac diff * 1000) :: Double) ++ " ms"
-  return diff
+    label ++
+    ": " ++
+    show ((realToFrac diff * 1000) :: Double) ++
+    " ms" ++ " - Result: " ++ show result -- Added result printing
+  return (diff, result)
 
 emptyAssignment ::
      forall n. KnownNat n
@@ -96,26 +99,34 @@ benchmarkWithVars ::
 benchmarkWithVars handle proxy = do
   let numVars = fromIntegral $ natVal proxy
   tee handle $ "Generating test cases with " ++ show numVars ++ " variables..."
-  let clauseCounts = [32,64 .. 640]
+  let clauseCounts = [16,32 .. 256]
   let numProblems = 5
   problems <-
     replicateM numProblems $
     concat <$> mapM (generateSATProblems proxy numVars) clauseCounts
-    -- replicateM numProblems $ concat <$> mapM (\c -> generateSATProblems proxy numVars c) clauseCounts
   let zippedProblems = zip clauseCounts $ transpose problems
   tee handle "\nRunning benchmarks..."
   forM_ zippedProblems $ \(numClauses, problemSet) -> do
     tee handle $ "Benchmarking with " ++ show numClauses ++ " clauses..."
-    times <-
+    timesAndResults <-
       mapM
         (timeAction
            handle
            ("DPLL-" ++ show numVars ++ "-vars/" ++ show numClauses ++ " clauses"))
         problemSet
+    let times = map fst timesAndResults
+    let satisfiableCount =
+          length [r | (_, r) <- timesAndResults, isSatisfiable r]
     let avgTime = realToFrac (sum times) * 1000 / fromIntegral numProblems
     tee handle $
       "Average time for " ++
-      show numClauses ++ " clauses: " ++ show (avgTime :: Double) ++ " ms\n"
+      show numClauses ++ " clauses: " ++ show (avgTime :: Double) ++ " ms"
+    tee handle $
+      "Satisfiable problems: " ++
+      show satisfiableCount ++ " out of " ++ show numProblems ++ "\n"
+  where
+    isSatisfiable (Satisfiable _) = True
+    isSatisfiable Unsatisfiable = False
 
 main :: IO ()
 main = do
@@ -128,4 +139,4 @@ main = do
       formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S" currentTime
     tee handle "================================================"
     tee handle ""
-    benchmarkWithVars handle (Proxy @64)
+    benchmarkWithVars handle (Proxy @32)

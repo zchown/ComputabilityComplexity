@@ -1,0 +1,150 @@
+SAT Solver Benchmark Results - 2024-11-09 20:01:08
+================================================
+
+Generating test cases with 32 variables...
+
+Running benchmarks...
+Benchmarking with 16 clauses...
+DPLL-32-vars/16 clauses: 2.5e-2 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 1.7e-2 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 1.9e-2 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 2.0e-2 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 0.163 ms - Result: Satisfiable 
+Average time for 16 clauses: 4.8799999999999996e-2 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 32 clauses...
+DPLL-32-vars/32 clauses: 3.8e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 4.0e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 4.1999999999999996e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 4.0e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 3.3e-2 ms - Result: Satisfiable 
+Average time for 32 clauses: 3.86e-2 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 48 clauses...
+DPLL-32-vars/48 clauses: 7.3e-2 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 6.2e-2 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 3.816 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 0.27399999999999997 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 6.3e-2 ms - Result: Satisfiable 
+Average time for 48 clauses: 0.8576 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 64 clauses...
+DPLL-32-vars/64 clauses: 0.116 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 1.503 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 10.145 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 61.557 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 81.917 ms - Result: Satisfiable 
+Average time for 64 clauses: 31.0476 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 80 clauses...
+DPLL-32-vars/80 clauses: 45.735 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 3.891 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 2.882 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 9.1e-2 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 175.072 ms - Result: Satisfiable 
+Average time for 80 clauses: 45.534200000000006 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 96 clauses...
+DPLL-32-vars/96 clauses: 23.002000000000002 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 481.709 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 34.68 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 45.593 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 117.799 ms - Result: Satisfiable 
+Average time for 96 clauses: 140.5566 ms
+Satisfiable problems: 5 out of 5
+
+Benchmarking with 112 clauses...
+DPLL-32-vars/112 clauses: 663.259 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 135.958 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 605.19 ms - Result: Unsatisfiable
+DPLL-32-vars/112 clauses: 957.534 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 9.785 ms - Result: Satisfiable 
+Average time for 112 clauses: 474.3451999999999 ms
+Satisfiable problems: 4 out of 5
+
+Benchmarking with 128 clauses...
+DPLL-32-vars/128 clauses: 883.1569999999999 ms - Result: Unsatisfiable
+DPLL-32-vars/128 clauses: 180.711 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 174.62199999999999 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 231.692 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 361.72900000000004 ms - Result: Satisfiable 
+Average time for 128 clauses: 366.3822 ms
+Satisfiable problems: 4 out of 5
+
+Benchmarking with 144 clauses...
+DPLL-32-vars/144 clauses: 307.313 ms - Result: Unsatisfiable
+DPLL-32-vars/144 clauses: 21.564 ms - Result: Satisfiable 
+DPLL-32-vars/144 clauses: 4800.295 ms - Result: Unsatisfiable
+DPLL-32-vars/144 clauses: 1318.74 ms - Result: Satisfiable 
+DPLL-32-vars/144 clauses: 305.351 ms - Result: Unsatisfiable
+Average time for 144 clauses: 1350.6526 ms
+Satisfiable problems: 2 out of 5
+
+Benchmarking with 160 clauses...
+DPLL-32-vars/160 clauses: 208.596 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 168.879 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 927.119 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 1095.525 ms - Result: Unsatisfiable
+DPLL-32-vars/160 clauses: 1265.1950000000002 ms - Result: Unsatisfiable
+Average time for 160 clauses: 733.0627999999999 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 176 clauses...
+DPLL-32-vars/176 clauses: 371.96000000000004 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 215.494 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 375.214 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 432.913 ms - Result: Unsatisfiable
+DPLL-32-vars/176 clauses: 152.985 ms - Result: Unsatisfiable
+Average time for 176 clauses: 309.71320000000003 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 192 clauses...
+DPLL-32-vars/192 clauses: 929.7860000000001 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 139.959 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 649.638 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 892.266 ms - Result: Unsatisfiable
+DPLL-32-vars/192 clauses: 155.45700000000002 ms - Result: Unsatisfiable
+Average time for 192 clauses: 553.4212 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 208 clauses...
+DPLL-32-vars/208 clauses: 991.178 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 128.227 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 878.3570000000001 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 133.19400000000002 ms - Result: Unsatisfiable
+DPLL-32-vars/208 clauses: 161.173 ms - Result: Unsatisfiable
+Average time for 208 clauses: 458.4258 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 224 clauses...
+DPLL-32-vars/224 clauses: 97.51400000000001 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 204.90800000000002 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 127.50800000000001 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 466.086 ms - Result: Unsatisfiable
+DPLL-32-vars/224 clauses: 261.065 ms - Result: Unsatisfiable
+Average time for 224 clauses: 231.41620000000003 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 240 clauses...
+DPLL-32-vars/240 clauses: 181.735 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 74.166 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 230.883 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 98.329 ms - Result: Unsatisfiable
+DPLL-32-vars/240 clauses: 167.152 ms - Result: Unsatisfiable
+Average time for 240 clauses: 150.453 ms
+Satisfiable problems: 0 out of 5
+
+Benchmarking with 256 clauses...
+DPLL-32-vars/256 clauses: 105.363 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 170.072 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 121.372 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 178.88899999999998 ms - Result: Unsatisfiable
+DPLL-32-vars/256 clauses: 271.005 ms - Result: Unsatisfiable
+Average time for 256 clauses: 169.3402 ms
+Satisfiable problems: 0 out of 5
+

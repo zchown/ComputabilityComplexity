@@ -27,7 +27,11 @@ newtype SatProblem (n :: Nat) =
 data SatSolution (n :: Nat)
   = Satisfiable !(VarList n)
   | Unsatisfiable
-  deriving (Eq, Show)
+  deriving (Eq)
+
+instance Show (SatSolution n) where
+  show (Satisfiable _) = "Satisfiable "
+  show Unsatisfiable = "Unsatisfiable"
 
 newtype BoolSatSolution (n :: Nat) =
   BoolSatSolution [Bool]
