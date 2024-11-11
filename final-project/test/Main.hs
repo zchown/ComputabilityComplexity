@@ -57,13 +57,7 @@ getTestConfig = do
   fuzzKnapsack <- lookupEnvBool "RUN_FUZZ_KNAPSACK_TESTS" True
   return
     TestConfig
-      { runTsp = tsp
-      , runSatType = satType
-      , runSatHelper = satHelper
-      , runSatSolver = satSolver
-      , runKnapsack = knapsack
-      , runFuzzKnapsack = fuzzKnapsack
-      }
+      { runTsp = tsp, runSatType = satType, runSatHelper = satHelper, runSatSolver = satSolver, runKnapsack = knapsack, runFuzzKnapsack = fuzzKnapsack}
   where
     lookupEnvBool :: String -> Bool -> IO Bool
     lookupEnvBool name defaultValue = do
