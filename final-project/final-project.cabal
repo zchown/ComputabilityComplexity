@@ -57,7 +57,7 @@ test-suite final-project-test
                      TestSatTypes
                      TestSatSolverHelpers
                      TestSatSolvers
-                     TspParserTest
+                     TestTspParser
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Main.hs

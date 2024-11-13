@@ -1,4 +1,4 @@
-module TspParserTest where
+module TestTspParser where
 
 import Control.Monad (filterM)
 import Data.List (isSuffixOf)

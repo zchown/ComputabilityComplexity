@@ -15,7 +15,7 @@ import TestKnapsack
 import TestSatSolverHelpers
 import TestSatSolvers
 import TestSatTypes
-import TspParserTest
+import TestTspParser
 
 loadEnvFile :: IO [(String, String)]
 loadEnvFile = do
