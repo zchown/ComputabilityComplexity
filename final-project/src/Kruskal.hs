@@ -1,19 +1,46 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE TypeFamilies #-}
+
 module Kruskal where
 
+import Control.Monad
+import Control.Monad.ST
 import DisjointSet
-import GraphTypes (BasicGraph)
+import GraphTypes
 
-sortEdges :: BasicGraph -> BasicGraph
-sortEdges (BasicGraph ns es) = BasicGraph ns (mergeSort es)
+kruskal :: BasicGraph -> BasicGraph
+kruskal (BasicGraph nodes edges) =
+  BasicGraph nodes $
+  runST $ do
+    ds <- createDisjointSet (length nodes)
+    let sortedEdges = sortEdges edges
+    foldM
+      (\acc e@(Edge (NodeId u, NodeId v, _)) -> do
+         ux <- find ds u
+         vx <- find ds v
+         if ux /= vx
+           then do
+             union ds u v
+             return (e : acc)
+           else return acc)
+      []
+      sortedEdges
+
+sortEdges :: [Edge] -> [Edge]
+sortEdges = mergeAll . runs
   where
-    mergeSort = mergeAll . runs
     runs [] = []
-    runs [x] = [x]
-    runs xs = frontRun xs : runs (dropFrontRun xs)
-    frontRun = takeWhile (uncurry (f)) . pairs
-    dropFrontRun = dropWhile (uncurry (f)) . pairs
+    runs [x] = [[x]]
+    runs xs = frontRun xs : runs (drop (length (frontRun xs)) xs)
+    frontRun [] = []
+    frontRun (x:y:zs)
+      | x `f` y = x : frontRun (y : zs)
+      | otherwise = [x]
+    frontRun [x] = [x]
     mergeAll [] = []
-    mergeAll [x] = [x]
+    mergeAll [x] = x
     mergeAll xs = (mergeAll . mergePairs) xs
     mergePairs (x:y:ys) = merge x y : mergePairs ys
     mergePairs xs = xs
@@ -22,27 +49,4 @@ sortEdges (BasicGraph ns es) = BasicGraph ns (mergeSort es)
     merge (x:xs) (y:ys)
       | x `f` y = x : merge xs (y : ys)
       | otherwise = y : merge (x : xs) ys
-    pairs xs = zip xs (tail xs)
-    f (_, _, x) (_, _, y) = x <= y
-
-kruskal :: BasicGraph -> BasicGraph
-kruskal g@(BasicGraph ns es) = krusk n (sortEdges g) m (BasicGraph ns []) ds
-  where
-    n = length ns
-    ds = createDisjointSet n
-    m = zip ns [1 .. n]
-
-krusk ::
-     Int
-  -> BasicGraph
-  -> [(NodeId, Int)]
-  -> BasicGraph
-  -> DisjointSet
-  -> BasicGraph
-krusk n (BasicGraph ns (e@(u, v, _):es)) m mst ds
-  | n == 1 + length (bgEdges mst) = mst
-  | equality u v = k mst ds
-  | otherwise = k (addEdge e mst) (union ds u v)
-  where
-    k = krusk n es m
-    equality a b = fst (find ds m a) == fst (find ds m b)
+    f (Edge (_, _, w1)) (Edge (_, _, w2)) = w1 < w2

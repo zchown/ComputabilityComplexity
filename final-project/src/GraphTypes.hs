@@ -33,9 +33,13 @@ newtype EdgeWeight =
 --     unsafeAt arr i = EdgeWeight $ realToFrac (unsafeAt (castUArray arr) i)
 -- newtype AdjacencyMatrix = AdjacencyMatrix { matrix :: UArray (NodeId, NodeId) EdgeWeight }
 --   deriving (Show, Eq)
+newtype Edge =
+  Edge (NodeId, NodeId, EdgeWeight)
+  deriving (Show, Eq)
+
 data BasicGraph = BasicGraph
   { bgNodes :: [NodeId]
-  , bgEdges :: [(NodeId, NodeId, EdgeWeight)]
+  , bgEdges :: [Edge]
   } deriving (Show, Eq)
 
 data Node = Node
@@ -46,20 +50,19 @@ data Node = Node
 newtype NodeGraph = NodeGraph
   { ngNodes :: [Node]
   } deriving (Show, Eq)
-
 ------------------------------
 -- | Conversion functions | --
 ------------------------------
-basicToNode :: BasicGraph -> NodeGraph
-basicToNode (BasicGraph ns es) = NodeGraph $ map mkNode ns
-  where
-    mkNode n = Node n (map (\(from, to, w) -> (to, w)) $ connecting n)
-    connecting n = filter (\(from, _, _) -> from == n) es
-
-nodeToBasic :: NodeGraph -> BasicGraph
-nodeToBasic (NodeGraph ns) = BasicGraph (map nNodeId ns) (concatMap mkEdges ns)
-  where
-    mkEdges (Node n es) = map (\(to, w) -> (n, to, w)) es
+-- basicToNode :: BasicGraph -> NodeGraph
+-- basicToNode (BasicGraph ns es) = NodeGraph $ map mkNode ns
+--   where
+--     mkNode n = Node n (map (\(from, to, w) -> (to, w)) $ connecting n)
+--     connecting n = filter (\(from, _, _) -> from == n) es
+--
+-- nodeToBasic :: NodeGraph -> BasicGraph
+-- nodeToBasic (NodeGraph ns) = BasicGraph (map nNodeId ns) (concatMap mkEdges ns)
+--   where
+--     mkEdges (Node n es) = map (\(to, w) -> (n, to, w)) es
 --
 -- basicToAdjacency :: BasicGraph -> AdjacencyMatrix
 -- basicToAdjacency bg@(BasicGraph ns es) = AdjacencyMatrix table

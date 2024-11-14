@@ -17,18 +17,15 @@ createDisjointSet :: Int -> ST s (DisjointSet s)
 createDisjointSet n =
   liftM2 DisjointSet (newListArray (1, n) [1 .. n]) (newArray (1, n) 0)
 
-getRepresentative :: DisjointSet s -> Int -> ST s Int
-getRepresentative ds x = do
+find :: DisjointSet s -> Int -> ST s Int
+find ds x = do
   p <- readArray (parent ds) x
   if p /= x
     then do
-      rep <- getRepresentative ds p
+      rep <- find ds p
       writeArray (parent ds) x rep
       return rep
     else return x
-
-find :: DisjointSet s -> Int -> Int -> ST s Bool
-find ds x y = liftM2 (==) (getRepresentative ds x) (getRepresentative ds y)
 
 link :: DisjointSet s -> Int -> Int -> ST s ()
 link ds x y = do
@@ -43,6 +40,6 @@ link ds x y = do
 
 union :: DisjointSet s -> Int -> Int -> ST s ()
 union ds x y = do
-  rx <- getRepresentative ds x
-  ry <- getRepresentative ds y
+  rx <- find ds x
+  ry <- find ds y
   unless (rx == ry) $ link ds rx ry

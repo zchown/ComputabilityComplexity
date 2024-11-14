@@ -33,6 +33,7 @@ library
                      GraphTypes
                      TspSolvers
                      DisjointSet
+                     Kruskal
     other-extensions: FlexibleInstances
                      FlexibleContexts
                      DataKinds
@@ -62,6 +63,7 @@ test-suite final-project-test
                      TestSatSolvers
                      TestTspParser
                      TestDisjointSet
+                     TestKruskal
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Main.hs
