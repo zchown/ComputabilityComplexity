@@ -11,6 +11,7 @@ import qualified Data.Text.IO as TIO
 import FuzzKnapsack
 import System.Directory (doesFileExist)
 import System.Environment (lookupEnv, setEnv)
+import TestDisjointSet
 import TestKnapsack
 import TestSatSolverHelpers
 import TestSatSolvers
@@ -45,6 +46,7 @@ data TestConfig = TestConfig
   , runSatSolver :: Bool
   , runKnapsack :: Bool
   , runFuzzKnapsack :: Bool
+  , runDisjointSet :: Bool
   }
 
 getTestConfig :: IO TestConfig
@@ -55,6 +57,7 @@ getTestConfig = do
   satSolver <- lookupEnvBool "RUN_SAT_SOLVER_TESTS" True
   knapsack <- lookupEnvBool "RUN_KNAPSACK_TESTS" True
   fuzzKnapsack <- lookupEnvBool "RUN_FUZZ_KNAPSACK_TESTS" True
+  runDisjointSet <- lookupEnvBool "RUN_DISJOINT_SET_TESTS" True
   return
     TestConfig
       { runTsp = tsp
@@ -63,6 +66,7 @@ getTestConfig = do
       , runSatSolver = satSolver
       , runKnapsack = knapsack
       , runFuzzKnapsack = fuzzKnapsack
+      , runDisjointSet = runDisjointSet
       }
   where
     lookupEnvBool :: String -> Bool -> IO Bool
@@ -87,6 +91,8 @@ runAllTests config = do
     putStrLn "Running Knapsack Tests..." >> runKnapsackTests
   when (runFuzzKnapsack config) $
     putStrLn "Running Knapsack Fuzz Tests..." >> runKnapsackFuzzTests
+  when (runDisjointSet config) $
+    putStrLn "Running Disjoint Set Tests..." >> runTestDisjointSet
 
 main :: IO ()
 main = do

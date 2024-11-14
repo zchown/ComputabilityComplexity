@@ -14,7 +14,8 @@ data DisjointSet s = DisjointSet
   }
 
 createDisjointSet :: Int -> ST s (DisjointSet s)
-createDisjointSet n = liftM2 DisjointSet (newListArray (1, n) [1 .. n]) (newArray (1, n) 0)
+createDisjointSet n =
+  liftM2 DisjointSet (newListArray (1, n) [1 .. n]) (newArray (1, n) 0)
 
 getRepresentative :: DisjointSet s -> Int -> ST s Int
 getRepresentative ds x = do
@@ -24,7 +25,7 @@ getRepresentative ds x = do
       rep <- getRepresentative ds p
       writeArray (parent ds) x rep
       return rep
-    else return p
+    else return x
 
 find :: DisjointSet s -> Int -> Int -> ST s Bool
 find ds x y = liftM2 (==) (getRepresentative ds x) (getRepresentative ds y)
@@ -36,7 +37,9 @@ link ds x y = do
   case compare rx ry of
     GT -> writeArray (parent ds) y x
     LT -> writeArray (parent ds) x y
-    EQ -> writeArray (rank ds) y (ry + 1)
+    EQ -> do
+      writeArray (parent ds) y x
+      writeArray (rank ds) x (rx + 1)
 
 union :: DisjointSet s -> Int -> Int -> ST s ()
 union ds x y = do
