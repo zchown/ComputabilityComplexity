@@ -30,6 +30,8 @@ library
                      TspTypes
                      TspLibParser
                      DistanceFunctions
+                     GraphTypes
+                     TspSolvers
     other-extensions: FlexibleInstances
                      FlexibleContexts
                      DataKinds
