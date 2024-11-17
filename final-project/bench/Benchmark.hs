@@ -73,23 +73,18 @@ timeAction ::
   => Handle
   -> String
   -> SatProblem n
-  -> IO (POSIXTime, SatSolution n) -- Modified to return the solution as well
+  -> IO (POSIXTime, SatSolution n)
 timeAction handle label problem = do
   start <- getPOSIXTime
-  let !result = dpll problem (emptyAssignment @n)
+  let !result = dpll problem
   end <- getPOSIXTime
   let diff = end - start
   tee handle $
     label ++
     ": " ++
     show ((realToFrac diff * 1000) :: Double) ++
-    " ms" ++ " - Result: " ++ show result -- Added result printing
+    " ms" ++ " - Result: " ++ show result
   return (diff, result)
-
-emptyAssignment ::
-     forall n. KnownNat n
-  => VarAssignment n
-emptyAssignment = createVarAssignment createVarList createVarList
 
 benchmarkWithVars ::
      forall n. KnownNat n

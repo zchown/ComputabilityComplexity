@@ -427,8 +427,10 @@ varAssignmentToBoolAssignment (VarAssignment vp vn) =
       | testBit n i = Just False
       | otherwise = Nothing
 
-createVarAssignment :: VarList n -> VarList n -> VarAssignment n
-createVarAssignment = VarAssignment
+createVarAssignment ::
+     forall n. KnownNat n
+  => VarAssignment n
+createVarAssignment = VarAssignment (createVarList @n) (createVarList @n)
 
 ------------------------------------------
 -- | SatSolution Conversion Operations |--

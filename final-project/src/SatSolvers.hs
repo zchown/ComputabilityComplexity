@@ -12,12 +12,17 @@ import qualified Data.Vector as V
 import GHC.TypeLits
 import SatTypes
 
+gsat ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> SatSolution n
+gsat = undefined
+
 dpll ::
      forall n. KnownNat n
   => SatProblem n
-  -> VarAssignment n
   -> SatSolution n
-dpll !p !a = dpll' p a 0
+dpll !p = dpll' p (createVarAssignment @n) 0
 
 dpll' ::
      forall n. KnownNat n
@@ -38,9 +43,20 @@ dpll' !p !a !j =
   where
     (SatProblem !cs, VarAssignment !vp _) = unitPropagateReduce p a
 
---------------------------
--- | Helper Functions | --
---------------------------
+-------------------------------
+-- | GSAT Helper Functions | --
+-------------------------------
+data GSATStatus
+  = Satisfied
+  | Unsatisfied
+  | NeedFlip
+  deriving (Show, Eq)
+
+-- count
+
+-------------------------------
+-- | DPLL Helper Functions | --
+-------------------------------
 data ClauseStatus
   = EmptyClause
   | AllSatisfied
