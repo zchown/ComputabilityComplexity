@@ -6,8 +6,14 @@
 
 module SatSolvers where
 
+import Control.Monad
+import Control.Monad.ST
+import Data.Array.MArray
+import Data.Array.ST
 import Data.Bits
 import Data.Foldable (find, foldr')
+import Data.List (elemIndex)
+import Data.Maybe (fromMaybe)
 import qualified Data.Vector as V
 import GHC.TypeLits
 import SatTypes
@@ -15,8 +21,13 @@ import SatTypes
 gsat ::
      forall n. KnownNat n
   => SatProblem n
-  -> SatSolution n
-gsat = undefined
+  -> Int
+  -> VarAssignment n
+gsat p@(SatProblem cs) maxTries = go maxTries (createVarAssignment @n)
+  where
+    go :: Int -> VarAssignment n -> VarAssignment n -> VarAssignment n
+    go 0 !a _ = a
+    go !t !best !a =
 
 dpll ::
      forall n. KnownNat n
@@ -52,7 +63,31 @@ data GSATStatus
   | NeedFlip
   deriving (Show, Eq)
 
--- count
+findFlipVar ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> VarAssignment n
+  -> Int
+findFlipVar (SatProblem cs) (VarAssignment vp vn) = go
+  where
+    s = varListSize vp
+    uc =
+      V.filter (\(Clause p n) -> varListIsZero ((vp .&. p) .|. (vn .&. n))) cs
+    table = newListArray (0, s - 1) (replicate s 0) :: ST s (STUArray s Int Int)
+    go =
+      runST $ do
+        t <- table
+        forM_ uc $ \(Clause p n) -> do
+          forM_ [0 .. s - 1] $ \i -> do
+            when (testBit p i) $ do
+              v <- readArray t i
+              writeArray t i (v + 1)
+            when (testBit n i) $ do
+              v <- readArray t i
+              writeArray t i (v + 1)
+        scores <- getElems t
+        let m = maximum scores
+        return $ fromMaybe 0 $ elemIndex m scores
 
 -------------------------------
 -- | DPLL Helper Functions | --
