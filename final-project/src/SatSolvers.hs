@@ -13,7 +13,7 @@ import Data.Array.ST
 import Data.Bits
 import Data.Foldable (find, foldr')
 import Data.List (elemIndex)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromJust, fromMaybe)
 import qualified Data.Vector as V
 import GHC.TypeLits
 import SatTypes
@@ -23,12 +23,25 @@ gsat ::
   => SatProblem n
   -> Int
   -> VarAssignment n
-gsat p@(SatProblem cs) maxTries = go maxTries (createVarAssignment @n)
+gsat p maxTries = go maxTries initial initial
   where
+    initial = createRandomVarAssignment @n
     go :: Int -> VarAssignment n -> VarAssignment n -> VarAssignment n
     go 0 !a _ = a
-    go !t !best !a =
+    go !t !best va@(VarAssignment !vp !_)
+      | numberOfUnsatisfiedClauses p va' < numberOfUnsatisfiedClauses p best =
+        go (t - 1) va' va'
+      | otherwise = go (t - 1) best va'
+      where
+        va' = VarAssignment vp' (complement vp')
+        vp' :: VarList n
+        vp' = fromJust $ flipBit vp (findFlipVar p va)
 
+-- gsat' :: forall n. KnownNat n => SatProblem n -> Int -> VarAssignment n
+-- gsat' p maxTries = foldr' f (initial, initial) [0 .. maxTries]
+--   where
+--     inital = createRandomVarAssignment @n
+--     f _ (best,
 dpll ::
      forall n. KnownNat n
   => SatProblem n
@@ -57,12 +70,6 @@ dpll' !p !a !j =
 -------------------------------
 -- | GSAT Helper Functions | --
 -------------------------------
-data GSATStatus
-  = Satisfied
-  | Unsatisfied
-  | NeedFlip
-  deriving (Show, Eq)
-
 findFlipVar ::
      forall n. KnownNat n
   => SatProblem n
@@ -73,10 +80,10 @@ findFlipVar (SatProblem cs) (VarAssignment vp vn) = go
     s = varListSize vp
     uc =
       V.filter (\(Clause p n) -> varListIsZero ((vp .&. p) .|. (vn .&. n))) cs
-    table = newListArray (0, s - 1) (replicate s 0) :: ST s (STUArray s Int Int)
     go =
       runST $ do
-        t <- table
+        t <-
+          newListArray (0, s - 1) (replicate s 0) :: ST s (STUArray s Int Int)
         forM_ uc $ \(Clause p n) -> do
           forM_ [0 .. s - 1] $ \i -> do
             when (testBit p i) $ do
@@ -88,6 +95,16 @@ findFlipVar (SatProblem cs) (VarAssignment vp vn) = go
         scores <- getElems t
         let m = maximum scores
         return $ fromMaybe 0 $ elemIndex m scores
+
+numberOfUnsatisfiedClauses ::
+     forall n. KnownNat n
+  => SatProblem n
+  -> VarAssignment n
+  -> Int
+numberOfUnsatisfiedClauses (SatProblem cs) (VarAssignment vp vn) = length uc
+  where
+    uc =
+      V.filter (\(Clause p n) -> varListIsZero ((vp .&. p) .|. (vn .&. n))) cs
 
 -------------------------------
 -- | DPLL Helper Functions | --

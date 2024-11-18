@@ -228,11 +228,13 @@ createVarList =
 createRandomVarList ::
      forall n. KnownNat n
   => VarList n
-createRandomVarList = VarList $ V.replicate (minWords n - 1) (fst (genWord64 pureGen)) V.++ end
+createRandomVarList =
+  VarList $ V.replicate (minWords n - 1) (fst (genWord64 pureGen)) V.++ end
   where
     n = natVal (Proxy @n)
     pureGen = mkStdGen 42
-    end = V.singleton $ fst (genWord64 pureGen) .&. bit (fromInteger $ n `mod` 64)
+    end =
+      V.singleton $ fst (genWord64 pureGen) .&. bit (fromInteger $ n `mod` 64)
 
 varListFromList ::
      forall n. KnownNat n
