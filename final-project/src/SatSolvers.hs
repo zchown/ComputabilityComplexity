@@ -37,11 +37,6 @@ gsat p maxTries = go maxTries initial initial
         vp' :: VarList n
         vp' = fromJust $ flipBit vp (findFlipVar p va)
 
--- gsat' :: forall n. KnownNat n => SatProblem n -> Int -> VarAssignment n
--- gsat' p maxTries = foldr' f (initial, initial) [0 .. maxTries]
---   where
---     inital = createRandomVarAssignment @n
---     f _ (best,
 dpll ::
      forall n. KnownNat n
   => SatProblem n

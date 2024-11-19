@@ -34,6 +34,8 @@ library
                      TspSolvers
                      DisjointSet
                      Kruskal
+                     SatSolverHelpers
+                     SatLinearProgramming
     other-extensions: FlexibleInstances
                      FlexibleContexts
                      DataKinds
@@ -41,7 +43,7 @@ library
                      GeneralizedNewtypeDeriving
                      ScopedTypeVariables
                      TypeApplications
-    build-depends:    base ^>=4.16.4.0
+    build-depends:    base <= 5.0.0.0
                    , bitarray ^>=0.0.1.0
                    , vector
                    , array
@@ -51,6 +53,7 @@ library
                    , bytestring
                    , text
                    , random
+                   , glpk-hs <= 0.5
     hs-source-dirs:   src
     default-language: Haskell2010
 

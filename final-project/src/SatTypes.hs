@@ -140,6 +140,15 @@ unsafeClauseFromList !xs =
     Just !c -> c
     Nothing -> error "Invalid clause"
 
+clauseToList ::
+     forall n. KnownNat n
+  => Clause n
+  -> [Int]
+clauseToList (Clause !p !n) = map (+ 1) p' ++ map (\x -> -x - 1) n'
+  where
+    !p' = getPositiveVars (Clause p n)
+    !n' = getNegativeVars (Clause p n)
+
 ------------------------------------
 -- | Clause Variable Operations | --
 ------------------------------------
