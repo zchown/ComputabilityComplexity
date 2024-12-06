@@ -4,35 +4,17 @@
 
 module GraphTypes where
 
-import Control.Monad (forM_)
-import Control.Monad.ST (ST)
-import Data.Array.Base
-import Data.Array.ST
-import Data.Array.Unboxed (UArray)
+import qualified Data.Vector as V
+import qualified TspTypes as T
 
 newtype NodeId =
   NodeId Int
-  deriving (Show, Eq, Ord, Ix)
+  deriving (Show, Eq, Ord)
 
 newtype EdgeWeight =
   EdgeWeight Double
   deriving (Show, Eq, Ord, Num)
 
--- instance MArray (STUArray s) EdgeWeight ST where
---     getBounds = getBounds . castSTUArray
---     getNumElements = getNumElements . castSTUArray
---     newArray b e = newArray b (realToFrac e) >>= return . castSTUArray
---     newArray_ b = newArray_ b >>= return . castSTUArray
---     unsafeRead arr i = unsafeRead (castSTUArray arr) i >>= return . realToFrac
---     unsafeWrite arr i e = unsafeWrite (castSTUArray arr) i (realToFrac e)
---
--- instance IArray UArray EdgeWeight where
---     bounds = bounds . castUArray
---     numElements = numElements . castUArray
---     unsafeArray b es = castUArray $ unsafeArray b [(i, realToFrac e) | (i,e) <- es]
---     unsafeAt arr i = EdgeWeight $ realToFrac (unsafeAt (castUArray arr) i)
--- newtype AdjacencyMatrix = AdjacencyMatrix { matrix :: UArray (NodeId, NodeId) EdgeWeight }
---   deriving (Show, Eq)
 newtype Edge =
   Edge (NodeId, NodeId, EdgeWeight)
   deriving (Show, Eq)
@@ -50,29 +32,44 @@ data Node = Node
 newtype NodeGraph = NodeGraph
   { ngNodes :: [Node]
   } deriving (Show, Eq)
+
+newtype AdjacencyMatrix =
+  AdjacencyMatrix (V.Vector (V.Vector (Maybe EdgeWeight)))
+
 ------------------------------
 -- | Conversion functions | --
 ------------------------------
--- basicToNode :: BasicGraph -> NodeGraph
--- basicToNode (BasicGraph ns es) = NodeGraph $ map mkNode ns
---   where
---     mkNode n = Node n (map (\(from, to, w) -> (to, w)) $ connecting n)
---     connecting n = filter (\(from, _, _) -> from == n) es
---
--- nodeToBasic :: NodeGraph -> BasicGraph
--- nodeToBasic (NodeGraph ns) = BasicGraph (map nNodeId ns) (concatMap mkEdges ns)
---   where
---     mkEdges (Node n es) = map (\(to, w) -> (n, to, w)) es
---
--- basicToAdjacency :: BasicGraph -> AdjacencyMatrix
--- basicToAdjacency bg@(BasicGraph ns es) = AdjacencyMatrix table
---   where
---     size = maximum $ map (\(NodeId x) -> x) ns
---     table :: UArray (NodeId, NodeId) EdgeWeight
---     table = runSTUArray $ do
---       arr <- newArray ((NodeId 1, NodeId 1), (NodeId size, NodeId size)) (EdgeWeight 0)
---       forM_ es $ \(from, to, w) -> writeArray arr (from, to) w
---       return arr
---
--- nodeToAdjacency :: NodeGraph -> AdjacencyMatrix
--- nodeToAdjacency = basicToAdjacency . nodeToBasic
+basicToNode :: BasicGraph -> NodeGraph
+basicToNode (BasicGraph ns es) = NodeGraph $ map mkNode ns
+  where
+    mkNode n = Node n (map (\(Edge (_, to, w)) -> (to, w)) $ connecting n)
+    connecting n = filter (\(Edge (from, _, _)) -> from == n) es
+
+nodeToBasic :: NodeGraph -> BasicGraph
+nodeToBasic (NodeGraph ns) = BasicGraph (map nNodeId ns) (concatMap mkEdges ns)
+  where
+    mkEdges (Node n es) = map (\(to, w) -> Edge (n, to, w)) es
+
+nodeToMatrix :: NodeGraph -> AdjacencyMatrix
+nodeToMatrix (NodeGraph ns) = AdjacencyMatrix $ V.fromList $ map mkRow ns
+  where
+    mkRow (Node _ es) = V.fromList $ map (\(_, w) -> Just w) es
+
+basicToMatrix :: BasicGraph -> AdjacencyMatrix
+basicToMatrix = nodeToMatrix . basicToNode
+
+matrixToBasic :: AdjacencyMatrix -> BasicGraph
+matrixToBasic = nodeToBasic . matrixToNode
+
+matrixToNode :: AdjacencyMatrix -> NodeGraph
+matrixToNode (AdjacencyMatrix m) =
+  NodeGraph $ zipWith mkNode [0 ..] (V.toList m)
+  where
+    mkNode i row = Node (NodeId i) (zipWith mkEdge [0 ..] (V.toList row))
+    mkEdge j (Just w) = (NodeId j, w)
+    mkEdge _ Nothing = error "matrixToNode: invalid edge"
+-----------------------------
+-- | TSP-Lib Conversions | --
+-----------------------------
+-- tspProblemToBasic :: T.TspProblem -> BasicGraph
+-- tspProblemToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata)
