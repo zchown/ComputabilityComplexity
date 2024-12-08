@@ -74,3 +74,134 @@ runGraphConversionTests =
                   Left err -> expectationFailure $ show err
                   Right _ -> return ()
           else expectationFailure "ali535.tsp.gz not found"
+    describe "Euc2D TSP Problems" $ do
+      it "converts berlin52" $ do
+        let berlin52Path = "tsp_problems/berlin52.tsp.gz"
+        exists <- doesFileExist berlin52Path
+        if exists
+          then do
+            result <- parseTspFile berlin52Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "berlin52.tsp.gz not found"
+      it "converts bier127" $ do
+        let bier127Path = "tsp_problems/bier127.tsp.gz"
+        exists <- doesFileExist bier127Path
+        if exists
+          then do
+            result <- parseTspFile bier127Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "bier127.tsp.gz not found"
+      it "converts brd14051" $ do
+        let brd14051Path = "tsp_problems/brd14051.tsp.gz"
+        exists <- doesFileExist brd14051Path
+        if exists
+          then do
+            result <- parseTspFile brd14051Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "brd14051.tsp.gz not found"
+      it "converts ch130" $ do
+        let ch130Path = "tsp_problems/ch130.tsp.gz"
+        exists <- doesFileExist ch130Path
+        if exists
+          then do
+            result <- parseTspFile ch130Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "ch130.tsp.gz not found"
+      it "converts ch150" $ do
+        let ch150Path = "tsp_problems/ch150.tsp.gz"
+        exists <- doesFileExist ch150Path
+        if exists
+          then do
+            result <- parseTspFile ch150Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "ch150.tsp.gz not found"
+      it "converts d198" $ do
+        let d198Path = "tsp_problems/d198.tsp.gz"
+        exists <- doesFileExist d198Path
+        if exists
+          then do
+            result <- parseTspFile d198Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "d198.tsp.gz not found"
+      it "converts d493" $ do
+        let d493Path = "tsp_problems/d493.tsp.gz"
+        exists <- doesFileExist d493Path
+        if exists
+          then do
+            result <- parseTspFile d493Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "d493.tsp.gz not found"
+      it "converts d657" $ do
+        let d657Path = "tsp_problems/d657.tsp.gz"
+        exists <- doesFileExist d657Path
+        if exists
+          then do
+            result <- parseTspFile d657Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "d657.tsp.gz not found"
+      it "converts eil51" $ do
+        let eil51Path = "tsp_problems/eil51.tsp.gz"
+        exists <- doesFileExist eil51Path
+        if exists
+          then do
+            result <- parseTspFile eil51Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "eil51.tsp.gz not found"
+      it "converts eil76" $ do
+        let eil76Path = "tsp_problems/eil76.tsp.gz"
+        exists <- doesFileExist eil76Path
+        if exists
+          then do
+            result <- parseTspFile eil76Path
+            case result of
+              Left err -> expectationFailure $ show err
+              Right p -> do
+                case tspProblemToBasic p of
+                  Left err -> expectationFailure $ show err
+                  Right _ -> return ()
+          else expectationFailure "eil76.tsp.gz not found"

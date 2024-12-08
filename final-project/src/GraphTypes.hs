@@ -81,6 +81,7 @@ tspProblemToBasic :: T.TspProblem -> Either BasicGraph TspError
 tspProblemToBasic p@(T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
   case ewt of
     Just T.GEO -> geoToBasic p
+    Just T.EUC_2D -> euc2dToBasic p
     Nothing -> Right $ TspError "tspProblemToBasic: no edge weight type"
 
 geoToBasic :: T.TspProblem -> Either BasicGraph TspError
@@ -112,3 +113,33 @@ edgeWeightFromGeo tdata i j =
             T.Node2D _ p -> p
             _ -> error "edgeWeightFromGeo: invalid node data"
         _ -> error "edgeWeightFromGeo: invalid node data"
+
+euc2dToBasic :: T.TspProblem -> Either BasicGraph TspError
+euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.EdgeWeightData _)) =
+  Right $ TspError "euc2dToBasic: no edge weight data"
+euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.FixedEdgesData _)) =
+  Right $ TspError "euc2dToBasic: fixed edges not supported"
+euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.CombinedData {})) =
+  Right $ TspError "euc2dToBasic: combined data not supported"
+euc2dToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
+  Left $ BasicGraph nodes edges
+  where
+    nodes = [NodeId i | i <- [1 .. dims]]
+    edges =
+      [ Edge (NodeId i, NodeId j, edgeWeightFromEuc2d tdata i j)
+      | i <- [1 .. dims]
+      , j <- [1 .. dims]
+      , i /= j
+      ]
+
+edgeWeightFromEuc2d :: T.TspData -> Int -> Int -> EdgeWeight
+edgeWeightFromEuc2d tdata i j =
+  EdgeWeight $ fromIntegral $ euclideanDistance (euc2d i) (euc2d j)
+  where
+    euc2d n =
+      case tdata of
+        T.NodeCoordData ns ->
+          case ns !! (n - 1) of
+            T.Node2D _ p -> p
+            _ -> error "edgeWeightFromEuc2d: invalid node data"
+        _ -> error "edgeWeightFromEuc2d: invalid node data"
