@@ -67,6 +67,7 @@ test-suite final-project-test
                      TestTspParser
                      TestDisjointSet
                      TestKruskal
+                     TestGraphConversion
     type:             exitcode-stdio-1.0
     hs-source-dirs:   test
     main-is:          Main.hs

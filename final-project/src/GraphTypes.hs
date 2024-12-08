@@ -5,6 +5,7 @@
 module GraphTypes where
 
 import qualified Data.Vector as V
+import DistanceFunctions
 import qualified TspTypes as T
 
 newtype NodeId =
@@ -35,6 +36,10 @@ newtype NodeGraph = NodeGraph
 
 newtype AdjacencyMatrix =
   AdjacencyMatrix (V.Vector (V.Vector (Maybe EdgeWeight)))
+
+newtype TspError =
+  TspError String
+  deriving (Show, Eq)
 
 ------------------------------
 -- | Conversion functions | --
@@ -68,8 +73,42 @@ matrixToNode (AdjacencyMatrix m) =
     mkNode i row = Node (NodeId i) (zipWith mkEdge [0 ..] (V.toList row))
     mkEdge j (Just w) = (NodeId j, w)
     mkEdge _ Nothing = error "matrixToNode: invalid edge"
+
 -----------------------------
 -- | TSP-Lib Conversions | --
 -----------------------------
--- tspProblemToBasic :: T.TspProblem -> BasicGraph
--- tspProblemToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata)
+tspProblemToBasic :: T.TspProblem -> Either BasicGraph TspError
+tspProblemToBasic p@(T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
+  case ewt of
+    Just T.GEO -> geoToBasic p
+    Nothing -> Right $ TspError "tspProblemToBasic: no edge weight type"
+
+geoToBasic :: T.TspProblem -> Either BasicGraph TspError
+geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.EdgeWeightData _)) =
+  Right $ TspError "geoToBasic: no edge weight data"
+geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.FixedEdgesData _)) =
+  Right $ TspError "geoToBasic: fixed edges not supported"
+geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.CombinedData {})) =
+  Right $ TspError "geoToBasic: combined data not supported"
+geoToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
+  Left $ BasicGraph nodes edges
+  where
+    nodes = [NodeId i | i <- [1 .. dims]]
+    edges =
+      [ Edge (NodeId i, NodeId j, edgeWeightFromGeo tdata i j)
+      | i <- [1 .. dims]
+      , j <- [1 .. dims]
+      , i /= j
+      ]
+
+edgeWeightFromGeo :: T.TspData -> Int -> Int -> EdgeWeight
+edgeWeightFromGeo tdata i j =
+  EdgeWeight $ fromIntegral $ geoDistance (geo i) (geo j)
+  where
+    geo n =
+      case tdata of
+        T.NodeCoordData ns ->
+          case ns !! (n - 1) of
+            T.Node2D _ p -> p
+            _ -> error "edgeWeightFromGeo: invalid node data"
+        _ -> error "edgeWeightFromGeo: invalid node data"
