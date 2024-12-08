@@ -83,6 +83,9 @@ test-suite final-project-test
 
 benchmark sat-solver-bench
     import:           warnings
+    default-language: Haskell2010
+    other-modules:    SatBenchmarks
+                      TspBenchmarks
     type:             exitcode-stdio-1.0
     main-is:          Benchmark.hs
     hs-source-dirs:   bench
