@@ -49,4 +49,4 @@ runTspParserTest =
         all (either (const False) (const True)) results `shouldBe` True
   where
     isLeft (Left _) = True
-    isLeft _ = False
+    isLefopp = False

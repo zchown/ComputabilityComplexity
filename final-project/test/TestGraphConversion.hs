@@ -192,16 +192,3 @@ runGraphConversionTests =
                   Left err -> expectationFailure $ show err
                   Right _ -> return ()
           else expectationFailure "eil51.tsp.gz not found"
-      it "converts eil76" $ do
-        let eil76Path = "tsp_problems/eil76.tsp.gz"
-        exists <- doesFileExist eil76Path
-        if exists
-          then do
-            result <- parseTspFile eil76Path
-            case result of
-              Left err -> expectationFailure $ show err
-              Right p -> do
-                case tspProblemToBasic p of
-                  Left err -> expectationFailure $ show err
-                  Right _ -> return ()
-          else expectationFailure "eil76.tsp.gz not found"

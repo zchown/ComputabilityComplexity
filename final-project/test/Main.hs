@@ -19,6 +19,7 @@ import TestSatSolverHelpers
 import TestSatSolvers
 import TestSatTypes
 import TestTspParser
+import TestTspSolver
 
 loadEnvFile :: IO [(String, String)]
 loadEnvFile = do
@@ -51,6 +52,7 @@ data TestConfig = TestConfig
   , runDisjointSet :: Bool
   , runKruskal :: Bool
   , runGraphConversion :: Bool
+  , runTspSolver :: Bool
   }
 
 getTestConfig :: IO TestConfig
@@ -64,6 +66,7 @@ getTestConfig = do
   runDisjointSet <- lookupEnvBool "RUN_DISJOINT_SET_TESTS" True
   runKruskal <- lookupEnvBool "RUN_KRUSKAL_TESTS" True
   runGraphConversion <- lookupEnvBool "RUN_GRAPH_CONVERSION_TESTS" True
+  runTspSolver <- lookupEnvBool "RUN_TSP_SOLVER_TESTS" True
   return
     TestConfig
       { runTsp = tsp
@@ -75,6 +78,7 @@ getTestConfig = do
       , runDisjointSet = runDisjointSet
       , runKruskal = runKruskal
       , runGraphConversion = runGraphConversion
+      , runTspSolver = runTspSolver
       }
   where
     lookupEnvBool :: String -> Bool -> IO Bool
@@ -105,6 +109,8 @@ runAllTests config = do
     putStrLn "Running Kruskal Tests..." >> runTestKruskal
   when (runGraphConversion config) $
     putStrLn "Running Graph Conversion Tests..." >> runGraphConversionTests
+  when (runTspSolver config) $
+    putStrLn "Running TSP Solver Tests..." >> runTspSolverTests
 
 main :: IO ()
 main = do
