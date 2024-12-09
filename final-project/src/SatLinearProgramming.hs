@@ -15,11 +15,14 @@ randomizedRounding ::
      forall n. KnownNat n
   => SatProblem n
   -> IO (SatSolution n)
-randomizedRounding p = do
+randomizedRounding p@(SatProblem cs) = do
   g <- newStdGen
   case runLinear p of
     Nothing -> return Unsatisfiable
-    Just xs -> return . Satisfiable . varListFromList . randomlyRound xs $ g
+    Just xs ->
+      return . Satisfiable . varListFromList . randomlyRound (take n xs) $ g
+  where
+    n = varListSize . positive $ cs V.! 0
 
 runLinear ::
      forall n. KnownNat n
@@ -35,9 +38,7 @@ runLinear p@(SatProblem cs) = do
     Optimal (_, xs) -> Just xs
   where
     n = varListSize . positive $ cs V.! 0
-    lo = map (:>=: 1) [0 .. length cs + n]
-    gz = map (:<=: 0) [0 .. length cs + n]
-    b = lo ++ gz
+    b = map (:&: (0, 1)) [0 .. length cs + n]
 
 randomlyRound :: RandomGen g => [Double] -> g -> [Bool]
 randomlyRound xs g =
@@ -63,7 +64,7 @@ clauseToConstraint ::
   => Clause n
   -> Int
   -> Bound [(Double, Int)]
-clauseToConstraint c i = cc :>=: 0
+clauseToConstraint c@(Clause p _) i = cc :>=: 0
   where
     cc = (-1.0, i) : (map (1.0, ) . clauseToList) c
 
@@ -72,6 +73,6 @@ createConstraints ::
   => SatProblem n
   -> Constraints
 createConstraints (SatProblem cs) =
-  Sparse $ zipWith clauseToConstraint (V.toList cs) [n ..]
+  General $ zipWith clauseToConstraint (V.toList cs) [n ..]
   where
     n = varListSize . positive $ cs V.! 0

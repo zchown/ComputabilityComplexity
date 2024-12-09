@@ -9,6 +9,7 @@ import Control.Monad (when)
 import qualified Data.Text as T
 import qualified Data.Text.IO as TIO
 import FuzzKnapsack
+import LinearProgrammingSatTest
 import System.Directory (doesFileExist)
 import System.Environment (lookupEnv, setEnv)
 import TestDisjointSet
@@ -53,6 +54,7 @@ data TestConfig = TestConfig
   , runKruskal :: Bool
   , runGraphConversion :: Bool
   , runTspSolver :: Bool
+  , runLinearProgramming :: Bool
   }
 
 getTestConfig :: IO TestConfig
@@ -67,6 +69,7 @@ getTestConfig = do
   runKruskal <- lookupEnvBool "RUN_KRUSKAL_TESTS" True
   runGraphConversion <- lookupEnvBool "RUN_GRAPH_CONVERSION_TESTS" True
   runTspSolver <- lookupEnvBool "RUN_TSP_SOLVER_TESTS" True
+  runLinearProgramming <- lookupEnvBool "RUN_LINEAR_PROGRAMMING" True
   return
     TestConfig
       { runTsp = tsp
@@ -79,6 +82,7 @@ getTestConfig = do
       , runKruskal = runKruskal
       , runGraphConversion = runGraphConversion
       , runTspSolver = runTspSolver
+      , runLinearProgramming = runLinearProgramming
       }
   where
     lookupEnvBool :: String -> Bool -> IO Bool
@@ -111,6 +115,9 @@ runAllTests config = do
     putStrLn "Running Graph Conversion Tests..." >> runGraphConversionTests
   when (runTspSolver config) $
     putStrLn "Running TSP Solver Tests..." >> runTspSolverTests
+  when (runLinearProgramming config) $
+    putStrLn "Running Linear Programming Tests..." >>
+    runLinearProgrammingSatTest
 
 main :: IO ()
 main = do
