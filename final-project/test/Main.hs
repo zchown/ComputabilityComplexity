@@ -22,10 +22,10 @@ import TestTspParser
 
 loadEnvFile :: IO [(String, String)]
 loadEnvFile = do
-  exists <- doesFileExist ".env"
+  exists <- doesFileExist ".tenv"
   if exists
     then do
-      content <- TIO.readFile ".env"
+      content <- TIO.readFile ".tenv"
       return $ parseEnvFile $ T.unpack content
     else return []
   where

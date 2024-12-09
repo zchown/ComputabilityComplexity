@@ -5,7 +5,7 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-module Main where
+module SatBenchmarks where
 
 import Control.DeepSeq
 import Control.Monad (forM_, replicateM)

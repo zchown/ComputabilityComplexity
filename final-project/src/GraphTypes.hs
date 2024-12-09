@@ -89,9 +89,20 @@ geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.EdgeWeightData _)) =
   Right $ TspError "geoToBasic: no edge weight data"
 geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.FixedEdgesData _)) =
   Right $ TspError "geoToBasic: fixed edges not supported"
-geoToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.CombinedData {})) =
-  Right $ TspError "geoToBasic: combined data not supported"
-geoToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
+geoToBasic (T.TspProblem _ _ _ dims _ _ _ _ (T.CombinedData nc _ _)) =
+  case nc of
+    Nothing -> Right $ TspError "geoToBasic: no node coordinates"
+    Just ns ->
+      let nodes = [NodeId i | i <- [1 .. dims]]
+          edges =
+            [ Edge
+              (NodeId i, NodeId j, edgeWeightFromGeo (T.NodeCoordData ns) i j)
+            | i <- [1 .. dims]
+            , j <- [1 .. dims]
+            , i /= j
+            ]
+       in Left $ BasicGraph nodes edges
+geoToBasic (T.TspProblem _ _ _ dims _ _ _ _ tdata) =
   Left $ BasicGraph nodes edges
   where
     nodes = [NodeId i | i <- [1 .. dims]]
@@ -119,8 +130,19 @@ euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.EdgeWeightData _)) =
   Right $ TspError "euc2dToBasic: no edge weight data"
 euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.FixedEdgesData _)) =
   Right $ TspError "euc2dToBasic: fixed edges not supported"
-euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.CombinedData {})) =
-  Right $ TspError "euc2dToBasic: combined data not supported"
+euc2dToBasic (T.TspProblem _ _ _ _ _ _ _ _ (T.CombinedData nc _ _)) =
+  case nc of
+    Nothing -> Right $ TspError "euc2dToBasic: no node coordinates"
+    Just ns ->
+      let nodes = [NodeId i | i <- [1 .. length ns]]
+          edges =
+            [ Edge
+              (NodeId i, NodeId j, edgeWeightFromEuc2d (T.NodeCoordData ns) i j)
+            | i <- [1 .. length ns]
+            , j <- [1 .. length ns]
+            , i /= j
+            ]
+       in Left $ BasicGraph nodes edges
 euc2dToBasic (T.TspProblem _ _ _ dims ewt ewf edf nct tdata) =
   Left $ BasicGraph nodes edges
   where

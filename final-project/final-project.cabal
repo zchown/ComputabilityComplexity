@@ -81,7 +81,7 @@ test-suite final-project-test
                     , text
     buildable:        True
 
-benchmark sat-solver-bench
+benchmark final-project-benchmarks
     import:           warnings
     default-language: Haskell2010
     other-modules:    SatBenchmarks
@@ -97,6 +97,9 @@ benchmark sat-solver-bench
                     , vector
                     , time
                     , parallel
+                    , text
+                    , filepath
+                    , directory
     default-language: Haskell2010
     ghc-options:      -O2
                      -threaded
