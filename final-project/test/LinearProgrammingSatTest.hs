@@ -22,3 +22,18 @@ runLinearProgrammingSatTest =
         (S.Satisfiable sol) <- randomizedRounding problem
         let csol = fromJust $ S.setBits (S.createVarList @2) [0, 1]
         sol `shouldBe` csol
+      it "one variable, two clauses" $ do
+        let problem = fromJust $ S.satProblemFromList @1 [[1], [1]]
+        (S.Satisfiable sol) <- randomizedRounding problem
+        let csol = fromJust $ S.setBit (S.createVarList @1) 0
+        sol `shouldBe` csol
+      it "unsat 1 var, 1 clause" $ do
+        let problem = fromJust $ S.satProblemFromList @1 [[1], [1], [-1]]
+        (S.Satisfiable sol) <- randomizedRounding problem
+        let csol = fromJust $ S.setBit (S.createVarList @1) 0
+        sol `shouldBe` csol
+      it "unsat 1 var, 1 clause negative" $ do
+        let problem = fromJust $ S.satProblemFromList @1 [[1], [-1], [-1]]
+        (S.Satisfiable sol) <- randomizedRounding problem
+        let csol = S.createVarList @1
+        sol `shouldBe` csol

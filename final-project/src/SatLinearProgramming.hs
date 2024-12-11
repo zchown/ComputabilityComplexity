@@ -64,15 +64,20 @@ clauseToConstraint ::
   => Clause n
   -> Int
   -> Bound [(Double, Int)]
-clauseToConstraint c@(Clause p _) i = cc :>=: 0
+clauseToConstraint c i = ((-1.0, i) : bs) :>=: b
   where
-    cc = (-1.0, i) : (map (1.0, ) . clauseToList) c
+    (bs, b) = go (clauseToList c) [] 0
+    go :: [Int] -> [(Double, Int)] -> Double -> ([(Double, Int)], Double)
+    go [] acc j = (acc, j)
+    go (x:xs) acc j
+      | x < 0 = go xs ((-1.0, -1 * x) : acc) (j - 1)
+      | otherwise = go xs ((1.0, x) : acc) j
 
 createConstraints ::
      forall n. KnownNat n
   => SatProblem n
   -> Constraints
 createConstraints (SatProblem cs) =
-  General $ zipWith clauseToConstraint (V.toList cs) [n ..]
+  General $ zipWith clauseToConstraint (V.toList cs) [n + 1 ..]
   where
     n = varListSize . positive $ cs V.! 0
