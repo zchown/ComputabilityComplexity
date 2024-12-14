@@ -73,12 +73,12 @@ runTestSatSolver =
         let varListSolution = fromJust $ S.setBit (S.createVarList @1) 0
         let solution =
               S.VarAssignment varListSolution (complement varListSolution)
-        gsat problem 5 `shouldBe` solution
+        gsat problem 5 5 `shouldBe` solution
       it "multiple variable single clause problem" $ do
         let problem = fromJust $ S.satProblemFromList @3 [[1, 2, 3]]
-        let (S.VarAssignment p _) = gsat problem 1
+        let (S.VarAssignment p _) = gsat problem 1 1
         popCount p `shouldBe` 1
       it "easy 2 clause" $ do
         let problem = fromJust $ S.satProblemFromList @2 [[1], [2]]
-        let (S.VarAssignment p _) = gsat problem 2
+        let (S.VarAssignment p _) = gsat problem 2 2
         popCount p `shouldBe` 2

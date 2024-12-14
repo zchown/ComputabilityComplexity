@@ -1,0 +1,216 @@
+SAT Solver Benchmark Results - 2024-12-14 00:58:00
+================================================
+
+Generating test cases with 32 variables...
+
+Running benchmarks...
+Benchmarking with 16 clauses...
+DPLL-32-vars/16 clauses: 0.325 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 0.859 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 7.7e-2 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 0.102 ms - Result: Satisfiable 
+DPLL-32-vars/16 clauses: 7.200000000000001e-2 ms - Result: Satisfiable 
+GSAT-32-vars/16 clauses: 50.73 ms - Result: VarAssignment {assignedPositive = VarList [False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/16 clauses: 28.569 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/16 clauses: 40.695 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/16 clauses: 28.293 ms - Result: VarAssignment {assignedPositive = VarList [False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/16 clauses: 31.787000000000003 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,False,False,False,False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [False,True,True,True,True,True,True,True,True,False,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+Randomized-Rounding-32-vars/16 clauses: 1.9200000000000002 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/16 clauses: 8.1e-2 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/16 clauses: 8.1e-2 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/16 clauses: 7.5e-2 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/16 clauses: 7.8e-2 ms - Result: Satisfiable 
+Average time for 16 clauses:
+  DPLL:               0.28700000000000003 ms
+  GSAT:               36.0148 ms
+  Randomized Rounding:0.44699999999999995 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 32 clauses...
+DPLL-32-vars/32 clauses: 9.3e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 8.1e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 8.9e-2 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 1.737 ms - Result: Satisfiable 
+DPLL-32-vars/32 clauses: 8.7e-2 ms - Result: Satisfiable 
+GSAT-32-vars/32 clauses: 51.907000000000004 ms - Result: VarAssignment {assignedPositive = VarList [False,True,False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,False,True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/32 clauses: 51.382 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/32 clauses: 63.747 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True]}
+GSAT-32-vars/32 clauses: 55.355000000000004 ms - Result: VarAssignment {assignedPositive = VarList [False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,False,False,True,True,True,True,True,True,True,True,True,True,True,False,False,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/32 clauses: 69.91 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,True,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True], assignedNegative = VarList [True,True,True,True,True,True,True,True,False,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False]}
+Randomized-Rounding-32-vars/32 clauses: 0.194 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/32 clauses: 0.263 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/32 clauses: 0.135 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/32 clauses: 0.146 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/32 clauses: 0.176 ms - Result: Satisfiable 
+Average time for 32 clauses:
+  DPLL:               0.41739999999999994 ms
+  GSAT:               58.4602 ms
+  Randomized Rounding:0.18280000000000002 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 48 clauses...
+DPLL-32-vars/48 clauses: 11.453 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 21.426000000000002 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 0.191 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 218.63299999999998 ms - Result: Satisfiable 
+DPLL-32-vars/48 clauses: 0.165 ms - Result: Satisfiable 
+GSAT-32-vars/48 clauses: 75.458 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,True,False,True,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,False,True,False,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/48 clauses: 76.02000000000001 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,True,False,True,False,False,False,True,False,False,False,False,False,False,False,False,True,False,True,False,False,False,True,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,False,True,False,True,True,True,False,True,True,True,True,True,True,True,True,False,True,False,True,True,True,False,True,True,True,True,True]}
+GSAT-32-vars/48 clauses: 83.005 ms - Result: VarAssignment {assignedPositive = VarList [False,False,True,False,True,False,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,True], assignedNegative = VarList [True,True,False,True,False,True,False,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False]}
+GSAT-32-vars/48 clauses: 97.932 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,True,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True]}
+GSAT-32-vars/48 clauses: 125.421 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,True,False,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [False,True,True,True,False,True,False,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+Randomized-Rounding-32-vars/48 clauses: 0.229 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/48 clauses: 0.22699999999999998 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/48 clauses: 0.22599999999999998 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/48 clauses: 0.303 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/48 clauses: 0.251 ms - Result: Satisfiable 
+Average time for 48 clauses:
+  DPLL:               50.373599999999996 ms
+  GSAT:               91.5672 ms
+  Randomized Rounding:0.2472 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 64 clauses...
+DPLL-32-vars/64 clauses: 138.787 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 0.19699999999999998 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 0.248 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 7.729 ms - Result: Satisfiable 
+DPLL-32-vars/64 clauses: 0.205 ms - Result: Satisfiable 
+GSAT-32-vars/64 clauses: 126.377 ms - Result: VarAssignment {assignedPositive = VarList [False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/64 clauses: 121.044 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,False,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/64 clauses: 110.086 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False], assignedNegative = VarList [True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True]}
+GSAT-32-vars/64 clauses: 107.773 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,False,True,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False], assignedNegative = VarList [False,True,True,True,True,False,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True]}
+GSAT-32-vars/64 clauses: 106.924 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,True,False,False,False,False,False,False,False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False], assignedNegative = VarList [False,True,True,False,True,True,True,True,True,True,True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True]}
+Randomized-Rounding-32-vars/64 clauses: 0.333 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/64 clauses: 0.377 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/64 clauses: 0.27 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/64 clauses: 0.292 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/64 clauses: 0.262 ms - Result: Satisfiable 
+Average time for 64 clauses:
+  DPLL:               29.4332 ms
+  GSAT:               114.44080000000001 ms
+  Randomized Rounding:0.3068 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 80 clauses...
+DPLL-32-vars/80 clauses: 99.244 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 48.94 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 31.798 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 0.523 ms - Result: Satisfiable 
+DPLL-32-vars/80 clauses: 813.844 ms - Result: Satisfiable 
+GSAT-32-vars/80 clauses: 144.141 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,False,True,True,True,True,True]}
+GSAT-32-vars/80 clauses: 168.396 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/80 clauses: 134.179 ms - Result: VarAssignment {assignedPositive = VarList [False,False,True,True,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,True], assignedNegative = VarList [True,True,False,False,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,False]}
+GSAT-32-vars/80 clauses: 147.16099999999997 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/80 clauses: 130.609 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,True,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,False,True,True]}
+Randomized-Rounding-32-vars/80 clauses: 0.435 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/80 clauses: 0.374 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/80 clauses: 0.48500000000000004 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/80 clauses: 0.371 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/80 clauses: 0.406 ms - Result: Satisfiable 
+Average time for 80 clauses:
+  DPLL:               198.8698 ms
+  GSAT:               144.8972 ms
+  Randomized Rounding:0.41419999999999996 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 96 clauses...
+DPLL-32-vars/96 clauses: 53.687 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 24.369 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 123.03999999999999 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 104.225 ms - Result: Satisfiable 
+DPLL-32-vars/96 clauses: 62.14 ms - Result: Satisfiable 
+GSAT-32-vars/96 clauses: 154.632 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,True,False,True,True,False,True,False,False,True,False,False,False,False,False,False,False,False,False,False,True,False,True,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,False,True,False,False,True,False,True,True,False,True,True,True,True,True,True,True,True,True,True,False,True,False,True,True,True,True,True,True,True]}
+GSAT-32-vars/96 clauses: 172.588 ms - Result: VarAssignment {assignedPositive = VarList [True,False,True,True,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [False,True,False,False,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/96 clauses: 180.35399999999998 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False], assignedNegative = VarList [False,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True]}
+GSAT-32-vars/96 clauses: 170.329 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/96 clauses: 181.93200000000002 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,True,False,False,False,True,True,False,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,False,True,True,True,False,False,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True]}
+Randomized-Rounding-32-vars/96 clauses: 0.535 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/96 clauses: 0.515 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/96 clauses: 0.544 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/96 clauses: 0.5810000000000001 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/96 clauses: 0.49299999999999994 ms - Result: Satisfiable 
+Average time for 96 clauses:
+  DPLL:               73.4922 ms
+  GSAT:               171.967 ms
+  Randomized Rounding:0.5336 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 112 clauses...
+DPLL-32-vars/112 clauses: 60.526 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 504.872 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 423.846 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 660.397 ms - Result: Satisfiable 
+DPLL-32-vars/112 clauses: 258.316 ms - Result: Satisfiable 
+GSAT-32-vars/112 clauses: 223.947 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,True,False,False,False,False], assignedNegative = VarList [False,True,True,True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,False,True,True,True,True]}
+GSAT-32-vars/112 clauses: 189.449 ms - Result: VarAssignment {assignedPositive = VarList [False,False,True,True,True,False,False,False,False,True,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False], assignedNegative = VarList [True,True,False,False,False,True,True,True,True,False,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True]}
+GSAT-32-vars/112 clauses: 203.298 ms - Result: VarAssignment {assignedPositive = VarList [False,True,False,False,False,False,False,False,False,False,True,False,True,False,False,False,False,False,False,True,False,False,False,False,False,True,False,False,False,False,False,False], assignedNegative = VarList [True,False,True,True,True,True,True,True,True,True,False,True,False,True,True,True,True,True,True,False,True,True,True,True,True,False,True,True,True,True,True,True]}
+GSAT-32-vars/112 clauses: 211.058 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False,False,True,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [False,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True,True,False,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/112 clauses: 202.345 ms - Result: VarAssignment {assignedPositive = VarList [False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,True,False,False,True], assignedNegative = VarList [True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,False,True,True,False]}
+Randomized-Rounding-32-vars/112 clauses: 0.734 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/112 clauses: 0.5630000000000001 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/112 clauses: 0.6489999999999999 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/112 clauses: 0.8490000000000001 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/112 clauses: 0.6809999999999999 ms - Result: Satisfiable 
+Average time for 112 clauses:
+  DPLL:               381.59139999999996 ms
+  GSAT:               206.0194 ms
+  Randomized Rounding:0.6952 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 128 clauses...
+DPLL-32-vars/128 clauses: 195.064 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 580.759 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 55.388 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 904.737 ms - Result: Satisfiable 
+DPLL-32-vars/128 clauses: 83.297 ms - Result: Satisfiable 
+GSAT-32-vars/128 clauses: 228.33700000000002 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True]}
+GSAT-32-vars/128 clauses: 267.944 ms - Result: VarAssignment {assignedPositive = VarList [True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/128 clauses: 247.588 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,True,False], assignedNegative = VarList [True,True,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,False,True]}
+GSAT-32-vars/128 clauses: 242.98 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+GSAT-32-vars/128 clauses: 284.412 ms - Result: VarAssignment {assignedPositive = VarList [False,False,False,False,False,False,False,False,True,False,False,True,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False,False], assignedNegative = VarList [True,True,True,True,True,True,True,True,False,True,True,False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}
+Randomized-Rounding-32-vars/128 clauses: 0.868 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/128 clauses: 0.798 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/128 clauses: 0.847 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/128 clauses: 0.848 ms - Result: Satisfiable 
+Randomized-Rounding-32-vars/128 clauses: 0.867 ms - Result: Satisfiable 
+Average time for 128 clauses:
+  DPLL:               363.849 ms
+  GSAT:               254.2522 ms
+  Randomized Rounding:0.8455999999999999 ms
+Satisfiable problems:
+  DPLL:               5 out of 5
+  GSAT:               5 out of 5
+  Randomized Rounding:5 out of 5
+
+
+Benchmarking with 144 clauses...
+DPLL-32-vars/144 clauses: 1247.227 ms - Result: Unsatisfiable

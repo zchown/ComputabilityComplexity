@@ -1,0 +1,22 @@
+Knapsack Algorithm Benchmarks
+=============================
+Algorithm: Greedy Knapsack (Double)
+  Minimum Time: 1.385 ms
+  Maximum Time: 2.9050000000000002 ms
+  Average Time: 1.8916999999999997 ms
+
+Algorithm: 0/1 Dynamic Programming
+  Minimum Time: 0.377 ms
+  Maximum Time: 8.188 ms
+  Average Time: 4.156999999999999 ms
+
+Algorithm: Minimum Cost Knapsack
+  Minimum Time: 709.389 ms
+  Maximum Time: 780.577 ms
+  Average Time: 733.5092999999999 ms
+
+Algorithm: FPTAS Knapsack
+  Minimum Time: 1579.941 ms
+  Maximum Time: 12269.074 ms
+  Average Time: 3685.9759 ms
+

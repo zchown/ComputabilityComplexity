@@ -1,0 +1,502 @@
+SAT Solver Benchmark Results - 2024-12-14 01:12:21
+================================================
+
+Generating test cases with 32 variables...
+
+Running benchmarks...
+Benchmarking with 16 clauses...
+DPLL-32-vars/16 clauses: 0.882 ms
+DPLL-32-vars/16 clauses: 4.7e-2 ms
+DPLL-32-vars/16 clauses: 4.5000000000000005e-2 ms
+DPLL-32-vars/16 clauses: 6.1e-2 ms
+DPLL-32-vars/16 clauses: 4.7e-2 ms
+GSAT-32-vars/16 clauses: 29.028000000000002 ms
+GSAT-32-vars/16 clauses: 31.938000000000002 ms
+GSAT-32-vars/16 clauses: 35.429 ms
+GSAT-32-vars/16 clauses: 31.947000000000003 ms
+GSAT-32-vars/16 clauses: 40.659 ms
+Randomized-Rounding-32-vars/16 clauses: 0.153 ms
+Randomized-Rounding-32-vars/16 clauses: 9.2e-2 ms
+Randomized-Rounding-32-vars/16 clauses: 8.0e-2 ms
+Randomized-Rounding-32-vars/16 clauses: 7.4e-2 ms
+Randomized-Rounding-32-vars/16 clauses: 8.2e-2 ms
+Average time for 16 clauses:
+  DPLL:               0.2164 ms
+  GSAT:               33.800200000000004 ms
+  Randomized Rounding:9.62e-2 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.9625%
+  Randomized Rounding:1.0%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [1.0,1.0,0.9375,1.0,0.875]
+  Randomized Rounding:[1.0,1.0,1.0,1.0,1.0]
+
+
+Benchmarking with 32 clauses...
+DPLL-32-vars/32 clauses: 0.747 ms
+DPLL-32-vars/32 clauses: 9.3e-2 ms
+DPLL-32-vars/32 clauses: 7.6e-2 ms
+DPLL-32-vars/32 clauses: 8.0e-2 ms
+DPLL-32-vars/32 clauses: 1.278 ms
+GSAT-32-vars/32 clauses: 61.439 ms
+GSAT-32-vars/32 clauses: 51.49 ms
+GSAT-32-vars/32 clauses: 67.028 ms
+GSAT-32-vars/32 clauses: 69.155 ms
+GSAT-32-vars/32 clauses: 66.79599999999999 ms
+Randomized-Rounding-32-vars/32 clauses: 0.154 ms
+Randomized-Rounding-32-vars/32 clauses: 0.129 ms
+Randomized-Rounding-32-vars/32 clauses: 0.12999999999999998 ms
+Randomized-Rounding-32-vars/32 clauses: 0.13699999999999998 ms
+Randomized-Rounding-32-vars/32 clauses: 0.13999999999999999 ms
+Average time for 32 clauses:
+  DPLL:               0.4548 ms
+  GSAT:               63.1816 ms
+  Randomized Rounding:0.13799999999999998 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.95%
+  Randomized Rounding:0.99375%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.96875,1.0,0.9375,0.90625,0.9375]
+  Randomized Rounding:[0.96875,1.0,1.0,1.0,1.0]
+
+
+Benchmarking with 48 clauses...
+DPLL-32-vars/48 clauses: 0.219 ms
+DPLL-32-vars/48 clauses: 0.13899999999999998 ms
+DPLL-32-vars/48 clauses: 0.254 ms
+DPLL-32-vars/48 clauses: 0.242 ms
+DPLL-32-vars/48 clauses: 94.821 ms
+GSAT-32-vars/48 clauses: 95.959 ms
+GSAT-32-vars/48 clauses: 74.661 ms
+GSAT-32-vars/48 clauses: 98.428 ms
+GSAT-32-vars/48 clauses: 92.166 ms
+GSAT-32-vars/48 clauses: 81.239 ms
+Randomized-Rounding-32-vars/48 clauses: 0.27599999999999997 ms
+Randomized-Rounding-32-vars/48 clauses: 0.187 ms
+Randomized-Rounding-32-vars/48 clauses: 0.212 ms
+Randomized-Rounding-32-vars/48 clauses: 0.289 ms
+Randomized-Rounding-32-vars/48 clauses: 0.20900000000000002 ms
+Average time for 48 clauses:
+  DPLL:               19.134999999999998 ms
+  GSAT:               88.4906 ms
+  Randomized Rounding:0.2346 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.9541666666666666%
+  Randomized Rounding:0.9958333333333332%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.9375,1.0,0.9166666666666666,0.9375,0.9791666666666666]
+  Randomized Rounding:[1.0,1.0,0.9791666666666666,1.0,1.0]
+
+
+Benchmarking with 64 clauses...
+DPLL-32-vars/64 clauses: 0.17 ms
+DPLL-32-vars/64 clauses: 2.904 ms
+DPLL-32-vars/64 clauses: 1.175 ms
+DPLL-32-vars/64 clauses: 23.757 ms
+DPLL-32-vars/64 clauses: 0.17300000000000001 ms
+GSAT-32-vars/64 clauses: 112.65899999999999 ms
+GSAT-32-vars/64 clauses: 131.994 ms
+GSAT-32-vars/64 clauses: 139.638 ms
+GSAT-32-vars/64 clauses: 107.107 ms
+GSAT-32-vars/64 clauses: 110.901 ms
+Randomized-Rounding-32-vars/64 clauses: 0.428 ms
+Randomized-Rounding-32-vars/64 clauses: 0.328 ms
+Randomized-Rounding-32-vars/64 clauses: 0.296 ms
+Randomized-Rounding-32-vars/64 clauses: 0.251 ms
+Randomized-Rounding-32-vars/64 clauses: 0.33599999999999997 ms
+Average time for 64 clauses:
+  DPLL:               5.6358 ms
+  GSAT:               120.4598 ms
+  Randomized Rounding:0.3278 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.94375%
+  Randomized Rounding:0.978125%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.96875,0.90625,0.890625,0.984375,0.96875]
+  Randomized Rounding:[1.0,0.96875,1.0,1.0,0.921875]
+
+
+Benchmarking with 80 clauses...
+DPLL-32-vars/80 clauses: 68.79599999999999 ms
+DPLL-32-vars/80 clauses: 9.506 ms
+DPLL-32-vars/80 clauses: 4.101999999999999 ms
+DPLL-32-vars/80 clauses: 1061.566 ms
+DPLL-32-vars/80 clauses: 33.116 ms
+GSAT-32-vars/80 clauses: 175.507 ms
+GSAT-32-vars/80 clauses: 136.125 ms
+GSAT-32-vars/80 clauses: 139.97799999999998 ms
+GSAT-32-vars/80 clauses: 168.984 ms
+GSAT-32-vars/80 clauses: 209.985 ms
+Randomized-Rounding-32-vars/80 clauses: 0.49299999999999994 ms
+Randomized-Rounding-32-vars/80 clauses: 0.352 ms
+Randomized-Rounding-32-vars/80 clauses: 0.389 ms
+Randomized-Rounding-32-vars/80 clauses: 0.61 ms
+Randomized-Rounding-32-vars/80 clauses: 0.36000000000000004 ms
+Average time for 80 clauses:
+  DPLL:               235.4172 ms
+  GSAT:               166.11579999999998 ms
+  Randomized Rounding:0.44079999999999997 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.9324999999999999%
+  Randomized Rounding:0.9574999999999999%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.8875,0.975,0.975,0.9,0.925]
+  Randomized Rounding:[0.95,1.0,0.975,0.9125,0.95]
+
+
+Benchmarking with 96 clauses...
+DPLL-32-vars/96 clauses: 5.178 ms
+DPLL-32-vars/96 clauses: 150.953 ms
+DPLL-32-vars/96 clauses: 21.064 ms
+DPLL-32-vars/96 clauses: 0.519 ms
+DPLL-32-vars/96 clauses: 5456.076999999999 ms
+GSAT-32-vars/96 clauses: 157.202 ms
+GSAT-32-vars/96 clauses: 149.988 ms
+GSAT-32-vars/96 clauses: 161.729 ms
+GSAT-32-vars/96 clauses: 200.02900000000002 ms
+GSAT-32-vars/96 clauses: 167.922 ms
+Randomized-Rounding-32-vars/96 clauses: 0.513 ms
+Randomized-Rounding-32-vars/96 clauses: 0.636 ms
+Randomized-Rounding-32-vars/96 clauses: 0.46099999999999997 ms
+Randomized-Rounding-32-vars/96 clauses: 0.5419999999999999 ms
+Randomized-Rounding-32-vars/96 clauses: 0.524 ms
+Average time for 96 clauses:
+  DPLL:               1126.7582 ms
+  GSAT:               167.374 ms
+  Randomized Rounding:0.5352 ms
+Average clause satisfaction:
+  DPLL:               1.0%
+  GSAT:               0.9625%
+  Randomized Rounding:0.925%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.9791666666666666,1.0,0.9791666666666666,0.8958333333333334,0.9583333333333334]
+  Randomized Rounding:[0.9479166666666666,0.9479166666666666,0.8958333333333334,0.8958333333333334,0.9375]
+
+
+Benchmarking with 112 clauses...
+DPLL-32-vars/112 clauses: 3843.378 ms
+DPLL-32-vars/112 clauses: 25.213 ms
+DPLL-32-vars/112 clauses: 152.993 ms
+DPLL-32-vars/112 clauses: 6.569 ms
+DPLL-32-vars/112 clauses: 300.78700000000003 ms
+GSAT-32-vars/112 clauses: 220.592 ms
+GSAT-32-vars/112 clauses: 223.528 ms
+GSAT-32-vars/112 clauses: 204.514 ms
+GSAT-32-vars/112 clauses: 236.35999999999999 ms
+GSAT-32-vars/112 clauses: 190.021 ms
+Randomized-Rounding-32-vars/112 clauses: 0.709 ms
+Randomized-Rounding-32-vars/112 clauses: 0.636 ms
+Randomized-Rounding-32-vars/112 clauses: 0.7789999999999999 ms
+Randomized-Rounding-32-vars/112 clauses: 0.617 ms
+Randomized-Rounding-32-vars/112 clauses: 0.656 ms
+Average time for 112 clauses:
+  DPLL:               865.7880000000001 ms
+  GSAT:               215.00300000000001 ms
+  Randomized Rounding:0.6794 ms
+Average clause satisfaction:
+  DPLL:               0.8%
+  GSAT:               0.9285714285714285%
+  Randomized Rounding:0.9125%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,1.0,1.0,1.0,1.0]
+  GSAT:               [0.9196428571428571,0.9196428571428571,0.9464285714285714,0.8928571428571429,0.9642857142857143]
+  Randomized Rounding:[0.9107142857142857,0.9285714285714286,0.9285714285714286,0.875,0.9196428571428571]
+
+
+Benchmarking with 128 clauses...
+DPLL-32-vars/128 clauses: 121.85799999999999 ms
+DPLL-32-vars/128 clauses: 1739.051 ms
+DPLL-32-vars/128 clauses: 2878.2999999999997 ms
+DPLL-32-vars/128 clauses: 2953.5190000000002 ms
+DPLL-32-vars/128 clauses: 360.153 ms
+GSAT-32-vars/128 clauses: 255.803 ms
+GSAT-32-vars/128 clauses: 217.31 ms
+GSAT-32-vars/128 clauses: 226.433 ms
+GSAT-32-vars/128 clauses: 249.277 ms
+GSAT-32-vars/128 clauses: 253.206 ms
+Randomized-Rounding-32-vars/128 clauses: 0.9840000000000001 ms
+Randomized-Rounding-32-vars/128 clauses: 0.726 ms
+Randomized-Rounding-32-vars/128 clauses: 0.848 ms
+Randomized-Rounding-32-vars/128 clauses: 0.876 ms
+Randomized-Rounding-32-vars/128 clauses: 0.6920000000000001 ms
+Average time for 128 clauses:
+  DPLL:               1610.5762 ms
+  GSAT:               240.4058 ms
+  Randomized Rounding:0.8252 ms
+Average clause satisfaction:
+  DPLL:               0.6%
+  GSAT:               0.9359375%
+  Randomized Rounding:0.9203125%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,0.0,0.0,1.0]
+  GSAT:               [0.921875,0.96875,0.953125,0.921875,0.9140625]
+  Randomized Rounding:[0.90625,0.90625,0.9296875,0.953125,0.90625]
+
+
+Benchmarking with 144 clauses...
+DPLL-32-vars/144 clauses: 235.25099999999998 ms
+DPLL-32-vars/144 clauses: 1103.3059999999998 ms
+DPLL-32-vars/144 clauses: 1473.4199999999998 ms
+DPLL-32-vars/144 clauses: 1116.245 ms
+DPLL-32-vars/144 clauses: 57.836 ms
+GSAT-32-vars/144 clauses: 251.973 ms
+GSAT-32-vars/144 clauses: 253.41200000000003 ms
+GSAT-32-vars/144 clauses: 237.662 ms
+GSAT-32-vars/144 clauses: 248.292 ms
+GSAT-32-vars/144 clauses: 288.089 ms
+Randomized-Rounding-32-vars/144 clauses: 1.0150000000000001 ms
+Randomized-Rounding-32-vars/144 clauses: 1.014 ms
+Randomized-Rounding-32-vars/144 clauses: 0.923 ms
+Randomized-Rounding-32-vars/144 clauses: 1.067 ms
+Randomized-Rounding-32-vars/144 clauses: 0.8540000000000001 ms
+Average time for 144 clauses:
+  DPLL:               797.2116 ms
+  GSAT:               255.8856 ms
+  Randomized Rounding:0.9745999999999999 ms
+Average clause satisfaction:
+  DPLL:               0.6%
+  GSAT:               0.9541666666666666%
+  Randomized Rounding:0.9263888888888889%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [1.0,1.0,0.0,0.0,1.0]
+  GSAT:               [0.9583333333333334,0.9583333333333334,0.9791666666666666,0.9652777777777778,0.9097222222222222]
+  Randomized Rounding:[0.9444444444444444,0.9305555555555556,0.9444444444444444,0.875,0.9375]
+
+
+Benchmarking with 160 clauses...
+DPLL-32-vars/160 clauses: 1964.972 ms
+DPLL-32-vars/160 clauses: 528.207 ms
+DPLL-32-vars/160 clauses: 753.749 ms
+DPLL-32-vars/160 clauses: 335.703 ms
+DPLL-32-vars/160 clauses: 397.697 ms
+GSAT-32-vars/160 clauses: 359.59499999999997 ms
+GSAT-32-vars/160 clauses: 268.383 ms
+GSAT-32-vars/160 clauses: 308.187 ms
+GSAT-32-vars/160 clauses: 338.716 ms
+GSAT-32-vars/160 clauses: 336.769 ms
+Randomized-Rounding-32-vars/160 clauses: 1.383 ms
+Randomized-Rounding-32-vars/160 clauses: 0.934 ms
+Randomized-Rounding-32-vars/160 clauses: 1.346 ms
+Randomized-Rounding-32-vars/160 clauses: 1.365 ms
+Randomized-Rounding-32-vars/160 clauses: 1.119 ms
+Average time for 160 clauses:
+  DPLL:               796.0656 ms
+  GSAT:               322.33000000000004 ms
+  Randomized Rounding:1.2293999999999998 ms
+Average clause satisfaction:
+  DPLL:               0.2%
+  GSAT:               0.9099999999999999%
+  Randomized Rounding:0.915%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,1.0,0.0,0.0,0.0]
+  GSAT:               [0.86875,0.96875,0.93125,0.8875,0.89375]
+  Randomized Rounding:[0.9,0.98125,0.8875,0.88125,0.925]
+
+
+Benchmarking with 176 clauses...
+DPLL-32-vars/176 clauses: 681.767 ms
+DPLL-32-vars/176 clauses: 1251.112 ms
+DPLL-32-vars/176 clauses: 171.19799999999998 ms
+DPLL-32-vars/176 clauses: 635.2379999999999 ms
+DPLL-32-vars/176 clauses: 1953.365 ms
+GSAT-32-vars/176 clauses: 369.99100000000004 ms
+GSAT-32-vars/176 clauses: 408.27599999999995 ms
+GSAT-32-vars/176 clauses: 404.742 ms
+GSAT-32-vars/176 clauses: 877.287 ms
+GSAT-32-vars/176 clauses: 461.234 ms
+Randomized-Rounding-32-vars/176 clauses: 5.008 ms
+Randomized-Rounding-32-vars/176 clauses: 5.834 ms
+Randomized-Rounding-32-vars/176 clauses: 2.0500000000000003 ms
+Randomized-Rounding-32-vars/176 clauses: 2.5469999999999997 ms
+Randomized-Rounding-32-vars/176 clauses: 1.881 ms
+Average time for 176 clauses:
+  DPLL:               938.5360000000001 ms
+  GSAT:               504.3059999999999 ms
+  Randomized Rounding:3.464 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.925%
+  Randomized Rounding:0.9068181818181819%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.9545454545454546,0.9090909090909091,0.9488636363636364,0.9204545454545454,0.8920454545454546]
+  Randomized Rounding:[0.8977272727272727,0.9375,0.9090909090909091,0.8920454545454546,0.8977272727272727]
+
+
+Benchmarking with 192 clauses...
+DPLL-32-vars/192 clauses: 222.199 ms
+DPLL-32-vars/192 clauses: 1451.341 ms
+DPLL-32-vars/192 clauses: 1615.375 ms
+DPLL-32-vars/192 clauses: 6137.663 ms
+DPLL-32-vars/192 clauses: 233.73 ms
+GSAT-32-vars/192 clauses: 427.745 ms
+GSAT-32-vars/192 clauses: 388.444 ms
+GSAT-32-vars/192 clauses: 395.62 ms
+GSAT-32-vars/192 clauses: 437.53 ms
+GSAT-32-vars/192 clauses: 400.96500000000003 ms
+Randomized-Rounding-32-vars/192 clauses: 1.7049999999999998 ms
+Randomized-Rounding-32-vars/192 clauses: 1.474 ms
+Randomized-Rounding-32-vars/192 clauses: 1.673 ms
+Randomized-Rounding-32-vars/192 clauses: 1.846 ms
+Randomized-Rounding-32-vars/192 clauses: 1.717 ms
+Average time for 192 clauses:
+  DPLL:               1932.0616000000002 ms
+  GSAT:               410.06080000000003 ms
+  Randomized Rounding:1.6830000000000003 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.8947916666666668%
+  Randomized Rounding:0.8895833333333334%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.875,0.9114583333333334,0.90625,0.8645833333333334,0.9166666666666666]
+  Randomized Rounding:[0.8854166666666666,0.8958333333333334,0.8697916666666666,0.9114583333333334,0.8854166666666666]
+
+
+Benchmarking with 208 clauses...
+DPLL-32-vars/208 clauses: 712.27 ms
+DPLL-32-vars/208 clauses: 799.8340000000001 ms
+DPLL-32-vars/208 clauses: 1034.313 ms
+DPLL-32-vars/208 clauses: 1506.1970000000001 ms
+DPLL-32-vars/208 clauses: 453.745 ms
+GSAT-32-vars/208 clauses: 397.515 ms
+GSAT-32-vars/208 clauses: 446.038 ms
+GSAT-32-vars/208 clauses: 384.513 ms
+GSAT-32-vars/208 clauses: 376.902 ms
+GSAT-32-vars/208 clauses: 454.65 ms
+Randomized-Rounding-32-vars/208 clauses: 1.9729999999999999 ms
+Randomized-Rounding-32-vars/208 clauses: 1.916 ms
+Randomized-Rounding-32-vars/208 clauses: 1.8940000000000001 ms
+Randomized-Rounding-32-vars/208 clauses: 1.764 ms
+Randomized-Rounding-32-vars/208 clauses: 2.053 ms
+Average time for 208 clauses:
+  DPLL:               901.2717999999999 ms
+  GSAT:               411.92359999999996 ms
+  Randomized Rounding:1.92 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.925%
+  Randomized Rounding:0.8971153846153845%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.9567307692307693,0.8894230769230769,0.9471153846153846,0.9471153846153846,0.8846153846153846]
+  Randomized Rounding:[0.8846153846153846,0.875,0.9134615384615384,0.9038461538461539,0.9086538461538461]
+
+
+Benchmarking with 224 clauses...
+DPLL-32-vars/224 clauses: 841.634 ms
+DPLL-32-vars/224 clauses: 554.037 ms
+DPLL-32-vars/224 clauses: 752.386 ms
+DPLL-32-vars/224 clauses: 505.834 ms
+DPLL-32-vars/224 clauses: 1067.58 ms
+GSAT-32-vars/224 clauses: 453.46999999999997 ms
+GSAT-32-vars/224 clauses: 431.404 ms
+GSAT-32-vars/224 clauses: 372.976 ms
+GSAT-32-vars/224 clauses: 400.155 ms
+GSAT-32-vars/224 clauses: 494.291 ms
+Randomized-Rounding-32-vars/224 clauses: 2.0799999999999996 ms
+Randomized-Rounding-32-vars/224 clauses: 2.285 ms
+Randomized-Rounding-32-vars/224 clauses: 1.9829999999999999 ms
+Randomized-Rounding-32-vars/224 clauses: 2.055 ms
+Randomized-Rounding-32-vars/224 clauses: 2.236 ms
+Average time for 224 clauses:
+  DPLL:               744.2942 ms
+  GSAT:               430.45920000000007 ms
+  Randomized Rounding:2.1277999999999997 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.9303571428571427%
+  Randomized Rounding:0.9044642857142857%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.9151785714285714,0.9285714285714286,0.9776785714285714,0.9553571428571429,0.875]
+  Randomized Rounding:[0.90625,0.9241071428571429,0.8928571428571429,0.9330357142857143,0.8660714285714286]
+
+
+Benchmarking with 240 clauses...
+DPLL-32-vars/240 clauses: 900.899 ms
+DPLL-32-vars/240 clauses: 739.272 ms
+DPLL-32-vars/240 clauses: 88.76299999999999 ms
+DPLL-32-vars/240 clauses: 337.792 ms
+DPLL-32-vars/240 clauses: 80.281 ms
+GSAT-32-vars/240 clauses: 431.562 ms
+GSAT-32-vars/240 clauses: 499.437 ms
+GSAT-32-vars/240 clauses: 490.631 ms
+GSAT-32-vars/240 clauses: 446.737 ms
+GSAT-32-vars/240 clauses: 449.322 ms
+Randomized-Rounding-32-vars/240 clauses: 2.2009999999999996 ms
+Randomized-Rounding-32-vars/240 clauses: 2.536 ms
+Randomized-Rounding-32-vars/240 clauses: 2.5370000000000004 ms
+Randomized-Rounding-32-vars/240 clauses: 2.536 ms
+Randomized-Rounding-32-vars/240 clauses: 2.3080000000000003 ms
+Average time for 240 clauses:
+  DPLL:               429.4014 ms
+  GSAT:               463.53780000000006 ms
+  Randomized Rounding:2.4236 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.9258333333333335%
+  Randomized Rounding:0.8866666666666667%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.95,0.9,0.9041666666666667,0.9416666666666667,0.9333333333333333]
+  Randomized Rounding:[0.9125,0.8833333333333333,0.8916666666666667,0.9041666666666667,0.8416666666666667]
+
+
+Benchmarking with 256 clauses...
+DPLL-32-vars/256 clauses: 103.377 ms
+DPLL-32-vars/256 clauses: 1968.0089999999998 ms
+DPLL-32-vars/256 clauses: 1151.271 ms
+DPLL-32-vars/256 clauses: 240.445 ms
+DPLL-32-vars/256 clauses: 251.17099999999996 ms
+GSAT-32-vars/256 clauses: 596.701 ms
+GSAT-32-vars/256 clauses: 556.8610000000001 ms
+GSAT-32-vars/256 clauses: 474.779 ms
+GSAT-32-vars/256 clauses: 472.223 ms
+GSAT-32-vars/256 clauses: 636.7230000000001 ms
+Randomized-Rounding-32-vars/256 clauses: 2.721 ms
+Randomized-Rounding-32-vars/256 clauses: 3.42 ms
+Randomized-Rounding-32-vars/256 clauses: 3.199 ms
+Randomized-Rounding-32-vars/256 clauses: 2.679 ms
+Randomized-Rounding-32-vars/256 clauses: 2.8379999999999996 ms
+Average time for 256 clauses:
+  DPLL:               742.8546 ms
+  GSAT:               547.4574 ms
+  Randomized Rounding:2.9714 ms
+Average clause satisfaction:
+  DPLL:               0.0%
+  GSAT:               0.915625%
+  Randomized Rounding:0.89453125%
+
+Individual Problem Clause Satisfactions:
+  DPLL:               [0.0,0.0,0.0,0.0,0.0]
+  GSAT:               [0.89453125,0.8828125,0.94140625,0.94140625,0.91796875]
+  Randomized Rounding:[0.9140625,0.88671875,0.8984375,0.87890625,0.89453125]
+
+

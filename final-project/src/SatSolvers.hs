@@ -22,16 +22,19 @@ gsat ::
      forall n. KnownNat n
   => SatProblem n
   -> Int
+  -> Int
   -> VarAssignment n
-gsat p maxTries = go maxTries initial initial
+gsat p maxTries maxFlips = go maxTries (createVarAssignment @n)
   where
-    initial = createRandomVarAssignment @n
-    go :: Int -> VarAssignment n -> VarAssignment n -> VarAssignment n
-    go 0 !a _ = a
-    go !t !best va@(VarAssignment !vp !_)
-      | numberOfUnsatisfiedClauses p va' < numberOfUnsatisfiedClauses p best =
-        go (t - 1) va' va'
-      | otherwise = go (t - 1) best va'
+    go :: Int -> VarAssignment n -> VarAssignment n
+    go 0 !b = b
+    go i best = go (i - 1) $ gogo maxFlips best (createRandomVarAssignment @n)
+    gogo :: Int -> VarAssignment n -> VarAssignment n -> VarAssignment n
+    gogo 0 !b _ = b
+    gogo j !b va@(VarAssignment !vp !_)
+      | numberOfUnsatisfiedClauses p va' < numberOfUnsatisfiedClauses p b =
+        gogo (j - 1) va' va'
+      | otherwise = gogo (j - 1) b va'
       where
         va' = VarAssignment vp' (complement vp')
         vp' :: VarList n

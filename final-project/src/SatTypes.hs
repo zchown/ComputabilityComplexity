@@ -63,8 +63,16 @@ evaluateSatProblem ::
      forall n. KnownNat n
   => SatProblem n
   -> VarAssignment n
-  -> Bool
-evaluateSatProblem (SatProblem !cs) !v = VE.all (evaluateClause v) cs
+  -> Double
+evaluateSatProblem (SatProblem !cs) !va =
+  let !total = fromIntegral $ VE.length cs
+      !satisfied = VE.foldl' f 0 cs
+   in satisfied / total
+  where
+    f !acc !c =
+      if evaluateClause va c
+        then acc + 1
+        else acc
 
 satProblemFromList ::
      forall n. KnownNat n
